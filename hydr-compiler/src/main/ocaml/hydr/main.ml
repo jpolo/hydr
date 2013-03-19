@@ -45,8 +45,9 @@ exception Abort
 exception Completion of string
   
 let name = "Hydr"
-let version = 300
+let version = 100
 let extension = "hy"
+let extension_xml = "hyml"
 let usage() = 
   Printf.sprintf
     "%s Compiler  %d.%d.%d - (C)2005-2013 Julien Polo\n Usage : hydr%s -main <class> [-swf|-js|-neko|-php|-cpp|-as3] <output> [options]\n Options :"
@@ -488,7 +489,7 @@ let rec process_params create pl =
 			ctx.flush()
 		| arg :: l ->
 			match List.rev (ExtString.String.nsplit arg ".") with
-			| "hxml" :: _ when (match acc with "-cmd" :: _ -> false | _ -> true) -> loop acc (parse_hxml arg @ l)
+			| extension_xml :: _ when (match acc with "-cmd" :: _ -> false | _ -> true) -> loop acc (hxml_parse arg @ l)
 			| _ -> loop (arg :: acc) l
 	in
 	(* put --display in front if it was last parameter *)
