@@ -30,7 +30,7 @@
 	
 	There is some extra functions available in the [DateTools] class.
 	
-	In the context of haxe dates, a timestamp is defined as the number of
+	In the context of hydr dates, a timestamp is defined as the number of
 	milliseconds elapsed since 1st January 1970.
 **/
 extern class Date

@@ -615,7 +615,7 @@ package java.lang;
 	* @see     java.lang.Long#MAX_VALUE
 	* @see     java.lang.Long#MIN_VALUE
 	*/
-	@:overload public static function round(a : Float) : haxe.Int64;
+	@:overload public static function round(a : Float) : hydr.Int64;
 	
 	/**
 	* Returns a {@code double} value with a positive sign, greater
@@ -670,7 +670,7 @@ package java.lang;
 	* @param   a   the argument whose absolute value is to be determined
 	* @return  the absolute value of the argument.
 	*/
-	@:overload public static function abs(a : haxe.Int64) : haxe.Int64;
+	@:overload public static function abs(a : hydr.Int64) : hydr.Int64;
 	
 	/**
 	* Returns the absolute value of a {@code float} value.
@@ -728,7 +728,7 @@ package java.lang;
 	* @param   b   another argument.
 	* @return  the larger of {@code a} and {@code b}.
 	*/
-	@:overload public static function max(a : haxe.Int64, b : haxe.Int64) : haxe.Int64;
+	@:overload public static function max(a : hydr.Int64, b : hydr.Int64) : hydr.Int64;
 	
 	/**
 	* Returns the greater of two {@code float} values.  That is,
@@ -784,7 +784,7 @@ package java.lang;
 	* @param   b   another argument.
 	* @return  the smaller of {@code a} and {@code b}.
 	*/
-	@:overload public static function min(a : haxe.Int64, b : haxe.Int64) : haxe.Int64;
+	@:overload public static function min(a : hydr.Int64, b : hydr.Int64) : hydr.Int64;
 	
 	/**
 	* Returns the smaller of two {@code float} values.  That is,

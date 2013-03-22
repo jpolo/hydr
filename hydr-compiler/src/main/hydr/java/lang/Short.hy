@@ -289,7 +289,7 @@ package java.lang;
 	* Returns the value of this {@code Short} as a
 	* {@code long}.
 	*/
-	@:overload override public function longValue() : haxe.Int64;
+	@:overload override public function longValue() : hydr.Int64;
 	
 	/**
 	* Returns the value of this {@code Short} as a

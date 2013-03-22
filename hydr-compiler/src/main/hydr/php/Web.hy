@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,7 +21,7 @@
  */
 package php;
 
-import haxe.io.Bytes;
+import hydr.io.Bytes;
 
 /**
 	This class is used for accessing the local Web server and the current
@@ -81,7 +81,7 @@ class Web {
 		explore(getPostData());
 
         if (res.length == 0) {
-            var post:haxe.ds.StringMap<Dynamic> = Lib.hashOfAssociativeArray(untyped __php__("$_POST"));
+            var post:hydr.ds.StringMap<Dynamic> = Lib.hashOfAssociativeArray(untyped __php__("$_POST"));
             var data = post.get(param);
             var k = 0, v = "";
             if (untyped __call__("is_array", data)) {
@@ -289,8 +289,8 @@ class Web {
 		Get the multipart parameters as an hashtable. The data
 		cannot exceed the maximum size specified.
 	**/
-	public static function getMultipart( maxSize : Int ) : haxe.ds.StringMap<String> {
-		var h = new haxe.ds.StringMap();
+	public static function getMultipart( maxSize : Int ) : hydr.ds.StringMap<String> {
+		var h = new hydr.ds.StringMap();
 		var buf : StringBuf = null;
 		var curname = null;
 		parseMultipart(function(p,_) {

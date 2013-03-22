@@ -48,7 +48,7 @@ let gen_doc s =
 	(* remove trailing space and convert newlines *)
 	let s = ExtString.String.strip s in
 	let s = String.concat "\n" (ExtString.String.nsplit (String.concat "\n" (ExtString.String.nsplit s "\r\n")) "\r") in
-	node "haxe_doc" [] [gen_string s]
+	node "hydr_doc" [] [gen_string s]
 
 let gen_doc_opt d =
 	match d with
@@ -183,7 +183,7 @@ let gen_type_decl com pos t =
 		let interf = (if c.cl_interface then [("interface","1")] else []) in
 		let dynamic = (match c.cl_dynamic with
 			| None -> []
-			| Some t -> [node "haxe_dynamic" [] [gen_type t]]
+			| Some t -> [node "hydr_dynamic" [] [gen_type t]]
 		) in
 		node "class" (gen_type_params pos c.cl_private (tpath t) c.cl_types c.cl_pos m @ ext @ interf) (tree @ stats @ fields @ constr @ doc @ meta @ dynamic)
 	| TEnumDecl e ->
@@ -227,7 +227,7 @@ let rec write_xml ch tabs x =
 
 let generate com file =
 	let t = Common.timer "construct xml" in
-	let x = node "haxe" [] (List.map (gen_type_decl com true) (List.filter (fun t -> not (Meta.has Meta.NoDoc (t_infos t).mt_meta)) com.types)) in
+	let x = node "hydr" [] (List.map (gen_type_decl com true) (List.filter (fun t -> not (Meta.has Meta.NoDoc (t_infos t).mt_meta)) com.types)) in
 	t();
 	let t = Common.timer "write xml" in
 	let ch = IO.output_channel (open_out_bin file) in

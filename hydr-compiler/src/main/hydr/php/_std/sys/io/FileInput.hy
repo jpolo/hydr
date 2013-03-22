@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,10 +20,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package sys.io;
-import haxe.io.Eof;
+import hydr.io.Eof;
 
 @:coreApi
-class FileInput extends haxe.io.Input {
+class FileInput extends hydr.io.Input {
 
 	private var __f : File.FileHandle;
 
@@ -32,17 +32,17 @@ class FileInput extends haxe.io.Input {
 	}
 
 	public override function readByte() : Int {
-		if(untyped __call__('feof', __f)) return throw new haxe.io.Eof();
+		if(untyped __call__('feof', __f)) return throw new hydr.io.Eof();
 		var r = untyped __call__('fread', __f, 1);
-		if(untyped __physeq__(r, false)) return throw haxe.io.Error.Custom('An error occurred');
+		if(untyped __physeq__(r, false)) return throw hydr.io.Error.Custom('An error occurred');
 		return untyped __call__('ord', r);
 	}
 
-	public override function readBytes( s : haxe.io.Bytes, p : Int, l : Int ) : Int {
-		if(untyped __call__('feof', __f)) return throw new haxe.io.Eof();
+	public override function readBytes( s : hydr.io.Bytes, p : Int, l : Int ) : Int {
+		if(untyped __call__('feof', __f)) return throw new hydr.io.Eof();
 		var r : String = untyped __call__('fread', __f, l);
-		if(untyped __physeq__(r, false)) return throw haxe.io.Error.Custom('An error occurred');
-		var b = haxe.io.Bytes.ofString(r);
+		if(untyped __physeq__(r, false)) return throw hydr.io.Error.Custom('An error occurred');
+		var b = hydr.io.Bytes.ofString(r);
 		s.blit(p, b, 0, r.length);
 		return r.length;
 	}
@@ -60,12 +60,12 @@ class FileInput extends haxe.io.Input {
 			case SeekEnd  : w = untyped __php__('SEEK_END');
 		}
 		var r = untyped __call__('fseek', __f, p, w);
-		if(untyped __physeq__(r, false)) throw haxe.io.Error.Custom('An error occurred');
+		if(untyped __physeq__(r, false)) throw hydr.io.Error.Custom('An error occurred');
 	}
 
 	public function tell() : Int {
 		var r = untyped __call__('ftell', __f);
-		if(untyped __physeq__(r, false)) return throw haxe.io.Error.Custom('An error occurred');
+		if(untyped __physeq__(r, false)) return throw hydr.io.Error.Custom('An error occurred');
 		return cast r;
 	}
 

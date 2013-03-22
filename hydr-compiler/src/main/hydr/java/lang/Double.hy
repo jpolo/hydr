@@ -578,7 +578,7 @@ package java.lang;
 	* @return  the {@code double} value represented by this object
 	*          converted to type {@code long}
 	*/
-	@:overload override public function longValue() : haxe.Int64;
+	@:overload override public function longValue() : hydr.Int64;
 
 	/**
 	* Returns the {@code float} value of this
@@ -694,7 +694,7 @@ package java.lang;
 	* @param   value   a {@code double} precision floating-point number.
 	* @return the bits that represent the floating-point number.
 	*/
-	@:overload public static function doubleToLongBits(value : Float) : haxe.Int64;
+	@:overload public static function doubleToLongBits(value : Float) : hydr.Int64;
 
 	/**
 	* Returns a representation of the specified floating-point value
@@ -732,7 +732,7 @@ package java.lang;
 	* @return the bits that represent the floating-point number.
 	* @since 1.3
 	*/
-	@:require(java3) @:overload @:native public static function doubleToRawLongBits(value : Float) : haxe.Int64;
+	@:require(java3) @:overload @:native public static function doubleToRawLongBits(value : Float) : hydr.Int64;
 
 	/**
 	* Returns the {@code double} value corresponding to a given
@@ -795,7 +795,7 @@ package java.lang;
 	* @return  the {@code double} floating-point value with the same
 	*          bit pattern.
 	*/
-	@:overload @:native public static function longBitsToDouble(bits : haxe.Int64) : Float;
+	@:overload @:native public static function longBitsToDouble(bits : hydr.Int64) : Float;
 
 	/**
 	* Compares two {@code Double} objects numerically.  There

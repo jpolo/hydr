@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,14 +20,14 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package java.io;
-import haxe.Int64;
-import haxe.io.Bytes;
-import haxe.io.Eof;
-import haxe.io.Input;
+import hydr.Int64;
+import hydr.io.Bytes;
+import hydr.io.Eof;
+import hydr.io.Input;
 import java.io.IOException;
 import java.io.EOFException;
 
-@:native('haxe.java.io.NativeInput') class NativeInput extends Input
+@:native('hydr.java.io.NativeInput') class NativeInput extends Input
 {
 	var stream:java.io.InputStream;
 	public function new(stream)
@@ -46,7 +46,7 @@ import java.io.EOFException;
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -63,7 +63,7 @@ import java.io.EOFException;
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 
 		if (ret == -1)
@@ -79,7 +79,7 @@ import java.io.EOFException;
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36,7 +36,7 @@ enum ValueType {
 }
 
 /**
-	The haxe Reflection API allows retrieval of type information at runtime.
+	The hydr Reflection API allows retrieval of type information at runtime.
 	
 	This class complements the more lightweight Reflect class, with a focus on
 	class and enum instances.
@@ -83,7 +83,7 @@ extern class Type {
 		If [c] is inside a package, the package structure is returned dot-
 		separated, with another dot separating the class name:
 			pack1.pack2.(...).packN.ClassName
-		If [c] is a sub-type of a haxe module, that module is not part of the
+		If [c] is a sub-type of a hydr module, that module is not part of the
 		package structure.
 			
 		If [c] has no package, the class name is returned.
@@ -100,7 +100,7 @@ extern class Type {
 		If [e] is inside a package, the package structure is returned dot-
 		separated, with another dot separating the enum name:
 			pack1.pack2.(...).packN.EnumName
-		If [e] is a sub-type of a haxe module, that module is not part of the
+		If [e] is a sub-type of a hydr module, that module is not part of the
 		package structure.
 			
 		If [e] has no package, the enum name is returned.
@@ -183,7 +183,7 @@ extern class Type {
 		Creates an instance of enum [e] by calling its constructor number
 		[index] with arguments [params].
 		
-		The constructor indices are preserved from haxe syntax, so the first
+		The constructor indices are preserved from hydr syntax, so the first
 		declared is index 0, the next index 1 etc.
 		
 		If [e] or [constr] is null, or if enum [e] has no constructor named

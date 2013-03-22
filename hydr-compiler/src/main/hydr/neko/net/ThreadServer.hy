@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +32,7 @@ private typedef ClientInfos<Client> = {
 	var client : Client;
 	var sock : sys.net.Socket;
 	var thread : ThreadInfos;
-	var buf : haxe.io.Bytes;
+	var buf : hydr.io.Bytes;
 	var bufpos : Int;
 }
 
@@ -45,7 +45,7 @@ class ThreadServer<Client,Message> {
 	public var listen : Int;
 	public var nthreads : Int;
 	public var connectLag : Float;
-	public var errorOutput : haxe.io.Output;
+	public var errorOutput : hydr.io.Output;
 	public var initialBufferSize : Int;
 	public var maxBufferSize : Int;
 	public var messageHeaderSize : Int;
@@ -84,7 +84,7 @@ class ThreadServer<Client,Message> {
 				if( c.buf.length == maxBufferSize )
 					throw "Max buffer size reached";
 			}
-			var newbuf = haxe.io.Bytes.alloc(newsize);
+			var newbuf = hydr.io.Bytes.alloc(newsize);
 			newbuf.blit(0,c.buf,0,c.bufpos);
 			c.buf = newbuf;
 			available = newsize - c.bufpos;
@@ -113,7 +113,7 @@ class ThreadServer<Client,Message> {
 					readClientData(infos);
 				} catch( e : Dynamic ) {
 					t.socks.remove(s);
-					if( !Std.is(e,haxe.io.Eof) && !Std.is(e,haxe.io.Error) )
+					if( !Std.is(e,hydr.io.Eof) && !Std.is(e,hydr.io.Error) )
 						logError(e);
 					work(doClientDisconnected.bind(s,infos.client));
 				}
@@ -157,7 +157,7 @@ class ThreadServer<Client,Message> {
 	}
 
 	function logError( e : Dynamic ) {
-		var stack = haxe.CallStack.exceptionStack();
+		var stack = hydr.CallStack.exceptionStack();
 		if( neko.vm.Thread.current() == worker )
 			onError(e,stack);
 		else
@@ -173,7 +173,7 @@ class ThreadServer<Client,Message> {
 					thread : t,
 					client : clientConnected(sock),
 					sock : sock,
-					buf : haxe.io.Bytes.alloc(initialBufferSize),
+					buf : hydr.io.Bytes.alloc(initialBufferSize),
 					bufpos : 0,
 				};
 				sock.custom = infos;
@@ -249,7 +249,7 @@ class ThreadServer<Client,Message> {
 
 	public dynamic function onError( e : Dynamic, stack ) {
 		var estr = try Std.string(e) catch( e2 : Dynamic ) "???" + try "["+Std.string(e2)+"]" catch( e : Dynamic ) "";
-		errorOutput.writeString( estr + "\n" + haxe.CallStack.toString(stack) );
+		errorOutput.writeString( estr + "\n" + hydr.CallStack.toString(stack) );
 		errorOutput.flush();
 	}
 
@@ -260,7 +260,7 @@ class ThreadServer<Client,Message> {
 	public dynamic function clientDisconnected( c : Client ) {
 	}
 
-	public dynamic function readClientMessage( c : Client, buf : haxe.io.Bytes, pos : Int, len : Int ) : { msg : Message, bytes : Int } {
+	public dynamic function readClientMessage( c : Client, buf : hydr.io.Bytes, pos : Int, len : Int ) : { msg : Message, bytes : Int } {
 		return {
 			msg : null,
 			bytes : len,

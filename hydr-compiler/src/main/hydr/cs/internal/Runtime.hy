@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,33 +35,33 @@ import cs.system.Type;
 **/
 
 @:nativeGen
-@:native('haxe.lang.Runtime')
+@:native('hydr.lang.Runtime')
 @:classCode('
-	public static object getField(haxe.lang.HxObject obj, string field, int fieldHash, bool throwErrors)
+	public static object getField(hydr.lang.HxObject obj, string field, int fieldHash, bool throwErrors)
 	{
 		if (obj == null && !throwErrors) return null;
-		return obj.__hx_getField(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false, false);
+		return obj.__hx_getField(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false, false);
 	}
 
-	public static double getField_f(haxe.lang.HxObject obj, string field, int fieldHash, bool throwErrors)
+	public static double getField_f(hydr.lang.HxObject obj, string field, int fieldHash, bool throwErrors)
 	{
 		if (obj == null && !throwErrors) return 0.0;
-		return obj.__hx_getField_f(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false);
+		return obj.__hx_getField_f(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false);
 	}
 
-	public static object setField(haxe.lang.HxObject obj, string field, int fieldHash, object value)
+	public static object setField(hydr.lang.HxObject obj, string field, int fieldHash, object value)
 	{
-		return obj.__hx_setField(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, value, false);
+		return obj.__hx_setField(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, value, false);
 	}
 
-	public static double setField_f(haxe.lang.HxObject obj, string field, int fieldHash, double value)
+	public static double setField_f(hydr.lang.HxObject obj, string field, int fieldHash, double value)
 	{
-		return obj.__hx_setField_f(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, value, false);
+		return obj.__hx_setField_f(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, value, false);
 	}
 
-	public static object callField(haxe.lang.HxObject obj, string field, int fieldHash, Array args)
+	public static object callField(hydr.lang.HxObject obj, string field, int fieldHash, Array args)
 	{
-		return obj.__hx_invokeField(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, args);
+		return obj.__hx_invokeField(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, args);
 	}
 ')
 @:keep class Runtime
@@ -69,7 +69,7 @@ import cs.system.Type;
 	public static var undefined(default, never):Dynamic = { };
 
 	@:functionCode('
-		return new haxe.lang.Closure(obj, field, hash);
+		return new hydr.lang.Closure(obj, field, hash);
 	')
 	public static function closure(obj:Dynamic, hash:Int, field:String):Dynamic
 	{
@@ -300,12 +300,12 @@ import cs.system.Type;
 		{
 			string s = obj as string;
 			if (s != null)
-				return haxe.lang.StringRefl.handleGetField(s, field, throwErrors);
+				return hydr.lang.StringRefl.handleGetField(s, field, throwErrors);
 			t = obj.GetType();
 			bf = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.FlattenHierarchy;
 		} else {
 			if (obj == typeof(string) && field.Equals("fromCharCode"))
-				return new haxe.lang.Closure(typeof(haxe.lang.StringExt), field, 0);
+				return new hydr.lang.Closure(typeof(hydr.lang.StringExt), field, 0);
 
 			obj = null;
 			bf = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public;
@@ -314,7 +314,7 @@ import cs.system.Type;
 		System.Reflection.FieldInfo f = t.GetField(field, bf);
 		if (f != null)
 		{
-			return haxe.lang.Runtime.unbox(f.GetValue(obj));
+			return hydr.lang.Runtime.unbox(f.GetValue(obj));
 		} else {
 			System.Reflection.PropertyInfo prop = t.GetProperty(field, bf);
 			if (prop == null)
@@ -322,7 +322,7 @@ import cs.system.Type;
 				System.Reflection.MemberInfo[] m = t.GetMember(field, bf);
 				if (m.Length > 0)
 				{
-					return new haxe.lang.Closure(obj != null ? obj : t, field, 0);
+					return new hydr.lang.Closure(obj != null ? obj : t, field, 0);
 				} else {
 					if (throwErrors)
 						throw HaxeException.wrap("Cannot access field \'" + field + "\'.");
@@ -330,7 +330,7 @@ import cs.system.Type;
 						return null;
 				}
 			}
-			return haxe.lang.Runtime.unbox(prop.GetValue(obj, null));
+			return hydr.lang.Runtime.unbox(prop.GetValue(obj, null));
 		}
 
 	')
@@ -347,7 +347,7 @@ import cs.system.Type;
 		{
 			string s = obj as string;
 			if (s != null)
-				return haxe.lang.StringRefl.handleGetField(s, field, false) != null;
+				return hydr.lang.StringRefl.handleGetField(s, field, false) != null;
 			t = obj.GetType();
 			bf = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.FlattenHierarchy;
 		} else {
@@ -383,9 +383,9 @@ import cs.system.Type;
 		System.Reflection.FieldInfo f = t.GetField(field, bf);
 		if (f != null)
 		{
-			if (f.FieldType.ToString().StartsWith("haxe.lang.Null"))
+			if (f.FieldType.ToString().StartsWith("hydr.lang.Null"))
 			{
-				@value = haxe.lang.Runtime.mkNullable(@value, f.FieldType);
+				@value = hydr.lang.Runtime.mkNullable(@value, f.FieldType);
 			}
 
 			f.SetValue(obj, @value);
@@ -394,12 +394,12 @@ import cs.system.Type;
 			System.Reflection.PropertyInfo prop = t.GetProperty(field, bf);
 			if (prop == null)
 			{
-				throw haxe.lang.HaxeException.wrap("Field \'" + field + "\' not found for writing from Class " + t);
+				throw hydr.lang.HaxeException.wrap("Field \'" + field + "\' not found for writing from Class " + t);
 			}
 
-			if (prop.PropertyType.ToString().StartsWith("haxe.lang.Null"))
+			if (prop.PropertyType.ToString().StartsWith("hydr.lang.Null"))
 			{
-				@value = haxe.lang.Runtime.mkNullable(@value, prop.PropertyType);
+				@value = hydr.lang.Runtime.mkNullable(@value, prop.PropertyType);
 			}
 			prop.SetValue(obj, @value, null);
 
@@ -448,7 +448,7 @@ import cs.system.Type;
 						{
 							//if it is directly assignable, we'll give it top rate
 							continue;
-						} else if (untyped strParam.StartsWith("haxe.lang.Null") || ( (oargs[i] == null || Std.is(oargs[i], IConvertible) ) && cast(untyped __typeof__(IConvertible), Type).IsAssignableFrom(param) ))
+						} else if (untyped strParam.StartsWith("hydr.lang.Null") || ( (oargs[i] == null || Std.is(oargs[i], IConvertible) ) && cast(untyped __typeof__(IConvertible), Type).IsAssignableFrom(param) ))
 						{
 							//if it needs conversion, give a penalty. TODO rate penalty
 							crate++;
@@ -497,7 +497,7 @@ import cs.system.Type;
 		{
 			var param = params[i].ParameterType;
 			var strParam = param + "";
-			if (StringTools.startsWith(strParam, "haxe.lang.Null"))
+			if (StringTools.startsWith(strParam, "hydr.lang.Null"))
 			{
 				oargs[i] = mkNullable(oargs[i], param);
 			} else if (cast(untyped __typeof__(IConvertible), Type).IsAssignableFrom(param)) {
@@ -536,7 +536,7 @@ import cs.system.Type;
 
 	public static function unbox(dyn:Dynamic):Dynamic
 	{
-		if (dyn != null && untyped (Lib.nativeType(dyn) + "").StartsWith("haxe.lang.Null"))
+		if (dyn != null && untyped (Lib.nativeType(dyn) + "").StartsWith("hydr.lang.Null"))
 		{
 			return dyn.toDynamic();
 		} else {
@@ -546,7 +546,7 @@ import cs.system.Type;
 
 	@:functionCode('
 		if (nullableType.ContainsGenericParameters)
-			return haxe.lang.Null<object>.ofDynamic<object>(obj);
+			return hydr.lang.Null<object>.ofDynamic<object>(obj);
 		return nullableType.GetMethod("_ofDynamic").Invoke(null, new object[] { obj });
 	')
 	public static function mkNullable(obj:Dynamic, nullableType:cs.system.Type):Dynamic
@@ -563,12 +563,12 @@ import cs.system.Type;
 		{
 			string s = obj as string;
 			if (s != null)
-				return haxe.lang.StringRefl.handleCallField(s, field, args);
+				return hydr.lang.StringRefl.handleCallField(s, field, args);
 			t = obj.GetType();
 			bf = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.FlattenHierarchy;
 		} else {
 			if (t == typeof(string) && field.Equals("fromCharCode"))
-				return haxe.lang.StringExt.fromCharCode(toInt(args[0]));
+				return hydr.lang.StringExt.fromCharCode(toInt(args[0]));
 			obj = null;
 			bf = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public;
 		}
@@ -585,10 +585,10 @@ import cs.system.Type;
 
 		if (last == 0)
 		{
-			throw haxe.lang.HaxeException.wrap("Method \'" + field + "\' not found on type " + t);
+			throw hydr.lang.HaxeException.wrap("Method \'" + field + "\' not found on type " + t);
 		}
 
-		return haxe.lang.Runtime.callMethod(obj, mis, last, args);
+		return hydr.lang.Runtime.callMethod(obj, mis, last, args);
 	')
 	public static function slowCallField(obj:Dynamic, field:String, args:Array<Dynamic>):Dynamic
 	{
@@ -597,9 +597,9 @@ import cs.system.Type;
 	}
 
 	@:functionCode('
-		haxe.lang.HxObject hxObj = obj as haxe.lang.HxObject;
+		hydr.lang.HxObject hxObj = obj as hydr.lang.HxObject;
 		if (hxObj != null)
-			return hxObj.__hx_invokeField(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, args);
+			return hxObj.__hx_invokeField(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, args);
 
 		return slowCallField(obj, field, args);
 	')
@@ -610,9 +610,9 @@ import cs.system.Type;
 
 	@:functionCode('
 
-		haxe.lang.HxObject hxObj = obj as haxe.lang.HxObject;
+		hydr.lang.HxObject hxObj = obj as hydr.lang.HxObject;
 		if (hxObj != null)
-			return hxObj.__hx_getField(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false, false);
+			return hxObj.__hx_getField(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false, false);
 
 		return slowGetField(obj, field, throwErrors);
 
@@ -624,9 +624,9 @@ import cs.system.Type;
 
 	@:functionCode('
 
-		haxe.lang.HxObject hxObj = obj as haxe.lang.HxObject;
+		hydr.lang.HxObject hxObj = obj as hydr.lang.HxObject;
 		if (hxObj != null)
-			return hxObj.__hx_getField_f(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false);
+			return hxObj.__hx_getField_f(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, throwErrors, false);
 
 		return (double)slowGetField(obj, field, throwErrors);
 
@@ -638,9 +638,9 @@ import cs.system.Type;
 
 	@:functionCode('
 
-		haxe.lang.HxObject hxObj = obj as haxe.lang.HxObject;
+		hydr.lang.HxObject hxObj = obj as hydr.lang.HxObject;
 		if (hxObj != null)
-			return hxObj.__hx_setField(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, value, false);
+			return hxObj.__hx_setField(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, value, false);
 
 		return slowSetField(obj, field, value);
 
@@ -652,9 +652,9 @@ import cs.system.Type;
 
 	@:functionCode('
 
-		haxe.lang.HxObject hxObj = obj as haxe.lang.HxObject;
+		hydr.lang.HxObject hxObj = obj as hydr.lang.HxObject;
 		if (hxObj != null)
-			return hxObj.__hx_setField_f(field, (fieldHash == 0) ? haxe.lang.FieldLookup.hash(field) : fieldHash, value, false);
+			return hxObj.__hx_setField_f(field, (fieldHash == 0) ? hydr.lang.FieldLookup.hash(field) : fieldHash, value, false);
 
 		return (double)slowSetField(obj, field, value);
 
@@ -731,7 +731,7 @@ import cs.system.Type;
 	}*/
 }
 
-@:keep @:native("haxe.lang.EmptyObject") private enum EmptyObject
+@:keep @:native("hydr.lang.EmptyObject") private enum EmptyObject
 {
 	EMPTY;
 }

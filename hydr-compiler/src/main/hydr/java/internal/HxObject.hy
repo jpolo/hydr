@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,19 +23,19 @@ package java.internal;
 import java.internal.IEquatable;
 private typedef StdType = Type;
 
-@:native('haxe.lang.HxObject')
+@:native('hydr.lang.HxObject')
 @:keep
 private class HxObject implements IHxObject
 {
 }
 
-@:native('haxe.lang.IHxObject')
+@:native('hydr.lang.IHxObject')
 @:keep
 private interface IHxObject
 {
 }
 
-@:native('haxe.lang.DynamicObject')
+@:native('hydr.lang.DynamicObject')
 @:replaceReflection
 @:keep
 private class DynamicObject extends HxObject implements Dynamic
@@ -64,7 +64,7 @@ private class DynamicObject extends HxObject implements Dynamic
 	}
 }
 
-@:native('haxe.lang.Enum')
+@:native('hydr.lang.Enum')
 //@:skipCtor
 @:nativeGen
 @:keep

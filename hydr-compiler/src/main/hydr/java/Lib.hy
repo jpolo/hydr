@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,10 +23,10 @@ package java;
 
 /**
 	Platform-specific Java Library. Provides some platform-specific functions for the Java target,
-	such as conversion from haxe types to native types and vice-versa.
+	such as conversion from hydr types to native types and vice-versa.
 **/
-//we cannot use the java package for custom classes, so we're redefining it as "haxe.java.Lib"
-@:native('haxe.java.Lib') class Lib
+//we cannot use the java package for custom classes, so we're redefining it as "hydr.java.Lib"
+@:native('hydr.java.Lib') class Lib
 {
 
 	/**

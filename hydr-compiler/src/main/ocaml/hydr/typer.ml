@@ -109,7 +109,7 @@ let rec is_pos_infos = function
 		| _ -> false)
 	| TLazy f ->
 		is_pos_infos (!f())
-	| TType ({ t_path = ["haxe"] , "PosInfos" },[]) ->
+	| TType ({ t_path = ["hydr"] , "PosInfos" },[]) ->
 		true
 	| TType (t,tl) ->
 		is_pos_infos (apply_params t.t_types tl t.t_type)
@@ -798,7 +798,7 @@ let using_field ctx mode e i p =
 			let map = apply_params cf.cf_params monos in
 			let t = map cf.cf_type in
 			begin match follow t with
-				| TFun((_,_,(TType({t_path = ["haxe";"macro"],"ExprOf"},[t0]) | t0)) :: args,r) ->
+				| TFun((_,_,(TType({t_path = ["hydr";"macro"],"ExprOf"},[t0]) | t0)) :: args,r) ->
 					if is_dynamic && follow t0 != t_dynamic then raise Not_found;
 					Type.unify e.etype t0;
 					(* early constraints check is possible because e.etype has no monomorphs *)
@@ -2902,7 +2902,7 @@ and type_expr ctx (e,p) (with_type:with_type) =
 					let monos = List.map (fun _ -> mk_mono()) f.cf_params in
 					let map = apply_params f.cf_params monos in
 					match follow (map f.cf_type) with
-					| TFun((_,_,TType({t_path=["haxe";"macro"], "ExprOf"}, [t])) :: args, ret)
+					| TFun((_,_,TType({t_path=["hydr";"macro"], "ExprOf"}, [t])) :: args, ret)
 					| TFun((_,_,t) :: args, ret) ->
 						(try
 							unify_raise ctx (dup e.etype) t e.epos;
@@ -2979,7 +2979,7 @@ and type_call ctx e el (with_type:with_type) p =
 			let infos = type_expr ctx infos Value in
 			mk (TCall (mk (TLocal (alloc_var "`trace" t_dynamic)) t_dynamic p,[e;infos])) ctx.t.tvoid p
 		else
-			type_expr ctx (ECall ((EField ((EField ((EConst (Ident "haxe"),p),"Log"),p),"trace"),p),[e;EUntyped infos,p]),p) NoValue
+			type_expr ctx (ECall ((EField ((EField ((EConst (Ident "hydr"),p),"Log"),p),"trace"),p),[e;EUntyped infos,p]),p) NoValue
 	| (EConst(Ident "callback"),p1),args ->
 		let ecb = try Some (type_ident_raise ctx "callback" p1 MCall) with Not_found -> None in
 		(match ecb with
@@ -3573,8 +3573,8 @@ let make_macro_api ctx p =
 
 let rec init_macro_interp ctx mctx mint =
 	let p = Ast.null_pos in
-	ignore(Typeload.load_module mctx (["haxe";"macro"],"Expr") p);
-	ignore(Typeload.load_module mctx (["haxe";"macro"],"Type") p);
+	ignore(Typeload.load_module mctx (["hydr";"macro"],"Expr") p);
+	ignore(Typeload.load_module mctx (["hydr";"macro"],"Type") p);
 	flush_macro_context mint ctx;
 	Interp.init mint;
 	if !macro_enable_cache && not (Common.defined mctx.com Define.NoMacroCache) then macro_interp_cache := Some mint
@@ -3686,17 +3686,17 @@ let load_macro ctx cpath f p =
 let type_macro ctx mode cpath f (el:Ast.expr list) p =
 	let mctx, (margs,mret,mclass,mfield), call_macro = load_macro ctx cpath f p in
 	let mpos = mfield.cf_pos in
-	let ctexpr = { tpackage = ["haxe";"macro"]; tname = "Expr"; tparams = []; tsub = None } in
+	let ctexpr = { tpackage = ["hydr";"macro"]; tname = "Expr"; tparams = []; tsub = None } in
 	let expr = Typeload.load_instance mctx ctexpr p false in
 	(match mode with
 	| MExpr ->
 		unify mctx mret expr mpos;
 	| MBuild ->
-		let ctfields = { tpackage = []; tname = "Array"; tparams = [TPType (CTPath { tpackage = ["haxe";"macro"]; tname = "Expr"; tparams = []; tsub = Some "Field" })]; tsub = None } in
+		let ctfields = { tpackage = []; tname = "Array"; tparams = [TPType (CTPath { tpackage = ["hydr";"macro"]; tname = "Expr"; tparams = []; tsub = Some "Field" })]; tsub = None } in
 		let tfields = Typeload.load_instance mctx ctfields p false in
 		unify mctx mret tfields mpos
 	| MMacroType ->
-		let cttype = { tpackage = ["haxe";"macro"]; tname = "Type"; tparams = []; tsub = None } in
+		let cttype = { tpackage = ["hydr";"macro"]; tname = "Type"; tparams = []; tsub = None } in
 		let ttype = Typeload.load_instance mctx cttype p false in
 		unify mctx mret ttype mpos
 	);
@@ -3727,7 +3727,7 @@ let type_macro ctx mode cpath f (el:Ast.expr list) p =
 	let todo = ref [] in
 	let args =
 		(*
-			force default parameter types to haxe.macro.Expr, and if success allow to pass any value type since it will be encoded
+			force default parameter types to hydr.macro.Expr, and if success allow to pass any value type since it will be encoded
 		*)
 		let eargs = List.map (fun (n,o,t) -> try unify_raise mctx t expr p; (n, o, t_dynamic), true with Error (Unify _,_) -> (n,o,t), false) margs in
 		(*
@@ -3745,7 +3745,7 @@ let type_macro ctx mode cpath f (el:Ast.expr list) p =
 				| _ -> ());
 				e
 			with Error (Custom _,_) ->
-				(* if it's not a constant, let's make something that is typed as haxe.macro.Expr - for nice error reporting *)
+				(* if it's not a constant, let's make something that is typed as hydr.macro.Expr - for nice error reporting *)
 				(EBlock [
 					(EVars ["__tmp",Some (CTPath ctexpr),Some (EConst (Ident "null"),p)],p);
 					(EConst (Ident "__tmp"),p);
@@ -3803,7 +3803,7 @@ let type_macro ctx mode cpath f (el:Ast.expr list) p =
 	let e = (if ctx.in_macro then begin
 		(*
 			this is super-tricky : we can't evaluate a macro inside a macro because we might trigger some cycles.
-			So instead, we generate a haxe.macro.Context.delayedCalled(i) expression that will only evaluate the
+			So instead, we generate a hydr.macro.Context.delayedCalled(i) expression that will only evaluate the
 			macro if/when it is called.
 
 			The tricky part is that the whole delayed-evaluation process has to use the same contextual informations
@@ -3847,7 +3847,7 @@ let call_init_macro ctx e =
 			| _ -> error "Invalid macro call" p
 		in
 		let path, meth = (match loop e with
-		| [meth] -> (["haxe";"macro"],"Compiler"), meth
+		| [meth] -> (["hydr";"macro"],"Compiler"), meth
 		| meth :: cl :: path -> (List.rev path,cl), meth
 		| _ -> error "Invalid macro call" p) in
 		ignore(call_macro ctx path meth args p);
@@ -3959,11 +3959,11 @@ let rec create com =
 	(match m.m_types with
 	| [TClassDecl c] -> ctx.t.tarray <- (fun t -> TInst (c,[t]))
 	| _ -> assert false);
-	let m = Typeload.load_module ctx (["haxe"],"EnumTools") null_pos in
+	let m = Typeload.load_module ctx (["hydr"],"EnumTools") null_pos in
 	(match m.m_types with
 	| [TClassDecl c1;TClassDecl c2] -> ctx.g.global_using <- c1 :: c2 :: ctx.g.global_using
 	| [TClassDecl c1] ->
-		let m = Typeload.load_module ctx (["haxe"],"EnumValueTools") null_pos in
+		let m = Typeload.load_module ctx (["hydr"],"EnumValueTools") null_pos in
 		(match m.m_types with
 		| [TClassDecl c2 ] -> ctx.g.global_using <- c1 :: c2 :: ctx.g.global_using
 		| _ -> assert false);

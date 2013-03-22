@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,9 +20,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package sys.io;
-import haxe.io.Bytes;
-import haxe.io.Eof;
-import haxe.io.Output;
+import hydr.io.Bytes;
+import hydr.io.Eof;
+import hydr.io.Output;
 import java.io.EOFException;
 import java.io.IOException;
 
@@ -44,7 +44,7 @@ class FileOutput extends Output {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -56,7 +56,7 @@ class FileOutput extends Output {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -69,7 +69,7 @@ class FileOutput extends Output {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -80,8 +80,8 @@ class FileOutput extends Output {
 			switch(pos)
 			{
 				case SeekBegin: f.seek(cast p);
-				case SeekCur: f.seek(haxe.Int64.add(f.getFilePointer(), cast(p, haxe.Int64)));
-				case SeekEnd: f.seek(haxe.Int64.add(f.length(), cast p));
+				case SeekCur: f.seek(hydr.Int64.add(f.getFilePointer(), cast(p, hydr.Int64)));
+				case SeekEnd: f.seek(hydr.Int64.add(f.length(), cast p));
 			}
 		}
 		catch (e:EOFException) {
@@ -89,7 +89,7 @@ class FileOutput extends Output {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -101,7 +101,7 @@ class FileOutput extends Output {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,7 @@ package cs.system;
 import cs.NativeArray;
 import cs.NativeArray;
 import cs.StdTypes;
-import haxe.Int64;
+import hydr.Int64;
 
 @:native('System.BitConverter') extern class BitConverter 
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -372,7 +372,7 @@ extern class JQuery implements ArrayAccess<Element> {
 	private static function __init__() : Void untyped {
 		#if embed_js
 		if( untyped __js__("typeof($) == 'undefined'") )
-			haxe.macro.Compiler.includeFile("js/jquery-latest.min.js");
+			hydr.macro.Compiler.includeFile("js/jquery-latest.min.js");
 		#end
 		var q : Dynamic = window.jQuery;
 		js.JQuery = q;

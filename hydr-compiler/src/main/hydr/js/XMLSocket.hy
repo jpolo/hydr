@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,19 +22,19 @@
 package js;
 
 /**
-	By compiling the [haxe.remoting.SocketWrapper] into a SWF, you can create and use XMLSockets directly from Javascript.
+	By compiling the [hydr.remoting.SocketWrapper] into a SWF, you can create and use XMLSockets directly from Javascript.
 **/
 class XMLSocket {
 
-	var cnx : haxe.remoting.ExternalConnection;
+	var cnx : hydr.remoting.ExternalConnection;
 
 	public function new( flashObject : String ) {
-		var ctx = new haxe.remoting.Context();
-		var cnx = haxe.remoting.ExternalConnection.flashConnect("SocketWrapper",flashObject,ctx);
+		var ctx = new hydr.remoting.Context();
+		var cnx = hydr.remoting.ExternalConnection.flashConnect("SocketWrapper",flashObject,ctx);
 		var sockId = cnx.api.create.call([flashObject]);
 		cnx.close();
 		ctx.addObject("api",this,false);
-		this.cnx = haxe.remoting.ExternalConnection.flashConnect(sockId,flashObject,ctx);
+		this.cnx = hydr.remoting.ExternalConnection.flashConnect(sockId,flashObject,ctx);
 	}
 
 	public function connect( host : String, port : Int ) {

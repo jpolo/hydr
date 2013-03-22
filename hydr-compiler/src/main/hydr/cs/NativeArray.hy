@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,7 +27,7 @@ extern class NativeArray<T> extends cs.system.Array implements ArrayAccess<T>
 	
 	public function new(len:Int):Void;
 	
-	@:overload(function(arr:cs.system.Array, destIndex:haxe.Int64):Void {} )
+	@:overload(function(arr:cs.system.Array, destIndex:hydr.Int64):Void {} )
 	public function CopyTo(arr:cs.system.Array, destIndex:Int):Void;
 	
 	static function Reverse(arr:cs.system.Array):Void;

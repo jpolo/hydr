@@ -3394,7 +3394,7 @@ let enum_name = function
 let init ctx =
 	let enums = [IExpr;IBinop;IUnop;IConst;ITParam;ICType;IField;IType;IFieldKind;IMethodKind;IVarAccess;IAccess;IClassKind] in
 	let get_enum_proto e =
-		match get_path ctx ["haxe";"macro";enum_name e] null_pos with
+		match get_path ctx ["hydr";"macro";enum_name e] null_pos with
 		| VObject e ->
 			(match get_field e h_constructs with
 			| VObject cst ->
@@ -3407,10 +3407,10 @@ let init ctx =
 					) a
 				| _ -> assert false)
 			| _ -> assert false)
-		| _ -> failwith ("haxe.macro." ^ enum_name e ^ " does not exists")
+		| _ -> failwith ("hydr.macro." ^ enum_name e ^ " does not exists")
 	in
 	ctx.enums <- Array.of_list (List.map get_enum_proto enums);
-	ctx.error_proto <- (match get_path ctx ["haxe";"macro";"Error";"prototype"] null_pos with VObject p -> p | _ -> failwith ("haxe.macro.Error does not exists"))
+	ctx.error_proto <- (match get_path ctx ["hydr";"macro";"Error";"prototype"] null_pos with VObject p -> p | _ -> failwith ("hydr.macro.Error does not exists"))
 
 open Ast
 
@@ -3448,7 +3448,7 @@ let enc_string s =
 	]
 
 let enc_hash h =
-	enc_inst ["haxe";"ds";"StringMap"] [
+	enc_inst ["hydr";"ds";"StringMap"] [
 		"h", VAbstract (AHash h);
 	]
 
@@ -3460,14 +3460,14 @@ let enc_enum (i:enum_index) index pl =
 	if pl = [] then
 		fst edef.(index)
 	else
-		enc_inst ["haxe";"macro";enum_name i] [
+		enc_inst ["hydr";"macro";enum_name i] [
 			"tag", VString (snd edef.(index));
 			"index", VInt index;
 			"args", VArray (Array.of_list pl);
 		]
 
 let compiler_error msg pos =
-	exc (enc_inst ["haxe";"macro";"Error"] [("message",enc_string msg);("pos",encode_pos pos)])
+	exc (enc_inst ["hydr";"macro";"Error"] [("message",enc_string msg);("pos",encode_pos pos)])
 
 let encode_const c =
 	let tag, pl = match c with
@@ -3955,7 +3955,7 @@ let rec decode_expr v =
 		| 29, [m;e] ->
 			EMeta (decode_meta_entry m,loop e)
 		| 30, [e;f] ->
-			EField (loop e, dec_string f) (*** deprecated EType, keep until haxe 3 **)
+			EField (loop e, dec_string f) (*** deprecated EType, keep until hydr 3 **)
 		| _ ->
 			raise Invalid_expr
 	in

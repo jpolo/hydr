@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,8 +28,8 @@ class Socket {
 
 	private var __s : FileHandle;
 	private var protocol : String;
-	public var input(default,null) : haxe.io.Input;
-	public var output(default,null) : haxe.io.Output;
+	public var input(default,null) : hydr.io.Input;
+	public var output(default,null) : hydr.io.Output;
 	public var custom : Dynamic;
 
 	public function new() : Void {
@@ -152,7 +152,7 @@ class Socket {
 
 	private static function checkError(r : Bool, code : Int, msg : String) : Void {
 		if(!untyped __physeq__(r, false)) return;
-		throw haxe.io.Error.Custom('Error ['+code+']: ' +msg);
+		throw hydr.io.Error.Custom('Error ['+code+']: ' +msg);
 	}
 
 	private static function getType(isUdp : Bool) : Int {

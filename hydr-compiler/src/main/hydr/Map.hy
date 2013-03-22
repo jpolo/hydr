@@ -20,10 +20,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
- import haxe.ds.StringMap;
- import haxe.ds.IntMap;
- import haxe.ds.HashMap;
- import haxe.ds.ObjectMap;
+ import hydr.ds.StringMap;
+ import hydr.ds.IntMap;
+ import hydr.ds.HashMap;
+ import hydr.ds.ObjectMap;
 
  /**
 	Map allows key to value mapping for arbitrary value types, and many key
@@ -47,11 +47,11 @@ abstract Map< K, V > (IMap< K, V > ) {
 		
 		This becomes a constructor call to one of the specialization types in
 		the output. The rules for that are as follows:
-			1. if K is a String, haxe.ds.StringMap is used
-			2. if K is an Int, haxe.ds.IntMap is used
+			1. if K is a String, hydr.ds.StringMap is used
+			2. if K is an Int, hydr.ds.IntMap is used
 			3. if K is a class or structure that has a hashCode() function
-				which returns an Int, haxe.ds.HashMap is used
-			4. if K is any other class or structure, haxe.ds.ObjectMap is used
+				which returns an Int, hydr.ds.HashMap is used
+			4. if K is any other class or structure, hydr.ds.ObjectMap is used
 			5. if K is any other type, it causes a compile-time error
 			
 		(Cpp) Map does not use weak keys on ObjectMap by default.

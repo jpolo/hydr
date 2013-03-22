@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,7 +27,7 @@ class Boot {
 		return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 	}
 
-	private static function __trace(v,i : haxe.PosInfos) {
+	private static function __trace(v,i : hydr.PosInfos) {
 		untyped {
 			var msg = if( i != null ) i.fileName+":"+i.lineNumber+": " else "";
 			#if jsfl
@@ -36,7 +36,7 @@ class Boot {
 			#else
 			msg += __string_rec(v,"");
 			var d;
-			if( __js__("typeof")(document) != "undefined" && (d = document.getElementById("haxe:trace")) != null )
+			if( __js__("typeof")(document) != "undefined" && (d = document.getElementById("hydr:trace")) != null )
 				d.innerHTML += __unhtml(msg)+"<br/>";
 			else if( __js__("typeof")(console) != "undefined" && console.log != null )
 				console.log(msg);
@@ -49,7 +49,7 @@ class Boot {
 			#if jsfl
 			fl.outputPanel.clear();
 			#else
-			var d = document.getElementById("haxe:trace");
+			var d = document.getElementById("hydr:trace");
 			if( d != null )
 				d.innerHTML = "";
 			#end

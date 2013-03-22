@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,7 +21,7 @@
  */
 package sys.io;
 
-@:coreApi class FileOutput extends haxe.io.Output {
+@:coreApi class FileOutput extends hydr.io.Output {
 
 	private var __f : File.FileHandle;
 
@@ -30,11 +30,11 @@ package sys.io;
 	}
 
 	public override function writeByte( c : Int ) : Void {
-		try file_write_char(__f,c) catch( e : Dynamic ) throw haxe.io.Error.Custom(e);
+		try file_write_char(__f,c) catch( e : Dynamic ) throw hydr.io.Error.Custom(e);
 	}
 
-	public override function writeBytes( s : haxe.io.Bytes, p : Int, l : Int ) : Int {
-		return try file_write(__f,s.getData(),p,l) catch( e : Dynamic ) throw haxe.io.Error.Custom(e);
+	public override function writeBytes( s : hydr.io.Bytes, p : Int, l : Int ) : Int {
+		return try file_write(__f,s.getData(),p,l) catch( e : Dynamic ) throw hydr.io.Error.Custom(e);
 	}
 
 	public override function flush() : Void {

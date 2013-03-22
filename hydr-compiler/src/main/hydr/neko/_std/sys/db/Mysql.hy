@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -120,7 +120,7 @@ private class MysqlConnection implements sys.db.Connection {
 
 	public function new(c) {
 		__c = c;
-		D.set_conv_funs(c, function(s) return new String(s), function(d) return untyped Date.new1(d), function(b) return haxe.io.Bytes.ofData(b));
+		D.set_conv_funs(c, function(s) return new String(s), function(d) return untyped Date.new1(d), function(b) return hydr.io.Bytes.ofData(b));
 	}
 
 	public function request( s : String ) : sys.db.ResultSet {

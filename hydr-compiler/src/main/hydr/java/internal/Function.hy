@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@ import java.internal.Runtime;
  *
  * @author waneck
  */
-@:abstract @:nativeGen @:native("haxe.lang.Function") @:keep private class Function
+@:abstract @:nativeGen @:native("hydr.lang.Function") @:keep private class Function
 {
 	function new(arity:Int, type:Int)
 	{
@@ -37,7 +37,7 @@ import java.internal.Runtime;
 	}
 }
 
-@:nativeGen @:native("haxe.lang.VarArgsBase") @:keep private class VarArgsBase extends Function
+@:nativeGen @:native("hydr.lang.VarArgsBase") @:keep private class VarArgsBase extends Function
 {
 	public function __hx_invokeDynamic(dynArgs:Array<Dynamic>):Dynamic
 	{
@@ -46,7 +46,7 @@ import java.internal.Runtime;
 	}
 }
 
-@:nativeGen @:native('haxe.lang.VarArgsFunction') @:keep class VarArgsFunction extends VarArgsBase
+@:nativeGen @:native('hydr.lang.VarArgsFunction') @:keep class VarArgsFunction extends VarArgsBase
 {
 	private var fun:Array<Dynamic>->Dynamic;
 
@@ -62,7 +62,7 @@ import java.internal.Runtime;
 	}
 }
 
-@:nativeGen @:native('haxe.lang.Closure') @:keep class Closure extends VarArgsBase
+@:nativeGen @:native('hydr.lang.Closure') @:keep class Closure extends VarArgsBase
 {
 	private var obj:Dynamic;
 	private var field:String;

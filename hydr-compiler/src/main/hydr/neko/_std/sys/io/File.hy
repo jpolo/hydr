@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +33,7 @@ enum FileHandle {
 		return new String(file_contents(untyped path.__s));
 	}
 
-	public static function getBytes( path : String ) : haxe.io.Bytes {
+	public static function getBytes( path : String ) : hydr.io.Bytes {
 		return neko.Lib.bytesReference(getContent(path));
 	}
 
@@ -43,7 +43,7 @@ enum FileHandle {
 		f.close();
 	}
 
-	public static function saveBytes( path : String, bytes : haxe.io.Bytes ) : Void {
+	public static function saveBytes( path : String, bytes : hydr.io.Bytes ) : Void {
 		var f = write(path);
 		f.write(bytes);
 		f.close();

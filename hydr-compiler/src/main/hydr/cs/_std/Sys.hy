@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -52,7 +52,7 @@ import cs.system.threading.Thread;
 **/
 @:coreApi
 class Sys {
-	private static var _env:haxe.ds.StringMap<String>;
+	private static var _env:hydr.ds.StringMap<String>;
 	private static var _args:Array<String>;
 
 	/**
@@ -106,11 +106,11 @@ class Sys {
 	/**
 		Returns the whole environement variables.
 	**/
-	public static function environment() : haxe.ds.StringMap<String>
+	public static function environment() : hydr.ds.StringMap<String>
 	{
 		if (_env == null)
 		{
-			var e = _env = new haxe.ds.StringMap();
+			var e = _env = new hydr.ds.StringMap();
 			var nenv = Environment.GetEnvironmentVariables().GetEnumerator();
 			while (nenv.MoveNext())
 			{
@@ -237,7 +237,7 @@ class Sys {
 	/**
 		Returns the process standard input, from which you can read what user enters. Usually it will block until the user send a full input line. See [getChar] for an alternative.
 	**/
-	public static function stdin() : haxe.io.Input
+	public static function stdin() : hydr.io.Input
 	{
 #if !(Xbox || CF || MF)
 		return new cs.io.NativeInput(cs.system.Console.OpenStandardInput());
@@ -249,7 +249,7 @@ class Sys {
 	/**
 		Returns the process standard output on which you can write.
 	**/
-	public static function stdout() : haxe.io.Output
+	public static function stdout() : hydr.io.Output
 	{
 #if !(Xbox || CF || MF)
 		return new cs.io.NativeOutput(cs.system.Console.OpenStandardOutput());
@@ -261,7 +261,7 @@ class Sys {
 	/**
 		Returns the process standard error on which you can write.
 	**/
-	public static function stderr() : haxe.io.Output
+	public static function stderr() : hydr.io.Output
 	{
 #if !(Xbox || CF || MF)
 		return new cs.io.NativeOutput(cs.system.Console.OpenStandardError());

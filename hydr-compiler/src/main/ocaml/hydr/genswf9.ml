@@ -193,7 +193,7 @@ let rec follow_basic t =
 		| TAbstract ({ a_path = ([],"Float") },[])
 		| TAbstract ({ a_path = [],"UInt" },[])
 		| TAbstract ({ a_path = ([],"Bool") },[])
-		| TInst ({ cl_path = (["haxe"],"Int32") },[])
+		| TInst ({ cl_path = (["hydr"],"Int32") },[])
 		| TInst ({ cl_path = ([],"Int") },[])
 		| TInst ({ cl_path = ([],"Float") },[])
 		| TType ({ t_path = [],"UInt" },[])
@@ -211,7 +211,7 @@ let rec follow_basic t =
 
 let rec type_id ctx t =
 	match follow_basic t with
-	| TInst ({ cl_path = ["haxe"],"Int32" },_) ->
+	| TInst ({ cl_path = ["hydr"],"Int32" },_) ->
 		type_path ctx ([],"Int")
 	| TInst ({ cl_path = ["flash"],"Vector" } as c,pl) ->
 		(match pl with
@@ -257,7 +257,7 @@ let type_void ctx t =
 
 let classify ctx t =
 	match follow_basic t with
-	| TAbstract ({ a_path = [],"Int" },_) | TInst ({ cl_path = [],"Int" },_) | TInst ({ cl_path = ["haxe"],"Int32" },_) ->
+	| TAbstract ({ a_path = [],"Int" },_) | TInst ({ cl_path = [],"Int" },_) | TInst ({ cl_path = ["hydr"],"Int32" },_) ->
 		KInt
 	| TAbstract ({ a_path = [],"Float" },_) | TInst ({ cl_path = [],"Float" },_) ->
 		KFloat

@@ -309,7 +309,7 @@ let to_pattern ctx e t =
 		match fst e with
 		| EConst(Ident "null") ->
 			error "null-patterns are not allowed" p
-		| ECheckType(e, CTPath({tpackage=["haxe";"macro"]; tname="Expr"})) ->
+		| ECheckType(e, CTPath({tpackage=["hydr";"macro"]; tname="Expr"})) ->
 			let old = pctx.pc_reify in
 			pctx.pc_reify <- true;
 			let e = loop pctx e t in

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -110,19 +110,19 @@
 		return untyped __php__("$_SERVER['SCRIPT_FILENAME']");
 	}
 
-	public static function environment() : haxe.ds.StringMap<String> {
+	public static function environment() : hydr.ds.StringMap<String> {
 		return php.Lib.hashOfAssociativeArray(untyped __php__("$_SERVER"));
 	}
 
-	public static function stdin() : haxe.io.Input {
+	public static function stdin() : hydr.io.Input {
 		return untyped new sys.io.FileInput(__call__('fopen', 'php://stdin', "r"));
 	}
 
-	public static function stdout() : haxe.io.Output {
+	public static function stdout() : hydr.io.Output {
 		return untyped new sys.io.FileOutput(__call__('fopen', 'php://stdout', "w"));
 	}
 
-	public static function stderr() : haxe.io.Output {
+	public static function stderr() : hydr.io.Output {
 		return untyped new sys.io.FileOutput(__call__('fopen', 'php://stderr', "w"));
 	}
 

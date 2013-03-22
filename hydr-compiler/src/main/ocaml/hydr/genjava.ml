@@ -67,8 +67,8 @@ let rec t_has_type_param_shallow last t = match follow t with
 
 let is_java_basic_type t =
   match follow t with
-    | TInst( { cl_path = (["haxe"], "Int32") }, [] )
-    | TInst( { cl_path = (["haxe"], "Int64") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int32") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int64") }, [] )
     | TInst( { cl_path = ([], "Int") }, [] ) | TAbstract( { a_path =  ([], "Int") }, [] )
     | TInst( { cl_path = ([], "Float") }, [] ) | TAbstract( { a_path =  ([], "Float") }, [] )
     | TEnum( { e_path = ([], "Bool") }, [] ) | TAbstract( { a_path =  ([], "Bool") }, [] ) ->
@@ -84,8 +84,8 @@ let is_bool t =
 
 let is_int_float gen t =
   match follow (gen.greal_type t) with
-    | TInst( { cl_path = (["haxe"], "Int64") }, [] )
-    | TInst( { cl_path = (["haxe"], "Int32") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int64") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int32") }, [] )
     | TInst( { cl_path = ([], "Int") }, [] ) | TAbstract( { a_path =  ([], "Int") }, [] )
     | TInst( { cl_path = ([], "Float") }, [] ) | TAbstract( { a_path =  ([], "Float") }, [] ) ->
       true
@@ -289,7 +289,7 @@ struct
   let rec is_equatable gen t =
     match follow t with
       | TInst(cl,_) ->
-        if cl.cl_path = (["haxe";"lang"], "IEquatable") then
+        if cl.cl_path = (["hydr";"lang"], "IEquatable") then
           true
         else
           List.exists (fun (cl,p) -> is_equatable gen (TInst(cl,p))) cl.cl_implements
@@ -500,7 +500,7 @@ struct
     let tbyte = mt_to_t_dyn ( get_type gen (["java"], "Int8") ) in
     let tshort = mt_to_t_dyn ( get_type gen (["java"], "Int16") ) in
     let tsingle = mt_to_t_dyn ( get_type gen ([], "Single") ) in
-    let string_ext = get_cl ( get_type gen (["haxe";"lang"], "StringExt")) in
+    let string_ext = get_cl ( get_type gen (["hydr";"lang"], "StringExt")) in
 
     let is_string t = match follow t with | TInst({ cl_path = ([], "String") }, []) -> true | _ -> false in
 
@@ -655,13 +655,13 @@ let rec get_fun_modifiers meta access modifiers =
 let configure gen =
   let basic = gen.gcon.basic in
 
-  let fn_cl = get_cl (get_type gen (["haxe";"lang"],"Function")) in
+  let fn_cl = get_cl (get_type gen (["hydr";"lang"],"Function")) in
 
-  let runtime_cl = get_cl (get_type gen (["haxe";"lang"],"Runtime")) in
+  let runtime_cl = get_cl (get_type gen (["hydr";"lang"],"Runtime")) in
 
-  (*let string_ref = get_cl ( get_type gen (["haxe";"lang"], "StringRefl")) in*)
+  (*let string_ref = get_cl ( get_type gen (["hydr";"lang"], "StringRefl")) in*)
 
-  let ti64 = match ( get_type gen (["haxe";"_Int64"], "NativeInt64") ) with | TTypeDecl t -> TType(t,[]) | _ -> assert false in
+  let ti64 = match ( get_type gen (["hydr";"_Int64"], "NativeInt64") ) with | TTypeDecl t -> TType(t,[]) | _ -> assert false in
 
   let has_tdynamic params =
     List.exists (fun e -> match e with | TDynamic _ -> true | _ -> false) params
@@ -685,12 +685,12 @@ let configure gen =
                   | TAbstract ({ a_path = ([], "Bool") },[])
                   | TInst ({ cl_path = ([],"Float") },[])
                   | TAbstract ({ a_path = ([],"Float") },[])
-                  | TInst ({ cl_path = ["haxe"],"Int32" },[])
-                  | TInst ({ cl_path = ["haxe"],"Int64" },[])
+                  | TInst ({ cl_path = ["hydr"],"Int32" },[])
+                  | TInst ({ cl_path = ["hydr"],"Int64" },[])
                   | TInst ({ cl_path = ([],"Int") },[])
                   | TAbstract ({ a_path = ([],"Int") },[])
-                  | TType ({ t_path = ["haxe";"_Int64"], "NativeInt64" },[])
-                  | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeInt64" },[])
+                  | TType ({ t_path = ["hydr";"_Int64"], "NativeInt64" },[])
+                  | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeInt64" },[])
                   | TType ({ t_path = ["java"],"Int8" },[])
                   | TAbstract ({ a_path = ["java"],"Int8" },[])
                   | TType ({ t_path = ["java"],"Int16" },[])
@@ -710,7 +710,7 @@ let configure gen =
   in
 
   let rec change_ns ns = match ns with
-    | [] -> ["haxe"; "root"]
+    | [] -> ["hydr"; "root"]
     | _ -> ns
   in
 
@@ -736,10 +736,10 @@ let configure gen =
       | TAbstract ({ a_path = ([],"Float") },[])
       | TInst ({ cl_path = ([],"Int") },[])
       | TAbstract ({ a_path = ([],"Int") },[])
-      | TInst( { cl_path = (["haxe"], "Int32") }, [] )
-      | TInst( { cl_path = (["haxe"], "Int64") }, [] )
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeInt64" },[])
+      | TInst( { cl_path = (["hydr"], "Int32") }, [] )
+      | TInst( { cl_path = (["hydr"], "Int64") }, [] )
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeInt64" },[])
       | TType ({ t_path = ["java"],"Int8" },[])
       | TAbstract ({ a_path = ["java"],"Int8" },[])
       | TType ({ t_path = ["java"],"Int16" },[])
@@ -768,8 +768,8 @@ let configure gen =
     match t with
       | TAbstract ({ a_impl = Some _ } as a, pl) ->
         real_type (Codegen.Abstract.get_underlying_type a pl)
-      | TInst( { cl_path = (["haxe"], "Int32") }, [] ) -> gen.gcon.basic.tint
-      | TInst( { cl_path = (["haxe"], "Int64") }, [] ) -> ti64
+      | TInst( { cl_path = (["hydr"], "Int32") }, [] ) -> gen.gcon.basic.tint
+      | TInst( { cl_path = (["hydr"], "Int64") }, [] ) -> ti64
       | TAbstract( { a_path = ([], "Class") }, p  )
       | TAbstract( { a_path = ([], "Enum") }, p  )
       | TInst( { cl_path = ([], "Class") }, p  )
@@ -850,8 +850,8 @@ let configure gen =
       | TAbstract ({ a_path = ([],"Float") },[]) -> "double"
       | TInst ({ cl_path = ([],"Int") },[])
       | TAbstract ({ a_path = ([],"Int") },[]) -> "int"
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeInt64" },[]) -> "long"
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeInt64" },[]) -> "long"
       | TType ({ t_path = ["java"],"Int8" },[])
       | TAbstract ({ a_path = ["java"],"Int8" },[]) -> "byte"
       | TType ({ t_path = ["java"],"Int16" },[])
@@ -860,10 +860,10 @@ let configure gen =
       | TAbstract ({ a_path = ["java"],"Char16" },[]) -> "char"
       | TType ({ t_path = [],"Single" },[])
       | TAbstract ({ a_path = [],"Single" },[]) -> "float"
-      | TInst ({ cl_path = ["haxe"],"Int32" },[])
-      | TAbstract ({ a_path = ["haxe"],"Int32" },[]) -> "int"
-      | TInst ({ cl_path = ["haxe"],"Int64" },[])
-      | TAbstract ({ a_path = ["haxe"],"Int64" },[]) -> "long"
+      | TInst ({ cl_path = ["hydr"],"Int32" },[])
+      | TAbstract ({ a_path = ["hydr"],"Int32" },[]) -> "int"
+      | TInst ({ cl_path = ["hydr"],"Int64" },[])
+      | TAbstract ({ a_path = ["hydr"],"Int64" },[]) -> "long"
       | TInst({ cl_path = (["java"], "NativeArray") }, [param]) ->
         let rec check_t_s t =
           match real_type t with
@@ -909,14 +909,14 @@ let configure gen =
       | TInst ({ cl_path = ([],"Int") },[])
       | TAbstract ({ a_path = ([],"Int") },[]) ->
           path_s_import pos (["java";"lang"], "Integer")
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeInt64" },[]) ->
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeInt64" },[]) ->
           path_s_import pos (["java";"lang"], "Long")
-      | TInst ({ cl_path = ["haxe"],"Int64" },[])
-      | TAbstract ({ a_path = ["haxe"],"Int64" },[]) ->
+      | TInst ({ cl_path = ["hydr"],"Int64" },[])
+      | TAbstract ({ a_path = ["hydr"],"Int64" },[]) ->
           path_s_import pos (["java";"lang"], "Long")
-      | TInst ({ cl_path = ["haxe"],"Int32" },[])
-      | TAbstract ({ a_path = ["haxe"],"Int32" },[]) ->
+      | TInst ({ cl_path = ["hydr"],"Int32" },[])
+      | TAbstract ({ a_path = ["hydr"],"Int32" },[]) ->
           path_s_import pos (["java";"lang"], "Integer")
       | TType ({ t_path = ["java"],"Int8" },[])
       | TAbstract ({ a_path = ["java"],"Int8" },[]) ->
@@ -1022,7 +1022,7 @@ let configure gen =
             | TInt i32 ->
               print w "%ld" i32;
               (match real_type e.etype with
-                | TType( { t_path = (["haxe";"_Int64"], "NativeInt64") }, [] ) -> write w "L";
+                | TType( { t_path = (["hydr";"_Int64"], "NativeInt64") }, [] ) -> write w "L";
                 | _ -> ()
               )
             | TFloat s ->
@@ -1037,9 +1037,9 @@ let configure gen =
             | TBool b -> write w (if b then "true" else "false")
             | TNull ->
               (match real_type e.etype with
-                | TType( { t_path = (["haxe";"_Int64"], "NativeInt64") }, [] )
-                | TInst( { cl_path = (["haxe"], "Int64") }, [] ) -> write w "0L"
-                | TInst( { cl_path = (["haxe"], "Int32") }, [] )
+                | TType( { t_path = (["hydr";"_Int64"], "NativeInt64") }, [] )
+                | TInst( { cl_path = (["hydr"], "Int64") }, [] ) -> write w "0L"
+                | TInst( { cl_path = (["hydr"], "Int32") }, [] )
                 | TInst({ cl_path = ([], "Int") },[])
                 | TAbstract ({ a_path = ([], "Int") },[]) -> expr_s w ({ e with eexpr = TConst(TInt Int32.zero) })
                 | TInst({ cl_path = ([], "Float") },[])
@@ -1082,10 +1082,10 @@ let configure gen =
           loop cf.cf_meta
         | TField (e, s) ->
           expr_s w e; write w "."; write_field w (field_name s)
-        | TTypeExpr (TClassDecl { cl_path = (["haxe"], "Int32") }) ->
-          write w (path_s_import e.epos (["haxe"], "Int32"))
-        | TTypeExpr (TClassDecl { cl_path = (["haxe"], "Int64") }) ->
-          write w (path_s_import e.epos (["haxe"], "Int64"))
+        | TTypeExpr (TClassDecl { cl_path = (["hydr"], "Int32") }) ->
+          write w (path_s_import e.epos (["hydr"], "Int32"))
+        | TTypeExpr (TClassDecl { cl_path = (["hydr"], "Int64") }) ->
+          write w (path_s_import e.epos (["hydr"], "Int64"))
         | TTypeExpr mt -> write w (md_s e.epos mt)
         | TParenthesis e ->
           write w "("; expr_s w e; write w ")"
@@ -1533,13 +1533,13 @@ let configure gen =
 
     let suppress_warnings = loop_meta cl.cl_meta [ "rawtypes"; "unchecked" ] in
 
-    write w "import haxe.root.*;";
+    write w "import hydr.root.*;";
     newline w;
     let w_header = w in
     let w = new_source_writer () in
     clear_scope();
 
-    (* add all haxe.root.* to imports *)
+    (* add all hydr.root.* to imports *)
     List.iter (function
       | TClassDecl { cl_path = ([],c) } ->
           imports := ([],c) :: !imports
@@ -1628,7 +1628,7 @@ let configure gen =
 
     (* add imports *)
     List.iter (function
-      | ["haxe";"root"], _ | [], _ -> ()
+      | ["hydr";"root"], _ | [], _ -> ()
       | path ->
           write w_header "import ";
           write w_header (path_s path);
@@ -1712,18 +1712,18 @@ let configure gen =
 
   IteratorsInterface.configure gen (fun e -> e);
 
-  ClosuresToClass.configure gen (ClosuresToClass.default_implementation closure_t (get_cl (get_type gen (["haxe";"lang"],"Function")) ));
+  ClosuresToClass.configure gen (ClosuresToClass.default_implementation closure_t (get_cl (get_type gen (["hydr";"lang"],"Function")) ));
 
-  EnumToClass.configure gen (None) false true (get_cl (get_type gen (["haxe";"lang"],"Enum")) ) false true;
+  EnumToClass.configure gen (None) false true (get_cl (get_type gen (["hydr";"lang"],"Enum")) ) false true;
 
   InterfaceVarsDeleteModf.configure gen;
 
-  let dynamic_object = (get_cl (get_type gen (["haxe";"lang"],"DynamicObject")) ) in
+  let dynamic_object = (get_cl (get_type gen (["hydr";"lang"],"DynamicObject")) ) in
 
-  let object_iface = get_cl (get_type gen (["haxe";"lang"],"IHxObject")) in
+  let object_iface = get_cl (get_type gen (["hydr";"lang"],"IHxObject")) in
 
   (*fixme: THIS IS A HACK. take this off *)
-  let empty_e = match (get_type gen (["haxe";"lang"], "EmptyObject")) with | TEnumDecl e -> e | _ -> assert false in
+  let empty_e = match (get_type gen (["hydr";"lang"], "EmptyObject")) with | TEnumDecl e -> e | _ -> assert false in
   (*OverloadingCtor.set_new_create_empty gen ({eexpr=TEnumField(empty_e, "EMPTY"); etype=TEnum(empty_e,[]); epos=null_pos;});*)
 
   let empty_expr = { eexpr = (TTypeExpr (TEnumDecl empty_e)); etype = (TAnon { a_fields = PMap.empty; a_status = ref (EnumStatics empty_e) }); epos = null_pos } in
@@ -1734,8 +1734,8 @@ let configure gen =
   in
   OverloadingConstructor.configure gen (TEnum(empty_e, [])) ({ eexpr=TField(empty_expr, FEnum(empty_e, empty_ef)); etype=TEnum(empty_e,[]); epos=null_pos; }) false;
 
-  let rcf_static_find = mk_static_field_access_infer (get_cl (get_type gen (["haxe";"lang"], "FieldLookup"))) "findHash" Ast.null_pos [] in
-  (*let rcf_static_lookup = mk_static_field_access_infer (get_cl (get_type gen (["haxe";"lang"], "FieldLookup"))) "lookupHash" Ast.null_pos [] in*)
+  let rcf_static_find = mk_static_field_access_infer (get_cl (get_type gen (["hydr";"lang"], "FieldLookup"))) "findHash" Ast.null_pos [] in
+  (*let rcf_static_lookup = mk_static_field_access_infer (get_cl (get_type gen (["hydr";"lang"], "FieldLookup"))) "lookupHash" Ast.null_pos [] in*)
 
   let can_be_float t = like_float (real_type t) in
 
@@ -1795,16 +1795,16 @@ let configure gen =
     { hash with eexpr = TCall(rcf_static_find, [hash; hash_array]); etype=basic.tint }
   ) (fun hash -> hash ) false in
 
-  ReflectionCFs.UniversalBaseClass.default_config gen (get_cl (get_type gen (["haxe";"lang"],"HxObject")) ) object_iface dynamic_object;
+  ReflectionCFs.UniversalBaseClass.default_config gen (get_cl (get_type gen (["hydr";"lang"],"HxObject")) ) object_iface dynamic_object;
 
   ReflectionCFs.configure_dynamic_field_access rcf_ctx false;
 
-  (* let closure_func = ReflectionCFs.implement_closure_cl rcf_ctx ( get_cl (get_type gen (["haxe";"lang"],"Closure")) ) in *)
-  let closure_cl = get_cl (get_type gen (["haxe";"lang"],"Closure")) in
+  (* let closure_func = ReflectionCFs.implement_closure_cl rcf_ctx ( get_cl (get_type gen (["hydr";"lang"],"Closure")) ) in *)
+  let closure_cl = get_cl (get_type gen (["hydr";"lang"],"Closure")) in
 
   let closure_func = ReflectionCFs.get_closure_func rcf_ctx closure_cl in
 
-  ReflectionCFs.implement_varargs_cl rcf_ctx ( get_cl (get_type gen (["haxe";"lang"], "VarArgsBase")) );
+  ReflectionCFs.implement_varargs_cl rcf_ctx ( get_cl (get_type gen (["hydr";"lang"], "VarArgsBase")) );
 
   let slow_invoke = mk_static_field_access_infer (runtime_cl) "slowCallField" Ast.null_pos [] in
   ReflectionCFs.configure rcf_ctx ~slow_invoke:(fun ethis efield eargs -> {
@@ -1852,8 +1852,8 @@ let configure gen =
         | TInst({ cl_path = ([], "String") }, [])
         | TInst({ cl_path = ([], "Float") }, [])
         | TAbstract ({ a_path = ([], "Float") },[])
-        | TInst({ cl_path = (["haxe"], "Int32")}, [] )
-        | TInst({ cl_path = (["haxe"], "Int64")}, [] )
+        | TInst({ cl_path = (["hydr"], "Int32")}, [] )
+        | TInst({ cl_path = (["hydr"], "Int64")}, [] )
         | TInst({ cl_path = ([], "Int") }, [])
         | TAbstract ({ a_path = ([], "Int") },[])
         | TEnum({ e_path = ([], "Bool") }, [])
@@ -1892,8 +1892,8 @@ let configure gen =
           | _, TDynamic _
           | TInst({ cl_path = ([], "Float") },[]), _
           | TAbstract ({ a_path = ([], "Float") },[]) , _
-          | TInst( { cl_path = (["haxe"], "Int32") }, [] ), _
-          | TInst( { cl_path = (["haxe"], "Int64") }, [] ), _
+          | TInst( { cl_path = (["hydr"], "Int32") }, [] ), _
+          | TInst( { cl_path = (["hydr"], "Int64") }, [] ), _
           | TInst({ cl_path = ([], "Int") },[]), _
           | TAbstract ({ a_path = ([], "Int") },[]) , _
           | TEnum({ e_path = ([], "Bool") },[]), _
@@ -1902,8 +1902,8 @@ let configure gen =
           | _, TAbstract ({ a_path = ([], "Float") },[])
           | _, TInst({ cl_path = ([], "Int") },[])
           | _, TAbstract ({ a_path = ([], "Int") },[])
-          | _, TInst( { cl_path = (["haxe"], "Int32") }, [] )
-          | _, TInst( { cl_path = (["haxe"], "Int64") }, [] )
+          | _, TInst( { cl_path = (["hydr"], "Int32") }, [] )
+          | _, TInst( { cl_path = (["hydr"], "Int64") }, [] )
           | _, TEnum({ e_path = ([], "Bool") },[])
           | _, TAbstract ({ a_path = ([], "Bool") },[])
           | TInst( { cl_kind = KTypeParameter _ }, [] ), _
@@ -1942,7 +1942,7 @@ let configure gen =
   let base_exception = get_cl (get_type gen (["java"; "lang"], "Throwable")) in
   let base_exception_t = TInst(base_exception, []) in
 
-  let hx_exception = get_cl (get_type gen (["haxe";"lang"], "HaxeException")) in
+  let hx_exception = get_cl (get_type gen (["hydr";"lang"], "HaxeException")) in
   let hx_exception_t = TInst(hx_exception, []) in
 
   let rec is_exception t =
@@ -1995,7 +1995,7 @@ let configure gen =
     match e.eexpr with
       | TSwitch(cond, cases, def) ->
         (match gen.gfollow#run_f cond.etype with
-          | TInst( { cl_path = (["haxe"], "Int32") }, [] )
+          | TInst( { cl_path = (["hydr"], "Int32") }, [] )
           | TInst({ cl_path = ([], "Int") },[])
           | TAbstract ({ a_path = ([], "Int") },[])
           | TInst({ cl_path = ([], "String") },[]) ->
@@ -2037,7 +2037,7 @@ let configure gen =
 
   (* add native String as a String superclass *)
   let str_cl = match gen.gcon.basic.tstring with | TInst(cl,_) -> cl | _ -> assert false in
-  str_cl.cl_super <- Some (get_cl (get_type gen (["haxe";"lang"], "NativeString")), []);
+  str_cl.cl_super <- Some (get_cl (get_type gen (["hydr";"lang"], "NativeString")), []);
 
   let mkdir dir = if not (Sys.file_exists dir) then Unix.mkdir dir 0o755 in
   mkdir gen.gcon.file;
@@ -2045,7 +2045,7 @@ let configure gen =
 
   (* add resources array *)
   (try
-    let res = get_cl (Hashtbl.find gen.gtypes (["haxe"], "Resource")) in
+    let res = get_cl (Hashtbl.find gen.gtypes (["hydr"], "Resource")) in
     let cf = PMap.find "content" res.cl_statics in
     let res = ref [] in
     Hashtbl.iter (fun name v ->
@@ -2069,7 +2069,7 @@ let configure gen =
 	if ( not (Common.defined gen.gcon Define.NoCompilation) ) then begin
 		let old_dir = Sys.getcwd() in
 		Sys.chdir gen.gcon.file;
-		let cmd = "haxelib run hxjava hxjava_build.txt --haxe-version " ^ (string_of_int gen.gcon.version) in
+		let cmd = "hydrlib run hxjava hxjava_build.txt --hydr-version " ^ (string_of_int gen.gcon.version) in
 		print_endline cmd;
 		if gen.gcon.run_command cmd <> 0 then failwith "Build failed";
 		Sys.chdir old_dir;
@@ -2170,10 +2170,10 @@ and convert_signature ctx p jsig =
   | TDouble -> mk_type_path ctx ([], "Float") []
   | TFloat -> mk_type_path ctx ([], "Single") []
   | TInt -> mk_type_path ctx ([], "Int") []
-  | TLong -> mk_type_path ctx (["haxe"], "Int64") []
+  | TLong -> mk_type_path ctx (["hydr"], "Int64") []
   | TShort -> mk_type_path ctx (["java"; "types"], "Int16") []
   | TBool -> mk_type_path ctx ([], "Bool") []
-  | TObject ( (["haxe";"root"], name), args ) -> mk_type_path ctx ([], name) (List.map (convert_arg ctx p) args)
+  | TObject ( (["hydr";"root"], name), args ) -> mk_type_path ctx ([], name) (List.map (convert_arg ctx p) args)
   (** nullable types *)
   | TObject ( (["java";"lang"], "Integer"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx ([], "Int") []) ]
   | TObject ( (["java";"lang"], "Double"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx ([], "Float") []) ]
@@ -2182,7 +2182,7 @@ and convert_signature ctx p jsig =
   | TObject ( (["java";"lang"], "Byte"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx (["java";"types"], "Int8") []) ]
   | TObject ( (["java";"lang"], "Character"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx (["java";"types"], "Char16") []) ]
   | TObject ( (["java";"lang"], "Short"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx (["java";"types"], "Int16") []) ]
-  | TObject ( (["java";"lang"], "Long"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx (["haxe"], "Int64") []) ]
+  | TObject ( (["java";"lang"], "Long"), [] ) -> mk_type_path ctx ([], "Null") [ TPType (mk_type_path ctx (["hydr"], "Int64") []) ]
   (** other std types *)
   | TObject ( (["java";"lang"], "Object"), [] ) -> mk_type_path ctx ([], "Dynamic") []
   | TObject ( (["java";"lang"], "String"), [] ) -> mk_type_path ctx ([], "String") []
@@ -2402,13 +2402,13 @@ let convert_java_class ctx p jc =
 
     (match jc.csuper with
       | TObject( (["java";"lang"], "Object"), _ ) -> ()
-      | TObject( (["haxe";"lang"], "HxObject"), _ ) -> meta := (Meta.HxGen,[],p) :: !meta
+      | TObject( (["hydr";"lang"], "HxObject"), _ ) -> meta := (Meta.HxGen,[],p) :: !meta
       | _ -> flags := HExtends (get_type_path ctx (convert_signature ctx p jc.csuper)) :: !flags
     );
 
     List.iter (fun i ->
       match i with
-      | TObject ( (["haxe";"lang"], "IHxObject"), _ ) -> meta := (Meta.HxGen,[],p) :: !meta
+      | TObject ( (["hydr";"lang"], "IHxObject"), _ ) -> meta := (Meta.HxGen,[],p) :: !meta
       | _ -> flags :=
         if !is_interface then
           HExtends (get_type_path ctx (convert_signature ctx p i)) :: !flags
@@ -2525,7 +2525,7 @@ let add_java_lib com file =
       else begin
         types := path :: !types;
         match get_raw_class path, path with
-        | None, ([], c) -> build ctx (["haxe";"root"], c) p types
+        | None, ([], c) -> build ctx (["hydr";"root"], c) p types
         | None, _ -> None
         | Some (cls, real_path, pos_path), _ ->
             if com.verbose then print_endline ("Parsed Java class " ^ (path_s cls.cpath));
@@ -2591,7 +2591,7 @@ let add_java_lib com file =
                 | "toString", TMethod([], _) -> false
                 | _ -> true
             ) !cmethods;
-            (* change field name to not collide with haxe keywords *)
+            (* change field name to not collide with hydr keywords *)
             let map_field f =
               let change = match f.jf_name with
               | "callback" | "cast" | "extern" | "function" | "in" | "typedef" | "using" | "var" | "untyped" | "inline" -> true
@@ -2615,7 +2615,7 @@ let add_java_lib com file =
                 not (List.exists (filter_field f) !nonstatics)) cfields
             in
             let cls = { cls with cfields = cfields; cmethods = cmethods } in
-            let pack = match fst path with | ["haxe";"root"] -> [] | p -> p in
+            let pack = match fst path with | ["hydr";"root"] -> [] | p -> p in
 
             let ppath = path in
             let inner = List.fold_left (fun acc (path,out,_,_) ->

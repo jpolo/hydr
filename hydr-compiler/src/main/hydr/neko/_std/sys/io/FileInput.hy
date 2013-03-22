@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,7 +21,7 @@
  */
 package sys.io;
 
-@:coreApi class FileInput extends haxe.io.Input {
+@:coreApi class FileInput extends hydr.io.Input {
 
 	private var __f : File.FileHandle;
 
@@ -34,20 +34,20 @@ package sys.io;
 			file_read_char(__f);
 		} catch( e : Dynamic ) {
 			if( untyped __dollar__typeof(e) == __dollar__tarray )
-				throw new haxe.io.Eof();
+				throw new hydr.io.Eof();
 			else
-				throw haxe.io.Error.Custom(e);
+				throw hydr.io.Error.Custom(e);
 		}
 	}
 
-	public override function readBytes( s : haxe.io.Bytes, p : Int, l : Int ) : Int {
+	public override function readBytes( s : hydr.io.Bytes, p : Int, l : Int ) : Int {
 		return try {
 			file_read(__f,s.getData(),p,l);
 		} catch( e : Dynamic ) {
 			if( untyped __dollar__typeof(e) == __dollar__tarray )
-				throw new haxe.io.Eof();
+				throw new hydr.io.Eof();
 			else
-				throw haxe.io.Error.Custom(e);
+				throw hydr.io.Error.Custom(e);
 		}
 	}
 

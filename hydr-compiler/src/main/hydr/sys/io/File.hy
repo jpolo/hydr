@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,8 +28,8 @@ extern class File {
 
 	static function getContent( path : String ) : String;
 	static function saveContent( path : String, content : String ) : Void;
-	static function getBytes( path : String ) : haxe.io.Bytes;
-	static function saveBytes( path : String, bytes : haxe.io.Bytes ) : Void;
+	static function getBytes( path : String ) : hydr.io.Bytes;
+	static function saveBytes( path : String, bytes : hydr.io.Bytes ) : Void;
 	static function read( path : String, binary : Bool = true ) : FileInput;
 	static function write( path : String, binary : Bool = true ) : FileOutput;
 	static function append( path : String, binary : Bool = true ) : FileOutput;

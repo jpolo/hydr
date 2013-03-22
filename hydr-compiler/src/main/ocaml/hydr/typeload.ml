@@ -281,7 +281,7 @@ let rec load_type_def ctx p t =
 				(match fst ctx.m.curmod.m_path with
 				| [] -> raise Exit
 				| x :: _ ->
-					(* this can occur due to haxe remoting : a module can be
+					(* this can occur due to hydr remoting : a module can be
 						already defined in the "js" package and is not allowed
 						to access the js classes *)
 					try
@@ -1210,7 +1210,7 @@ let init_class ctx c p context_init herits fields =
 	let fields = !fields in
 	let core_api = Meta.has Meta.CoreApi c.cl_meta in
 	let is_class_macro = Meta.has Meta.Macro c.cl_meta in
-	if is_class_macro then display_error ctx "Macro classes are no longer allowed in haxe 3" p;
+	if is_class_macro then display_error ctx "Macro classes are no longer allowed in hydr 3" p;
 	let fields, herits = if is_class_macro && not ctx.in_macro then begin
 		c.cl_extern <- true;
 		List.filter (fun f -> List.mem AStatic f.cff_access) fields, []
@@ -1417,7 +1417,7 @@ let init_class ctx c p context_init herits fields =
 			let fd = if not is_macro then
 				fd
 			else if ctx.in_macro then
-				let texpr = CTPath { tpackage = ["haxe";"macro"]; tname = "Expr"; tparams = []; tsub = None } in
+				let texpr = CTPath { tpackage = ["hydr";"macro"]; tname = "Expr"; tparams = []; tsub = None } in
 				{
 					f_params = fd.f_params;
 					f_type = (match fd.f_type with None -> Some texpr | t -> t);
@@ -1427,9 +1427,9 @@ let init_class ctx c p context_init herits fields =
 			else
 				let tdyn = Some (CTPath { tpackage = []; tname = "Dynamic"; tparams = []; tsub = None }) in
 				let to_dyn = function
-					| { tpackage = ["haxe";"macro"]; tname = "Expr"; tsub = Some ("ExprOf"); tparams = [TPType t] } -> Some t
+					| { tpackage = ["hydr";"macro"]; tname = "Expr"; tsub = Some ("ExprOf"); tparams = [TPType t] } -> Some t
 					| { tpackage = []; tname = ("ExprOf"); tsub = None; tparams = [TPType t] } -> Some t
-					| { tpackage = ["haxe"]; tname = ("PosInfos"); tsub = None; tparams = [] } -> error "haxe.PosInfos is not allowed on macro functions, use Context.currentPos() instead" p
+					| { tpackage = ["hydr"]; tname = ("PosInfos"); tsub = None; tparams = [] } -> error "hydr.PosInfos is not allowed on macro functions, use Context.currentPos() instead" p
 					| _ -> tdyn
 				in
 				{
@@ -1941,7 +1941,7 @@ let rec init_module_type ctx context_init do_init (decl,p) =
 		let c = (match get_type d.d_name with TClassDecl c -> c | _ -> assert false) in
 		let herits = d.d_flags in
 		if Meta.has Meta.Generic c.cl_meta && c.cl_types <> [] then c.cl_kind <- KGeneric;
-		if c.cl_path = (["haxe";"macro"],"MacroType") then c.cl_kind <- KMacroType;
+		if c.cl_path = (["hydr";"macro"],"MacroType") then c.cl_kind <- KMacroType;
 		c.cl_extern <- List.mem HExtern herits;
 		c.cl_interface <- List.mem HInterface herits;
 		let build() =

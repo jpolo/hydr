@@ -36,7 +36,7 @@ type context = {
 }
 
 type cache = {
-	mutable c_haxelib : (string list, string list) Hashtbl.t;
+	mutable c_hydrlib : (string list, string list) Hashtbl.t;
 	mutable c_files : (string, float * Ast.package) Hashtbl.t;
 	mutable c_modules : (path * string, module_def) Hashtbl.t;
 }
@@ -63,7 +63,7 @@ let executable_path() =
 	Extc.executable_path()
 	
 let is_debug_run() =
-	try Sys.getenv "HAXEDEBUG" = "1" with _ -> false
+	try Sys.getenv "HYDR_DEBUG" = "1" with _ -> false
 
 let format msg p =
 	if p = Ast.null_pos then
@@ -92,24 +92,24 @@ let deprecated = [
 	"Class not found : IntIter","IntIter was renamed to IntIterator";
 	"EReg has no field customReplace","EReg.customReplace was renamed to EReg.map";
 	"#StringTools has no field isEOF","StringTools.isEOF was renamed to StringTools.isEof";
-	"Class not found : haxe.BaseCode","haxe.BaseCode was moved to haxe.crypto.BaseCode";
-	"Class not found : haxe.Md5","haxe.Md5 was moved to haxe.crypto.Md5";
-	"Class not found : haxe.SHA1","haxe.SHA1 was moved to haxe.crypto.SHA1";
+	"Class not found : hydr.BaseCode","hydr.BaseCode was moved to hydr.crypto.BaseCode";
+	"Class not found : hydr.Md5","hydr.Md5 was moved to hydr.crypto.Md5";
+	"Class not found : hydr.SHA1","hydr.SHA1 was moved to hydr.crypto.SHA1";
 	"Class not found : Hash","Hash has been removed, use Map instead";
 	"Class not found : IntHash","IntHash has been removed, use Map instead";
-	"Class not found : haxe.FastList","haxe.FastList was moved to haxe.ds.GenericStack";
+	"Class not found : hydr.FastList","hydr.FastList was moved to hydr.ds.GenericStack";
 	"#Std has no field format","Std.format has been removed, use single quote 'string ${escape}' syntax instead";
 	"Class not found : Int32","Int32 has been removed, use Int instead";
-	"Identifier 'EType' is not part of enum haxe.macro.ExprDef","EType has been removed, use EField instead";
-	"Identifier 'CType' is not part of enum haxe.macro.Constant","CType has been removed, use CIdent instead";
-	"Class not found : haxe.rtti.Infos","Use @:rtti instead of implementing haxe.rtti.Infos";
-	"Class not found : haxe.rtti.Generic","Use @:generic instead of implementing haxe.Generic";
-	"Class not found : haxe.Int32","haxe.Int32 has been removed, use normal Int instead";
+	"Identifier 'EType' is not part of enum hydr.macro.ExprDef","EType has been removed, use EField instead";
+	"Identifier 'CType' is not part of enum hydr.macro.Constant","CType has been removed, use CIdent instead";
+	"Class not found : hydr.rtti.Infos","Use @:rtti instead of implementing hydr.rtti.Infos";
+	"Class not found : hydr.rtti.Generic","Use @:generic instead of implementing hydr.Generic";
+	"Class not found : hydr.Int32","hydr.Int32 has been removed, use normal Int instead";
 	"Class not found : flash.utils.TypedDictionary","flash.utils.TypedDictionary has been removed, use Map instead";
-	"Class not found : haxe.Stack", "haxe.Stack has been renamed to haxe.CallStack";
-	"Class not found : neko.zip.Reader", "neko.zip.Reader has been removed, use haxe.zip.Reader instead";
-	"Class not found : neko.zip.Reader", "neko.zip.Writer has been removed, use haxe.zip.Writer instead";
-	"Class not found : haxe.Public", "Use @:publicFields instead of implementing or extending haxe.Public";
+	"Class not found : hydr.Stack", "hydr.Stack has been renamed to hydr.CallStack";
+	"Class not found : neko.zip.Reader", "neko.zip.Reader has been removed, use hydr.zip.Reader instead";
+	"Class not found : neko.zip.Reader", "neko.zip.Writer has been removed, use hydr.zip.Writer instead";
+	"Class not found : hydr.Public", "Use @:publicFields instead of implementing or extending hydr.Public";
 	"#Xml has no field createProlog", "Xml.createProlog was renamed to Xml.createProcessingInstruction";
 ]
 
@@ -320,16 +320,16 @@ let lookup_classes com spath =
 	loop com.class_path
 
 let add_libs com libs =
-	let call_haxelib() =
-		let t = Common.timer "haxelib" in
-		let cmd = "haxelib path " ^ String.concat " " libs in
+	let call_hydrlib() =
+		let t = Common.timer "hydrlib" in
+		let cmd = "hydrlib path " ^ String.concat " " libs in
 		let pin, pout, perr = Unix.open_process_full cmd (Unix.environment()) in
 		let lines = Std.input_list pin in
 		let err = Std.input_list perr in
 		let ret = Unix.close_process_full (pin,pout,perr) in
 		if ret <> Unix.WEXITED 0 then failwith (match lines, err with
-			| [], [] -> "Failed to call haxelib (command not found ?)"
-			| [], [s] when ExtString.String.ends_with (ExtString.String.strip s) "Module not found : path" -> "The haxelib command has been strip'ed, please install it again"
+			| [], [] -> "Failed to call hydrlib (command not found ?)"
+			| [], [s] when ExtString.String.ends_with (ExtString.String.strip s) "Module not found : path" -> "The hydrlib command has been strip'ed, please install it again"
 			| _ -> String.concat "\n" (lines@err));
 		t();
 		lines
@@ -340,14 +340,14 @@ let add_libs com libs =
 		let lines = match !global_cache with
 			| Some cache ->
 				(try
-					(* if we are compiling, really call haxelib since library path might have changed *)
+					(* if we are compiling, really call hydrlib since library path might have changed *)
 					if not com.display then raise Not_found;
-					Hashtbl.find cache.c_haxelib libs
+					Hashtbl.find cache.c_hydrlib libs
 				with Not_found ->
-					let lines = call_haxelib() in
-					Hashtbl.replace cache.c_haxelib libs lines;
+					let lines = call_hydrlib() in
+					Hashtbl.replace cache.c_hydrlib libs lines;
 					lines)
-			| _ -> call_haxelib()
+			| _ -> call_hydrlib()
 		in
 		let extra_args = ref [] in
 		let lines = List.fold_left (fun acc l ->
@@ -511,7 +511,7 @@ and wait_loop boot_com host port =
 	let bufsize = 1024 in
 	let tmp = String.create bufsize in
 	let cache = {
-		c_haxelib = Hashtbl.create 0;
+		c_hydrlib = Hashtbl.create 0;
 		c_files = Hashtbl.create 0;
 		c_modules = Hashtbl.create 0;
 	} in
@@ -791,11 +791,11 @@ try
 	if version < 300 then begin
 		for i = 0 to 4 do
 			let v = version - i in
-			Common.raw_define com ("haxe_" ^ string_of_int v);
+			Common.raw_define com ("hydr_" ^ string_of_int v);
 		done;
 	end else begin
 		Common.define_value com Define.HaxeVersion (string_of_float (float_of_int version /. 100.));
-		Common.raw_define com "haxe3";
+		Common.raw_define com "hydr3";
 	end;
 	Common.define_value com Define.Dce "std";
 	com.warning <- (fun msg p -> message ctx ("Warning : " ^ msg) p);
@@ -819,7 +819,7 @@ try
 	with
 		Not_found ->
 			if Sys.os_type = "Unix" then
-				com.class_path <- ["/usr/lib/haxe/std/";"/usr/local/lib/haxe/std/";"/usr/lib/haxe/std/libs/";"/usr/local/lib/haxe/std/libs/";"";"/"]
+				com.class_path <- ["/usr/lib/hydr/std/";"/usr/local/lib/hydr/std/";"/usr/lib/hydr/std/libs/";"/usr/local/lib/hydr/std/libs/";"";"/"]
 			else
 				let base_path = normalize_path (Extc.get_real_path (try executable_path() with _ -> "./")) in
 				com.class_path <- [base_path ^ "std/";base_path ^ "std/libs/";""]);
@@ -881,7 +881,7 @@ try
 		("-lib",Arg.String (fun l ->
 			cp_libs := l :: !cp_libs;
 			Common.raw_define com l;
-		),"<library[:version]> : use a haxelib library");
+		),"<library[:version]> : use a hydrlib library");
 		("-D",Arg.String (fun var ->
 			if var = fst (Define.infos Define.UseRttiDoc) then Parser.use_doc := true;
 			if var = fst (Define.infos Define.NoOpt) then com.foptimize <- false;
@@ -971,7 +971,7 @@ try
 			) :: !pre_compilation;
 			xml_out := Some extension
 		),": generate hydr headers for all input classes");
-		("--next", Arg.Unit (fun() -> assert false), ": separate several haxe compilations");
+		("--next", Arg.Unit (fun() -> assert false), ": separate several hydr compilations");
 		("--display", Arg.String (fun file_pos ->
 			match file_pos with
 			| "classes" ->
@@ -1064,7 +1064,7 @@ try
 	process_ref := process;
 	process ctx.com.args;
 	process_libs();
-	(try ignore(Common.find_file com "mt/Include.hx"); Common.raw_define com "mt"; with Not_found -> ());
+	(try ignore(Common.find_file com "mt/Include.hy"); Common.raw_define com "mt"; with Not_found -> ());
 	if com.display then begin
 		let mode = Common.defined_value_safe com Define.DisplayMode in
 		if mode = "usage" then begin
@@ -1361,9 +1361,9 @@ let other = Common.timer "other" in
 Sys.catch_break true;
 let args = List.tl (Array.to_list Sys.argv) in
 (try
-	let server = Sys.getenv "HAXE_COMPILATION_SERVER" in
+	let server = Sys.getenv "HYDR_COMPILATION_SERVER" in
 	let host, port = (try ExtString.String.split server ":" with _ -> "127.0.0.1", server) in
-	do_connect host (try int_of_string port with _ -> failwith "Invalid HAXE_COMPILATION_SERVER port") args
+	do_connect host (try int_of_string port with _ -> failwith "Invalid HYDR_COMPILATION_SERVER port") args
 with Not_found -> try
 	process_params create_context args
 with Completion c ->

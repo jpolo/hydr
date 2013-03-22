@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,8 +20,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package java.nio;
-import haxe.Int64;
-import haxe.io.BytesData;
+import hydr.Int64;
+import hydr.io.BytesData;
 import java.StdTypes;
 
 extern class ByteBuffer extends Buffer

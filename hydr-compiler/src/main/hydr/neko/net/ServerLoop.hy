@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,7 +24,7 @@ import sys.net.Socket;
 
 private typedef ServerClient<ClientData> = {
 	var sock : Socket;
-	var buffer : haxe.io.Bytes;
+	var buffer : hydr.io.Bytes;
 	var bufbytes : Int;
 	var data : ClientData;
 }
@@ -113,7 +113,7 @@ class ServerLoop<ClientData> {
 		while sending the data, no exception will occur but the client will
 		be gracefully disconnected.
 	**/
-	public function clientWrite( s : Socket, buf : haxe.io.Bytes, pos : Int, len : Int ) {
+	public function clientWrite( s : Socket, buf : hydr.io.Bytes, pos : Int, len : Int ) {
 		try {
 			while( len > 0 ) {
 				var nbytes = s.output.writeBytes(buf,pos,len);
@@ -131,7 +131,7 @@ class ServerLoop<ClientData> {
 		that needs to be removed from the buffer. It the data can't be handled (some
 		part of the message is missing for example), returns 0.
 	**/
-	public function processClientData( d : ClientData, buf : haxe.io.Bytes, bufpos : Int, buflen : Int ) {
+	public function processClientData( d : ClientData, buf : hydr.io.Bytes, bufpos : Int, buflen : Int ) {
 		throw "ServerLoop::processClientData is not implemented";
 		return 0;
 	}
@@ -141,7 +141,7 @@ class ServerLoop<ClientData> {
 		By default the error is displayed using [trace].
 	**/
 	public function onError( e : Dynamic ) {
-		trace(Std.string(e)+"\n"+haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
+		trace(Std.string(e)+"\n"+hydr.CallStack.toString(hydr.CallStack.exceptionStack()));
 	}
 
 	function readData( cl : ServerClient<ClientData> ) {
@@ -154,7 +154,7 @@ class ServerLoop<ClientData> {
 					throw "Max buffer size reached";
 				nsize = MAX_BUFSIZE;
 			}
-			var buf2 = haxe.io.Bytes.alloc(nsize);
+			var buf2 = hydr.io.Bytes.alloc(nsize);
 			buf2.blit(0,cl.buffer,0,buflen);
 			buflen = nsize;
 			cl.buffer = buf2;
@@ -195,7 +195,7 @@ class ServerLoop<ClientData> {
 					cl = {
 						sock : sock,
 						data : null,
-						buffer : haxe.io.Bytes.alloc(DEFAULT_BUFSIZE),
+						buffer : hydr.io.Bytes.alloc(DEFAULT_BUFSIZE),
 						bufbytes : 0,
 					};
 					// bind the client
@@ -217,7 +217,7 @@ class ServerLoop<ClientData> {
 						readData(cl);
 						processData(cl);
 					} catch( e : Dynamic ) {
-						if( !Std.is(e,haxe.io.Eof) )
+						if( !Std.is(e,hydr.io.Eof) )
 							onError(e);
 						closeConnection(cl.sock);
 					}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,9 +23,9 @@ package sys.io;
 
 extern class Process {
 
-	var stdout(default,null) : haxe.io.Input;
-	var stderr(default,null) : haxe.io.Input;
-	var stdin(default,null) : haxe.io.Output;
+	var stdout(default,null) : hydr.io.Input;
+	var stderr(default,null) : hydr.io.Input;
+	var stdin(default,null) : hydr.io.Output;
 
 	function new( cmd : String, args : Array<String> ) : Void;
 	function getPid() : Int;

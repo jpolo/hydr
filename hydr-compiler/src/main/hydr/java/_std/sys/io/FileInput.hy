@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,10 +20,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package sys.io;
-import haxe.Int64;
-import haxe.io.Bytes;
-import haxe.io.Eof;
-import haxe.io.Input;
+import hydr.Int64;
+import hydr.io.Bytes;
+import hydr.io.Eof;
+import hydr.io.Input;
 import java.io.EOFException;
 import java.io.IOException;
 
@@ -49,7 +49,7 @@ class FileInput extends Input {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -66,7 +66,7 @@ class FileInput extends Input {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 
 		if (ret == -1)
@@ -82,8 +82,8 @@ class FileInput extends Input {
 			switch(pos)
 			{
 				case SeekBegin: f.seek(cast p);
-				case SeekCur: f.seek(haxe.Int64.add(f.getFilePointer(), cast(p, Int64)));
-				case SeekEnd: f.seek(haxe.Int64.add(f.length(), cast p));
+				case SeekCur: f.seek(hydr.Int64.add(f.getFilePointer(), cast(p, Int64)));
+				case SeekEnd: f.seek(hydr.Int64.add(f.length(), cast p));
 			}
 		}
 
@@ -92,7 +92,7 @@ class FileInput extends Input {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -104,7 +104,7 @@ class FileInput extends Input {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 
@@ -116,7 +116,7 @@ class FileInput extends Input {
 		}
 
 		catch (e:IOException) {
-			throw haxe.io.Error.Custom(e);
+			throw hydr.io.Error.Custom(e);
 		}
 	}
 }

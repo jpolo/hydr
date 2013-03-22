@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,9 @@ class File {
 		return b.toString();
 	}
 
-	public static function getBytes( path : String ) : haxe.io.Bytes {
-		var data:haxe.io.BytesData = file_contents(path);
-		return haxe.io.Bytes.ofData(data);
+	public static function getBytes( path : String ) : hydr.io.Bytes {
+		var data:hydr.io.BytesData = file_contents(path);
+		return hydr.io.Bytes.ofData(data);
 	}
 
 	public static function saveContent( path : String, content : String ) : Void {
@@ -40,7 +40,7 @@ class File {
 		f.close();
 	}
 
-	public static function saveBytes( path : String, bytes : haxe.io.Bytes ) : Void {
+	public static function saveBytes( path : String, bytes : hydr.io.Bytes ) : Void {
 		var f = write(path);
 		f.write(bytes);
 		f.close();

@@ -31,8 +31,8 @@ open Option
 
 let is_cs_basic_type t =
   match follow t with
-    | TInst( { cl_path = (["haxe"], "Int32") }, [] )
-    | TInst( { cl_path = (["haxe"], "Int64") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int32") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int64") }, [] )
     | TInst( { cl_path = ([], "Int") }, [] )
     | TAbstract ({ a_path = ([], "Int") },[])
     | TInst( { cl_path = ([], "Float") }, [] )
@@ -53,8 +53,8 @@ let is_tparam t =
 
 let rec is_int_float t =
   match follow t with
-    | TInst( { cl_path = (["haxe"], "Int32") }, [] )
-    | TInst( { cl_path = (["haxe"], "Int64") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int32") }, [] )
+    | TInst( { cl_path = (["hydr"], "Int64") }, [] )
     | TInst( { cl_path = ([], "Int") }, [] )
     | TAbstract ({ a_path = ([], "Int") },[])
     | TInst( { cl_path = ([], "Float") }, [] )
@@ -62,12 +62,12 @@ let rec is_int_float t =
       true
     | TAbstract _ when like_float t ->
       true
-    | TInst( { cl_path = (["haxe"; "lang"], "Null") }, [t] ) -> is_int_float t
+    | TInst( { cl_path = (["hydr"; "lang"], "Null") }, [t] ) -> is_int_float t
     | _ -> false
 
 let rec is_null t =
   match t with
-    | TInst( { cl_path = (["haxe"; "lang"], "Null") }, _ )
+    | TInst( { cl_path = (["hydr"; "lang"], "Null") }, _ )
     | TType( { t_path = ([], "Null") }, _ ) -> true
     | TType( t, tl ) -> is_null (apply_params t.t_types tl t.t_type)
     | TMono r ->
@@ -263,7 +263,7 @@ struct
     let basic = gen.gcon.basic in
     let tchar = match ( get_type gen (["cs"], "Char16") ) with | TTypeDecl t -> t | _ -> assert false in
     let tchar = TType(tchar,[]) in
-    let string_ext = get_cl ( get_type gen (["haxe";"lang"], "StringExt")) in
+    let string_ext = get_cl ( get_type gen (["hydr";"lang"], "StringExt")) in
 
     let is_string t = match follow t with | TInst({ cl_path = ([], "String") }, []) -> true | _ -> false in
 
@@ -517,17 +517,17 @@ let rec get_fun_modifiers meta access modifiers =
 let configure gen =
   let basic = gen.gcon.basic in
 
-  let fn_cl = get_cl (get_type gen (["haxe";"lang"],"Function")) in
+  let fn_cl = get_cl (get_type gen (["hydr";"lang"],"Function")) in
 
-  let null_t = (get_cl (get_type gen (["haxe";"lang"],"Null")) ) in
+  let null_t = (get_cl (get_type gen (["hydr";"lang"],"Null")) ) in
 
-  let runtime_cl = get_cl (get_type gen (["haxe";"lang"],"Runtime")) in
+  let runtime_cl = get_cl (get_type gen (["hydr";"lang"],"Runtime")) in
 
   let no_root = Common.defined gen.gcon Define.NoRoot in
 
   let change_ns = if no_root then
     function
-      | [] -> ["haxe";"root"]
+      | [] -> ["hydr";"root"]
       | ns -> ns
   else fun ns -> ns in
 
@@ -552,10 +552,10 @@ let configure gen =
       | TAbstract ({ a_path = ([],"Int") },[])
       | TType ({ t_path = [],"UInt" },[])
       | TAbstract ({ a_path = [],"UInt" },[])
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeInt64" },[])
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeUInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeUInt64" },[])
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeInt64" },[])
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeUInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeUInt64" },[])
       | TType ({ t_path = ["cs"],"UInt64" },[])
       | TAbstract ({ a_path = ["cs"],"UInt64" },[])
       | TType ({ t_path = ["cs"],"UInt8" },[])
@@ -582,13 +582,13 @@ let configure gen =
 
   let path_s path = match path with
     | ([], "String") -> "string"
-    | ([], "Null") -> path_s (change_ns ["haxe"; "lang"], change_clname "Null")
+    | ([], "Null") -> path_s (change_ns ["hydr"; "lang"], change_clname "Null")
     | (ns,clname) -> path_s (change_ns ns, change_clname clname)
   in
 
   let ifaces = Hashtbl.create 1 in
 
-  let ti64 = match ( get_type gen (["haxe";"_Int64"], "NativeInt64") ) with | TTypeDecl t -> TType(t,[]) | TAbstractDecl a -> TAbstract(a,[]) | _ -> assert false in
+  let ti64 = match ( get_type gen (["hydr";"_Int64"], "NativeInt64") ) with | TTypeDecl t -> TType(t,[]) | TAbstractDecl a -> TAbstract(a,[]) | _ -> assert false in
 
   let ttype = get_cl ( get_type gen (["System"], "Type") ) in
 
@@ -597,8 +597,8 @@ let configure gen =
     let ret = match t with
       | TAbstract ({ a_impl = Some _ } as a, pl) ->
         real_type (Codegen.Abstract.get_underlying_type a pl)
-      | TInst( { cl_path = (["haxe"], "Int32") }, [] ) -> gen.gcon.basic.tint
-      | TInst( { cl_path = (["haxe"], "Int64") }, [] ) -> ti64
+      | TInst( { cl_path = (["hydr"], "Int32") }, [] ) -> gen.gcon.basic.tint
+      | TInst( { cl_path = (["hydr"], "Int64") }, [] ) -> ti64
       | TAbstract( { a_path = [],"Class" }, _ )
       | TAbstract( { a_path = [],"Enum" }, _ )
       | TInst( { cl_path = ([], "Class") }, _ )
@@ -618,9 +618,9 @@ let configure gen =
       | TType({ t_path = ([], "Null") }, [t]) ->
         (*
           Null<> handling is a little tricky.
-          It will only change to haxe.lang.Null<> when the actual type is non-nullable or a type parameter
+          It will only change to hydr.lang.Null<> when the actual type is non-nullable or a type parameter
           It works on cases such as Hash<T> returning Null<T> since cast_detect will invoke real_type at the original type,
-          Null<T>, which will then return the type haxe.lang.Null<>
+          Null<T>, which will then return the type hydr.lang.Null<>
         *)
         (match real_type t with
           | TInst( { cl_kind = KTypeParameter _ }, _ ) -> TInst(null_t, [t])
@@ -651,7 +651,7 @@ let configure gen =
         Because Null<> types need a special compiler treatment for many operations (e.g. boxing/unboxing),
         Null<> type parameters will be transformed into Dynamic.
       *)
-      | true, TInst ( { cl_path = (["haxe";"lang"], "Null") }, _ ) -> dynamic_anon
+      | true, TInst ( { cl_path = (["hydr";"lang"], "Null") }, _ ) -> dynamic_anon
       | true, TInst ( { cl_kind = KTypeParameter _ }, _ ) -> t
       | true, TInst _
       | true, TEnum _
@@ -688,10 +688,10 @@ let configure gen =
       | TAbstract ({ a_path = ([],"Int") },[]) -> "int"
       | TType ({ t_path = [],"UInt" },[])
       | TAbstract ({ a_path = [],"UInt" },[]) -> "uint"
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeInt64" },[]) -> "long"
-      | TType ({ t_path = ["haxe";"_Int64"], "NativeUInt64" },[])
-      | TAbstract ({ a_path = ["haxe";"_Int64"], "NativeUInt64" },[]) -> "ulong"
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeInt64" },[]) -> "long"
+      | TType ({ t_path = ["hydr";"_Int64"], "NativeUInt64" },[])
+      | TAbstract ({ a_path = ["hydr";"_Int64"], "NativeUInt64" },[]) -> "ulong"
       | TType ({ t_path = ["cs"],"UInt64" },[])
       | TAbstract ({ a_path = ["cs"],"UInt64" },[]) -> "ulong"
       | TType ({ t_path = ["cs"],"UInt8" },[])
@@ -706,10 +706,10 @@ let configure gen =
       | TAbstract ({ a_path = ["cs"],"Char16" },[]) -> "char"
       | TType ({ t_path = [],"Single" },[])
       | TAbstract ({ a_path = [],"Single" },[]) -> "float"
-      | TInst ({ cl_path = ["haxe"],"Int32" },[])
-      | TAbstract ({ a_path = ["haxe"],"Int32" },[]) -> "int"
-      | TInst ({ cl_path = ["haxe"],"Int64" },[])
-      | TAbstract ({ a_path = ["haxe"],"Int64" },[]) -> "long"
+      | TInst ({ cl_path = ["hydr"],"Int32" },[])
+      | TAbstract ({ a_path = ["hydr"],"Int32" },[]) -> "int"
+      | TInst ({ cl_path = ["hydr"],"Int64" },[])
+      | TAbstract ({ a_path = ["hydr"],"Int64" },[]) -> "long"
       | TInst ({ cl_path = ([], "Dynamic") },_)
       | TAbstract ({ a_path = ([], "Dynamic") },_) -> "object"
       | TType ({ t_path = ["cs"],"Out" },[t])
@@ -848,7 +848,7 @@ let configure gen =
             | TInt i32 ->
               write w (Int32.to_string i32);
               (*match real_type e.etype with
-                | TType( { t_path = (["haxe";"_Int64"], "NativeInt64") }, [] ) -> write w "L";
+                | TType( { t_path = (["hydr";"_Int64"], "NativeInt64") }, [] ) -> write w "L";
                 | _ -> ()
               *)
             | TFloat s ->
@@ -891,8 +891,8 @@ let configure gen =
           write w " )"
         | TField ({ eexpr = TTypeExpr mt }, s) ->
           (match mt with
-            | TClassDecl { cl_path = (["haxe"], "Int64") } -> write w ("global::" ^ path_s (["haxe"], "Int64"))
-            | TClassDecl { cl_path = (["haxe"], "Int32") } -> write w ("global::" ^ path_s (["haxe"], "Int32"))
+            | TClassDecl { cl_path = (["hydr"], "Int64") } -> write w ("global::" ^ path_s (["hydr"], "Int64"))
+            | TClassDecl { cl_path = (["hydr"], "Int32") } -> write w ("global::" ^ path_s (["hydr"], "Int32"))
             | TClassDecl cl -> write w (t_s (TInst(cl, List.map (fun _ -> t_empty) cl.cl_types)))
             | TEnumDecl en -> write w (t_s (TEnum(en, List.map (fun _ -> t_empty) en.e_types)))
             | TTypeDecl td -> write w (t_s (gen.gfollow#run_f (TType(td, List.map (fun _ -> t_empty) td.t_types))))
@@ -904,8 +904,8 @@ let configure gen =
           expr_s w e; write w "."; write_field w (field_name s)
         | TTypeExpr mt ->
           (match mt with
-            | TClassDecl { cl_path = (["haxe"], "Int64") } -> write w ("global::" ^ path_s (["haxe"], "Int64"))
-            | TClassDecl { cl_path = (["haxe"], "Int32") } -> write w ("global::" ^ path_s (["haxe"], "Int32"))
+            | TClassDecl { cl_path = (["hydr"], "Int64") } -> write w ("global::" ^ path_s (["hydr"], "Int64"))
+            | TClassDecl { cl_path = (["hydr"], "Int32") } -> write w ("global::" ^ path_s (["hydr"], "Int32"))
             | TClassDecl cl -> write w (t_s (TInst(cl, List.map (fun _ -> t_dynamic) cl.cl_types)))
             | TEnumDecl en -> write w (t_s (TEnum(en, List.map (fun _ -> t_dynamic) en.e_types)))
             | TTypeDecl td -> write w (t_s (gen.gfollow#run_f (TType(td, List.map (fun _ -> t_dynamic) td.t_types))))
@@ -1587,7 +1587,7 @@ let configure gen =
     match md_tp with
       | TClassDecl cl ->
         if not cl.cl_extern then begin
-          (if no_root && len w = 0 then write w "using haxe.root;"; newline w;);
+          (if no_root && len w = 0 then write w "using hydr.root;"; newline w;);
           gen_class w cl;
           newline w;
           newline w
@@ -1595,7 +1595,7 @@ let configure gen =
         (not cl.cl_extern)
       | TEnumDecl e ->
         if not e.e_extern then begin
-          (if no_root && len w = 0 then write w "using haxe.root;"; newline w;);
+          (if no_root && len w = 0 then write w "using hydr.root;"; newline w;);
           gen_enum w e;
           newline w;
           newline w
@@ -1629,9 +1629,9 @@ let configure gen =
   Hashtbl.add gen.gspecial_vars "__valueOf__" true;
   Hashtbl.add gen.gspecial_vars "__sizeof__" true;
 
-  Hashtbl.add gen.gsupported_conversions (["haxe"; "lang"], "Null") (fun t1 t2 -> true);
+  Hashtbl.add gen.gsupported_conversions (["hydr"; "lang"], "Null") (fun t1 t2 -> true);
   let last_needs_box = gen.gneeds_box in
-  gen.gneeds_box <- (fun t -> match t with | TInst( { cl_path = (["haxe"; "lang"], "Null") }, _ ) -> true | _ -> last_needs_box t);
+  gen.gneeds_box <- (fun t -> match t with | TInst( { cl_path = (["hydr"; "lang"], "Null") }, _ ) -> true | _ -> last_needs_box t);
 
   gen.greal_type <- real_type;
   gen.greal_type_param <- change_param_type;
@@ -1663,7 +1663,7 @@ let configure gen =
   HardNullableSynf.configure gen (HardNullableSynf.traverse gen
     (fun e ->
       match real_type e.etype with
-        | TInst({ cl_path = (["haxe";"lang"], "Null") }, [t]) ->
+        | TInst({ cl_path = (["hydr";"lang"], "Null") }, [t]) ->
             { (mk_field_access gen e "value" e.epos) with etype = t }
         | _ ->
           trace (debug_type e.etype); gen.gcon.error "This expression is not a Nullable expression" e.epos; assert false
@@ -1710,18 +1710,18 @@ let configure gen =
 
   OverrideFix.configure gen;
 
-  ClosuresToClass.configure gen (ClosuresToClass.default_implementation closure_t (get_cl (get_type gen (["haxe";"lang"],"Function")) ));
+  ClosuresToClass.configure gen (ClosuresToClass.default_implementation closure_t (get_cl (get_type gen (["hydr";"lang"],"Function")) ));
 
-  EnumToClass.configure gen (Some (fun e -> mk_cast gen.gcon.basic.tint e)) false true (get_cl (get_type gen (["haxe";"lang"],"Enum")) ) true false;
+  EnumToClass.configure gen (Some (fun e -> mk_cast gen.gcon.basic.tint e)) false true (get_cl (get_type gen (["hydr";"lang"],"Enum")) ) true false;
 
   InterfaceVarsDeleteModf.configure gen;
 
-  let dynamic_object = (get_cl (get_type gen (["haxe";"lang"],"DynamicObject")) ) in
+  let dynamic_object = (get_cl (get_type gen (["hydr";"lang"],"DynamicObject")) ) in
 
-  let object_iface = get_cl (get_type gen (["haxe";"lang"],"IHxObject")) in
+  let object_iface = get_cl (get_type gen (["hydr";"lang"],"IHxObject")) in
 
   (*fixme: THIS IS A HACK. take this off *)
-  let empty_e = match (get_type gen (["haxe";"lang"], "EmptyObject")) with | TEnumDecl e -> e | _ -> assert false in
+  let empty_e = match (get_type gen (["hydr";"lang"], "EmptyObject")) with | TEnumDecl e -> e | _ -> assert false in
   (*OverloadingCtor.set_new_create_empty gen ({eexpr=TEnumField(empty_e, "EMPTY"); etype=TEnum(empty_e,[]); epos=null_pos;});*)
 
   let empty_expr = { eexpr = (TTypeExpr (TEnumDecl empty_e)); etype = (TAnon { a_fields = PMap.empty; a_status = ref (EnumStatics empty_e) }); epos = null_pos } in
@@ -1732,8 +1732,8 @@ let configure gen =
   in
   OverloadingConstructor.configure gen (TEnum(empty_e, [])) ({ eexpr=TField(empty_expr, FEnum(empty_e, empty_ef)); etype=TEnum(empty_e,[]); epos=null_pos; }) false;
 
-  let rcf_static_find = mk_static_field_access_infer (get_cl (get_type gen (["haxe";"lang"], "FieldLookup"))) "findHash" Ast.null_pos [] in
-  let rcf_static_lookup = mk_static_field_access_infer (get_cl (get_type gen (["haxe";"lang"], "FieldLookup"))) "lookupHash" Ast.null_pos [] in
+  let rcf_static_find = mk_static_field_access_infer (get_cl (get_type gen (["hydr";"lang"], "FieldLookup"))) "findHash" Ast.null_pos [] in
+  let rcf_static_lookup = mk_static_field_access_infer (get_cl (get_type gen (["hydr";"lang"], "FieldLookup"))) "lookupHash" Ast.null_pos [] in
 
   let can_be_float = like_float in
 
@@ -1788,19 +1788,19 @@ let configure gen =
     mk_cast ecall.etype { ecall with eexpr = TCall(infer, call_args) }
   in
 
-  handle_type_params gen ifaces (get_cl (get_type gen (["haxe";"lang"], "IGenericObject")));
+  handle_type_params gen ifaces (get_cl (get_type gen (["hydr";"lang"], "IGenericObject")));
 
   let rcf_ctx = ReflectionCFs.new_ctx gen closure_t object_iface true rcf_on_getset_field rcf_on_call_field (fun hash hash_array ->
     { hash with eexpr = TCall(rcf_static_find, [hash; hash_array]); etype=basic.tint }
   ) (fun hash -> { hash with eexpr = TCall(rcf_static_lookup, [hash]); etype = gen.gcon.basic.tstring } ) false in
 
-  ReflectionCFs.UniversalBaseClass.default_config gen (get_cl (get_type gen (["haxe";"lang"],"HxObject")) ) object_iface dynamic_object;
+  ReflectionCFs.UniversalBaseClass.default_config gen (get_cl (get_type gen (["hydr";"lang"],"HxObject")) ) object_iface dynamic_object;
 
   ReflectionCFs.configure_dynamic_field_access rcf_ctx false;
 
-  (* let closure_func = ReflectionCFs.implement_closure_cl rcf_ctx ( get_cl (get_type gen (["haxe";"lang"],"Closure")) ) in *)
-  let closure_cl = get_cl (get_type gen (["haxe";"lang"],"Closure")) in
-  let varargs_cl = get_cl (get_type gen (["haxe";"lang"],"VarArgsFunction")) in
+  (* let closure_func = ReflectionCFs.implement_closure_cl rcf_ctx ( get_cl (get_type gen (["hydr";"lang"],"Closure")) ) in *)
+  let closure_cl = get_cl (get_type gen (["hydr";"lang"],"Closure")) in
+  let varargs_cl = get_cl (get_type gen (["hydr";"lang"],"VarArgsFunction")) in
   let dynamic_name = gen.gmk_internal_name "hx" "invokeDynamic" in
 
   List.iter (fun cl ->
@@ -1811,7 +1811,7 @@ let configure gen =
 
   let closure_func = ReflectionCFs.get_closure_func rcf_ctx closure_cl in
 
-  ReflectionCFs.implement_varargs_cl rcf_ctx ( get_cl (get_type gen (["haxe";"lang"], "VarArgsBase")) );
+  ReflectionCFs.implement_varargs_cl rcf_ctx ( get_cl (get_type gen (["hydr";"lang"], "VarArgsBase")) );
 
   let slow_invoke = mk_static_field_access_infer (runtime_cl) "slowCallField" Ast.null_pos [] in
   ReflectionCFs.configure rcf_ctx ~slow_invoke:(fun ethis efield eargs -> {
@@ -1859,8 +1859,8 @@ let configure gen =
         | TInst({ cl_path = ([], "String") }, [])
         | TInst({ cl_path = ([], "Float") }, [])
         | TAbstract ({ a_path = ([], "Float") },[])
-        | TInst({ cl_path = (["haxe"], "Int32")}, [] )
-        | TInst({ cl_path = (["haxe"], "Int64")}, [] )
+        | TInst({ cl_path = (["hydr"], "Int32")}, [] )
+        | TInst({ cl_path = (["hydr"], "Int64")}, [] )
         | TInst({ cl_path = ([], "Int") }, [])
         | TAbstract ({ a_path = ([], "Int") },[])
         | TEnum({ e_path = ([], "Bool") }, [])
@@ -1874,7 +1874,7 @@ let configure gen =
   let is_int t = like_int t in
 
   let is_null t = match real_type t with
-    | TInst( { cl_path = (["haxe";"lang"], "Null") }, _ ) -> true
+    | TInst( { cl_path = (["hydr";"lang"], "Null") }, _ ) -> true
     | _ -> false
   in
 
@@ -1889,7 +1889,7 @@ let configure gen =
     match real_type t with
       | TDynamic _ | TAnon _ | TMono _
       | TInst( { cl_kind = KTypeParameter _ }, _ )
-      | TInst( { cl_path = (["haxe";"lang"], "Null") }, _ ) -> true
+      | TInst( { cl_path = (["hydr";"lang"], "Null") }, _ ) -> true
       | _ -> false
   in
 
@@ -1969,7 +1969,7 @@ let configure gen =
   let base_exception = get_cl (get_type gen (["System"], "Exception")) in
   let base_exception_t = TInst(base_exception, []) in
 
-  let hx_exception = get_cl (get_type gen (["haxe";"lang"], "HaxeException")) in
+  let hx_exception = get_cl (get_type gen (["hydr";"lang"], "HaxeException")) in
   let hx_exception_t = TInst(hx_exception, []) in
 
   let rec is_exception t =
@@ -2063,7 +2063,7 @@ let configure gen =
 
   (* add resources array *)
   (try
-    let res = get_cl (Hashtbl.find gen.gtypes (["haxe"], "Resource")) in
+    let res = get_cl (Hashtbl.find gen.gtypes (["hydr"], "Resource")) in
     mkdir (gen.gcon.file ^ "/src/Resources");
     let cf = PMap.find "content" res.cl_statics in
     let res = ref [] in
@@ -2090,7 +2090,7 @@ let configure gen =
   let hashes = Hashtbl.fold (fun i s acc -> (normalize_i i,s) :: acc) rcf_ctx.rcf_hash_fields [] in
   let hashes = List.sort (fun (i,s) (i2,s2) -> compare i i2) hashes in
 
-  let flookup_cl = get_cl (get_type gen (["haxe";"lang"], "FieldLookup")) in
+  let flookup_cl = get_cl (get_type gen (["hydr";"lang"], "FieldLookup")) in
   (try
     let basic = gen.gcon.basic in
     let change_array = ArrayDeclSynf.default_implementation gen native_arr_cl in
@@ -2111,7 +2111,7 @@ let configure gen =
     })
 
   with | Not_found ->
-    gen.gcon.error "Fields 'fieldIds' and 'fields' were not found in class haxe.lang.FieldLookup" flookup_cl.cl_pos
+    gen.gcon.error "Fields 'fieldIds' and 'fields' were not found in class hydr.lang.FieldLookup" flookup_cl.cl_pos
   );
 
   TypeParams.RenameTypeParameters.run gen;
@@ -2124,7 +2124,7 @@ let configure gen =
 	if ( not (Common.defined gen.gcon Define.NoCompilation) ) then begin
 		let old_dir = Sys.getcwd() in
 		Sys.chdir gen.gcon.file;
-		let cmd = "haxelib run hxcs hxcs_build.txt --haxe-version " ^ (string_of_int gen.gcon.version) in
+		let cmd = "hydrlib run hxcs hxcs_build.txt --hydr-version " ^ (string_of_int gen.gcon.version) in
 		print_endline cmd;
 		if gen.gcon.run_command cmd <> 0 then failwith "Build failed";
 		Sys.chdir old_dir;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,11 +20,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package cs.io;
-import haxe.Int64;
-import haxe.io.Bytes;
-import haxe.io.Eof;
-import haxe.io.Error;
-import haxe.io.Input;
+import hydr.Int64;
+import hydr.io.Bytes;
+import hydr.io.Eof;
+import hydr.io.Error;
+import hydr.io.Input;
 
 class NativeInput extends Input
 {

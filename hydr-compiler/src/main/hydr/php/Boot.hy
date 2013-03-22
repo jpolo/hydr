@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -853,7 +853,7 @@ _hx_register_type(new _hx_enum('Void',     'Void'));
 
 
 $_hx_libdir = dirname(__FILE__) . '/..';
-$_hx_autload_cache_file = $_hx_libdir . '/../cache/haxe_autoload.php';
+$_hx_autload_cache_file = $_hx_libdir . '/../cache/hydr_autoload.php';
 if(!file_exists($_hx_autload_cache_file)) {
 	function _hx_build_paths($d, &$_hx_types_array, $pack, $prefix) {
 		$h = opendir($d);

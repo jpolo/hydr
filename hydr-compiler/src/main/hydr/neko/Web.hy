@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +32,7 @@ class Web {
 	**/
 	public static function getParams() {
 		var p = _get_params();
-		var h = new haxe.ds.StringMap<String>();
+		var h = new hydr.ds.StringMap<String>();
 		var k = "";
 		while( p != null ) {
 			untyped k.__s = p[0];
@@ -166,7 +166,7 @@ class Web {
 	**/
 	public static function getCookies() {
 		var p = _get_cookies();
-		var h = new haxe.ds.StringMap<String>();
+		var h = new hydr.ds.StringMap<String>();
 		var k = "";
 		while( p != null ) {
 			untyped k.__s = p[0];
@@ -236,15 +236,15 @@ class Web {
 		Get the multipart parameters as an hashtable. The data
 		cannot exceed the maximum size specified.
 	**/
-	public static function getMultipart( maxSize : Int ) : haxe.ds.StringMap<String> {
-		var h = new haxe.ds.StringMap();
-		var buf : haxe.io.BytesBuffer = null;
+	public static function getMultipart( maxSize : Int ) : hydr.ds.StringMap<String> {
+		var h = new hydr.ds.StringMap();
+		var buf : hydr.io.BytesBuffer = null;
 		var curname = null;
 		parseMultipart(function(p,_) {
 			if( curname != null )
 				h.set(curname,neko.Lib.stringReference(buf.getBytes()));
 			curname = p;
-			buf = new haxe.io.BytesBuffer();
+			buf = new hydr.io.BytesBuffer();
 			maxSize -= p.length;
 			if( maxSize < 0 )
 				throw "Maximum size reached";
@@ -265,10 +265,10 @@ class Web {
 		and [onData] when some part data is readed. You can this way
 		directly save the data on hard drive in the case of a file upload.
 	**/
-	public static function parseMultipart( onPart : String -> String -> Void, onData : haxe.io.Bytes -> Int -> Int -> Void ) : Void {
+	public static function parseMultipart( onPart : String -> String -> Void, onData : hydr.io.Bytes -> Int -> Int -> Void ) : Void {
 		_parse_multipart(
 			function(p,f) { onPart(new String(p),if( f == null ) null else new String(f)); },
-			function(buf,pos,len) { onData(untyped new haxe.io.Bytes(__dollar__ssize(buf),buf),pos,len); }
+			function(buf,pos,len) { onData(untyped new hydr.io.Bytes(__dollar__ssize(buf),buf),pos,len); }
 		);
 	}
 

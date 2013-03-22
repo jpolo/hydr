@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -105,8 +105,8 @@ class Module {
 		Each Module has an export table which can be useful to transfert
 		values between modules.
 	**/
-	public function getExports() : haxe.ds.StringMap<Dynamic> {
-		var h = new haxe.ds.StringMap();
+	public function getExports() : hydr.ds.StringMap<Dynamic> {
+		var h = new hydr.ds.StringMap();
 		var exp = _module_exports(m);
 		for( f in Reflect.fields(exp) )
 			h.set(f,Reflect.field(exp,f));
@@ -140,9 +140,9 @@ class Module {
 		Reads a module from an Input by using the given Loader.
 		The module is initialized but has not yet been executed.
 	**/
-	public static function read( i : haxe.io.Input, l : Loader ) : Module {
+	public static function read( i : hydr.io.Input, l : Loader ) : Module {
 		var m = _module_read(function(buf,pos,len) {
-			return i.readBytes(untyped new haxe.io.Bytes(len,buf),pos,len);
+			return i.readBytes(untyped new hydr.io.Bytes(len,buf),pos,len);
 		},l.l);
 		return new Module(m);
 	}
@@ -151,7 +151,7 @@ class Module {
 		Reads a module from Bytes using the given Loader.
 		The module is initialized but has not yet been executed.
 	**/
-	public static function readBytes( b : haxe.io.Bytes, loader : Loader ) : Module {
+	public static function readBytes( b : hydr.io.Bytes, loader : Loader ) : Module {
 		return new Module(_module_read_string(b.getData(),loader.l));
 	}
 
@@ -171,7 +171,7 @@ class Module {
 	/**
 		Extract the globals names from the given module
 	**/
-	public static function readGlobalsNames( i : haxe.io.Input ) {
+	public static function readGlobalsNames( i : hydr.io.Input ) {
 		if( i.readByte() != 0x4E || i.readByte() != 0x45 || i.readByte() != 0x4B || i.readByte() != 0x4F )
 			throw "Not a neko file";
 		function readInt() {

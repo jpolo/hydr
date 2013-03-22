@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -76,7 +76,7 @@ class Lib {
 		This function is used to make porting from neko to cpp easy.
 		It does not need to do anything because the c-code can work with any Dynamic
 	**/
-	public static function haxeToNeko( v : Dynamic ) : Dynamic {
+	public static function hydrToNeko( v : Dynamic ) : Dynamic {
 		return v;
 	}
 

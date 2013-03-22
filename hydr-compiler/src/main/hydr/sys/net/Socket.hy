@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,12 +30,12 @@ extern class Socket {
 		The stream on which you can read available data. By default the stream is blocking until the requested data is available,
 		use [setBlocking(false)] or [setTimeout] to prevent infinite waiting.
 	**/
-	var input(default,null) : haxe.io.Input;
+	var input(default,null) : hydr.io.Input;
 
 	/**
 		The stream on which you can send data. Please note that in case the output buffer you will block while writing the data, use [setBlocking(false)] or [setTimeout] to prevent that.
 	**/
-	var output(default,null) : haxe.io.Output;
+	var output(default,null) : hydr.io.Output;
 
 	/**
 		A custom value that can be associated with the socket. Can be used to retreive your custom infos after a [select].
@@ -108,7 +108,7 @@ extern class Socket {
 	function waitForRead() : Void;
 
 	/**
-		Change the blocking mode of the socket. A blocking socket is the default behavior. A non-blocking socket will abort blocking operations immediatly by throwing a haxe.io.Error.Blocking value.
+		Change the blocking mode of the socket. A blocking socket is the default behavior. A non-blocking socket will abort blocking operations immediatly by throwing a hydr.io.Error.Blocking value.
 	**/
 	function setBlocking( b : Bool ) : Void;
 

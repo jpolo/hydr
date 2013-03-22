@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,9 +21,9 @@
  */
 package sys.net;
 
-import haxe.io.Error;
+import hydr.io.Error;
 
-private class SocketInput extends haxe.io.Input {
+private class SocketInput extends hydr.io.Input {
 
 	var __s : Dynamic;
 
@@ -40,11 +40,11 @@ private class SocketInput extends haxe.io.Input {
 			else if( __s == null )
 				throw Custom(e);
 			else
-				throw new haxe.io.Eof();
+				throw new hydr.io.Eof();
 		}
 	}
 
-	public override function readBytes( buf : haxe.io.Bytes, pos : Int, len : Int ) : Int {
+	public override function readBytes( buf : hydr.io.Bytes, pos : Int, len : Int ) : Int {
 		var r;
 		if (__s==null)
 			throw "Invalid handle";
@@ -57,7 +57,7 @@ private class SocketInput extends haxe.io.Input {
 				throw Custom(e);
 		}
 		if( r == 0 )
-			throw new haxe.io.Eof();
+			throw new hydr.io.Eof();
 		return r;
 	}
 
@@ -72,7 +72,7 @@ private class SocketInput extends haxe.io.Input {
 
 }
 
-private class SocketOutput extends haxe.io.Output {
+private class SocketOutput extends hydr.io.Output {
 
 	var __s : Dynamic;
 
@@ -93,7 +93,7 @@ private class SocketOutput extends haxe.io.Output {
 		}
 	}
 
-	public override function writeBytes( buf : haxe.io.Bytes, pos : Int, len : Int) : Int {
+	public override function writeBytes( buf : hydr.io.Bytes, pos : Int, len : Int) : Int {
 		return try {
 			socket_send(__s, buf.getData(), pos, len);
 		} catch( e : Dynamic ) {
@@ -120,8 +120,8 @@ private class SocketOutput extends haxe.io.Output {
 class Socket {
 
 	private var __s : Dynamic;
-	public var input(default,null) : haxe.io.Input;
-	public var output(default,null) : haxe.io.Output;
+	public var input(default,null) : hydr.io.Input;
+	public var output(default,null) : hydr.io.Output;
 	public var custom : Dynamic;
 
 	public function new() : Void {
@@ -143,13 +143,13 @@ class Socket {
 	}
 
 	public function read() : String {
-		var bytes:haxe.io.BytesData = socket_read(__s);
+		var bytes:hydr.io.BytesData = socket_read(__s);
 		if (bytes==null) return "";
 		return bytes.toString();
 	}
 
 	public function write( content : String ) : Void {
-		socket_write(__s, haxe.io.Bytes.ofString(content).getData() );
+		socket_write(__s, hydr.io.Bytes.ofString(content).getData() );
 	}
 
 	public function connect(host : Host, port : Int) : Void {

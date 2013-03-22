@@ -90,7 +90,7 @@ let s_path ctx stat path p =
 		"QName"
 	| ["flash";"utils"],"Namespace" ->
 		"Namespace"
-	| (["haxe"],"Int32") when not stat ->
+	| (["hydr"],"Int32") when not stat ->
 		"int"
 	| (pack,name) ->
 		let name = protect name in

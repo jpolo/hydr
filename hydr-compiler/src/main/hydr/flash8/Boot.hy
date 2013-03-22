@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -177,7 +177,7 @@ class Boot {
 		def_color = rgb;
 	}
 
-	private static function __trace(v,inf : haxe.PosInfos) {
+	private static function __trace(v,inf : hydr.PosInfos) {
 		untyped {
 			var root = flash.Lib.current;
 			var tf = getTrace();
@@ -218,8 +218,8 @@ class Boot {
 	private static function __init(current : Dynamic) untyped {
 		// only if not set yet
 		var g : Dynamic = _global;
-		if( !g.haxeInitDone ) {
-			g.haxeInitDone = true;
+		if( !g.hydrInitDone ) {
+			g.hydrInitDone = true;
 			Array.prototype["copy"] = Array.prototype["slice"];
 			Array.prototype["insert"] = function(i,x) {
 				__this__["splice"](i,0,x);

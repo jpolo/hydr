@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@ import java.Lib;
 import java.StdTypes;
 import Reflect;
 import Map;
-import haxe.ds.StringMap;
+import hydr.ds.StringMap;
 import java.lang.Boolean;
 import java.lang.Character;
 import java.lang.Class;

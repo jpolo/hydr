@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
 @:keep @:coreApi class Type {
 
 	@:functionCode('
-		if (o == null || o instanceof haxe.lang.DynamicObject || o instanceof java.lang.Class)
+		if (o == null || o instanceof hydr.lang.DynamicObject || o instanceof java.lang.Class)
 			return null;
 
 		return (java.lang.Class<T>) o.getClass();
@@ -45,7 +45,7 @@
 	}
 
 	@:functionCode('
-		if (o instanceof java.lang.Enum || o instanceof haxe.lang.Enum)
+		if (o instanceof java.lang.Enum || o instanceof hydr.lang.Enum)
 			return o.getClass();
 		return null;
 	')
@@ -56,7 +56,7 @@
 
 	@:functionCode('
 		java.lang.Class cl = (c == null) ? null : c.getSuperclass();
-		if (cl != null && !cl.getName().equals("haxe.lang.HxObject") && !cl.getName().equals("java.lang.Object") )
+		if (cl != null && !cl.getName().equals("hydr.lang.HxObject") && !cl.getName().equals("java.lang.Object") )
 			return cl;
 		return null;
 	')
@@ -68,7 +68,7 @@
 	public static function getClassName( c : Class<Dynamic> ) : String untyped {
 		var c : java.lang.Class<Dynamic> = c;
 		var name:String = c.getName();
-		if (name.startsWith("haxe.root."))
+		if (name.startsWith("hydr.root."))
 			return name.substr(10);
 		if (name.startsWith("java.lang"))
 			name = name.substr(10);
@@ -85,7 +85,7 @@
 	public static function getEnumName( e : Enum<Dynamic> ) : String untyped {
 		var c : java.lang.Class<Dynamic> = e;
 		var ret:String = c.getName();
-		if (ret.startsWith("haxe.root."))
+		if (ret.startsWith("hydr.root."))
 			return ret.substr(10);
 		else if (ret == "boolean" || ret == "java.lang.Boolean")
 			return "Bool";
@@ -96,17 +96,17 @@
 	@:functionCode('
 		try {
 			if (name.indexOf(".") == -1)
-				name = "haxe.root." + name;
+				name = "hydr.root." + name;
 			return java.lang.Class.forName(name);
 		}
 		catch (java.lang.ClassNotFoundException e)
 		{
-			if (name.equals("haxe.root.Int")) return int.class;
-			else if (name.equals("haxe.root.Float")) return double.class;
-			else if (name.equals("haxe.root.String")) return java.lang.String.class;
-			else if (name.equals("haxe.root.Math")) return java.lang.Math.class;
-			else if (name.equals("haxe.root.Class")) return java.lang.Class.class;
-			else if (name.equals("haxe.root.Dynamic")) return java.lang.Object.class;
+			if (name.equals("hydr.root.Int")) return int.class;
+			else if (name.equals("hydr.root.Float")) return double.class;
+			else if (name.equals("hydr.root.String")) return java.lang.String.class;
+			else if (name.equals("hydr.root.Math")) return java.lang.Math.class;
+			else if (name.equals("hydr.root.Class")) return java.lang.Class.class;
+			else if (name.equals("hydr.root.Dynamic")) return java.lang.Object.class;
 			return null;
 		}
 	')
@@ -119,7 +119,7 @@
 	@:functionCode('
 		if ("Bool".equals(name)) return boolean.class;
 		Class r = resolveClass(name);
-		if (r != null && (r.getSuperclass() == java.lang.Enum.class || r.getSuperclass() == haxe.lang.Enum.class))
+		if (r != null && (r.getSuperclass() == java.lang.Enum.class || r.getSuperclass() == hydr.lang.Enum.class))
 			return r;
 		return null;
 	')
@@ -233,12 +233,12 @@
 		}
 		catch (java.lang.reflect.InvocationTargetException e)
 		{
-			throw haxe.lang.HaxeException.wrap(e.getCause());
+			throw hydr.lang.HaxeException.wrap(e.getCause());
 		}
 
 		catch (Throwable t)
 		{
-			throw haxe.lang.HaxeException.wrap(t);
+			throw hydr.lang.HaxeException.wrap(t);
 		}
 	')
 	public static function createInstance<T>( cl : Class<T>, args : Array<Dynamic> ) : T untyped
@@ -256,12 +256,12 @@
 	@:functionCode('
 		if (params == null || params.length == 0)
 		{
-			java.lang.Object ret = haxe.lang.Runtime.slowGetField(e, constr, true);
-			if (ret instanceof haxe.lang.Function)
-				throw haxe.lang.HaxeException.wrap("Constructor " + constr + " needs parameters");
+			java.lang.Object ret = hydr.lang.Runtime.slowGetField(e, constr, true);
+			if (ret instanceof hydr.lang.Function)
+				throw hydr.lang.HaxeException.wrap("Constructor " + constr + " needs parameters");
 			return (T) ret;
 		} else {
-			return (T) haxe.lang.Runtime.slowCallField(e, constr, params);
+			return (T) hydr.lang.Runtime.slowCallField(e, constr, params);
 		}
 	')
 	public static function createEnum<T>( e : Enum<T>, constr : String, ?params : Array<Dynamic> ) : T
@@ -277,7 +277,7 @@
 	@:functionCode('
 		if (c == java.lang.String.class)
 		{
-			return haxe.lang.StringRefl.fields;
+			return hydr.lang.StringRefl.fields;
 		}
 
 		Array<String> ret = new Array<String>();
@@ -342,10 +342,10 @@
 	@:functionCode('
 		if (v == null) return ValueType.TNull;
 
-		if (v instanceof haxe.lang.IHxObject) {
-			haxe.lang.IHxObject vobj = (haxe.lang.IHxObject) v;
+		if (v instanceof hydr.lang.IHxObject) {
+			hydr.lang.IHxObject vobj = (hydr.lang.IHxObject) v;
 			java.lang.Class cl = vobj.getClass();
-			if (v instanceof haxe.lang.DynamicObject)
+			if (v instanceof hydr.lang.DynamicObject)
 				return ValueType.TObject;
 			else
 				return ValueType.TClass(cl);
@@ -355,9 +355,9 @@
 				return ValueType.TInt;
 			else
 				return ValueType.TFloat;
-		} else if (v instanceof haxe.lang.Function) {
+		} else if (v instanceof hydr.lang.Function) {
 			return ValueType.TFunction;
-		} else if (v instanceof java.lang.Enum || v instanceof haxe.lang.Enum) {
+		} else if (v instanceof java.lang.Enum || v instanceof hydr.lang.Enum) {
 			return ValueType.TEnum(v.getClass());
 		} else if (v instanceof java.lang.Boolean) {
 			return ValueType.TBool;
@@ -373,10 +373,10 @@
 	}
 
 	@:functionCode('
-			if (a instanceof haxe.lang.Enum)
+			if (a instanceof hydr.lang.Enum)
 				return a.equals(b);
 			else
-				return haxe.lang.Runtime.eq(a, b);
+				return hydr.lang.Runtime.eq(a, b);
 	')
 	public static function enumEq<T>( a : T, b : T ) : Bool untyped
 	{
@@ -387,7 +387,7 @@
 		if (e instanceof java.lang.Enum)
 			return ((java.lang.Enum) e).name();
 		else
-			return ((haxe.lang.Enum) e).getTag();
+			return ((hydr.lang.Enum) e).getTag();
 	')
 	public static function enumConstructor( e : EnumValue ) : String untyped
 	{
@@ -395,7 +395,7 @@
 	}
 
 	@:functionCode('
-		return ( e instanceof java.lang.Enum ) ? new haxe.root.Array() : ((haxe.lang.Enum) e).params;
+		return ( e instanceof java.lang.Enum ) ? new hydr.root.Array() : ((hydr.lang.Enum) e).params;
 	')
 	public static function enumParameters( e : EnumValue ) : Array<Dynamic> untyped
 	{
@@ -406,7 +406,7 @@
 		if (e instanceof java.lang.Enum)
 			return ((java.lang.Enum) e).ordinal();
 		else
-			return ((haxe.lang.Enum) e).index;
+			return ((hydr.lang.Enum) e).index;
 	')
 	public static function enumIndex( e : EnumValue ) : Int untyped
 	{

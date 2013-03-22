@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -78,7 +78,7 @@ typedef RecordInfos = {
 	var name : String;
 	var key : Array<String>;
 	var fields : Array<RecordField>;
-	var hfields : haxe.ds.StringMap<RecordField>;
+	var hfields : hydr.ds.StringMap<RecordField>;
 	var relations : Array<RecordRelation>;
 	var indexes : Array<{ keys : Array<String>, unique : Bool }>;
 }

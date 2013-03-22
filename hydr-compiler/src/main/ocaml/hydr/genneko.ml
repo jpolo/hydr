@@ -709,8 +709,8 @@ let generate_libs_init = function
 			var @env = $loader.loadprim("std@get_env",1);
 			var @b = if( @s == "Windows" )
 				@env("HAXEPATH") + "lib\\"
-				else try $loader.loadprim("std@file_contents",1)(@env("HOME")+"/.haxelib") + "/"
-				catch e if( @s == "Linux" ) "/usr/lib/haxe/lib/" else "/usr/local/lib/haxe/lib/";
+				else try $loader.loadprim("std@file_contents",1)(@env("HOME")+"/.hydrlib") + "/"
+				catch e if( @s == "Linux" ) "/usr/lib/hydr/lib/" else "/usr/local/lib/hydr/lib/";
 			if( $loader.loadprim("std@sys_is64",0)() ) @s = @s + 64;
 			@s = @s + "/"
 		*)
@@ -729,11 +729,11 @@ let generate_libs_init = function
 				"@b", Some (EIf (op "==" es (str p "Windows"),
 					op "+" (call p (ident p "@env") [str p "HAXEPATH"]) (str p "lib\\"),
 					Some (ETry (
-						op "+" (call p (loadp "file_contents" 1) [op "+" (call p (ident p "@env") [str p "HOME"]) (str p "./haxelib")]) (str p "/"),
+						op "+" (call p (loadp "file_contents" 1) [op "+" (call p (ident p "@env") [str p "HOME"]) (str p "./hydrlib")]) (str p "/"),
 						"e",
 						(EIf (op "==" es (str p "Linux"),
-							str p "/usr/lib/haxe/lib/",
-							Some (str p "/usr/local/lib/haxe/lib/")
+							str p "/usr/lib/hydr/lib/",
+							Some (str p "/usr/local/lib/hydr/lib/")
 						),p)
 					),p)
 				),p);

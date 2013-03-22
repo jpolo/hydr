@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,9 +20,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package cs.io;
-import haxe.Int64;
-import haxe.io.Bytes;
-import haxe.io.Output;
+import hydr.Int64;
+import hydr.io.Bytes;
+import hydr.io.Output;
 
 class NativeOutput extends Output
 {
@@ -52,7 +52,7 @@ class NativeOutput extends Output
 	override public function prepare(nbytes:Int):Void
 	{
 		//TODO see if implementation is correct
-		stream.SetLength(haxe.Int64.add(stream.Length, cast(nbytes, Int64)));
+		stream.SetLength(hydr.Int64.add(stream.Length, cast(nbytes, Int64)));
 	}
 	
 	private function get_canSeek():Bool

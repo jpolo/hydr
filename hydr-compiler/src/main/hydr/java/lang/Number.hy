@@ -62,7 +62,7 @@ package java.lang;
 	* @return  the numeric value represented by this object after conversion
 	*          to type <code>long</code>.
 	*/
-	@:overload @:abstract public function longValue() : haxe.Int64;
+	@:overload @:abstract public function longValue() : hydr.Int64;
 	
 	/**
 	* Returns the value of the specified number as a <code>float</code>.

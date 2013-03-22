@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +33,7 @@ enum XmlType {
 
 /**
 	The standard Xml class and parsing.
-	More API to manipulate XML are available in the [haxe.xml] package.
+	More API to manipulate XML are available in the [hydr.xml] package.
 **/
 
 extern class Xml {

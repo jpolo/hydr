@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,7 +24,7 @@ import java.internal.Function;
 
 private typedef NativeString = String;
 
-@:keep @:nativeGen @:native("haxe.lang.StringExt") private class StringExt
+@:keep @:nativeGen @:native("hydr.lang.StringExt") private class StringExt
 {
 
 	@:functionCode('
@@ -50,7 +50,7 @@ private typedef NativeString = String;
 	}
 
 	@:functionCode('
-			int sIndex = (startIndex != null ) ? (haxe.lang.Runtime.toInt(startIndex)) : 0;
+			int sIndex = (startIndex != null ) ? (hydr.lang.Runtime.toInt(startIndex)) : 0;
 			if (sIndex >= me.length() || sIndex < 0)
 				return -1;
 			return me.indexOf(str, sIndex);
@@ -61,7 +61,7 @@ private typedef NativeString = String;
 	}
 
 	@:functionCode('
-			int sIndex = (startIndex != null ) ? (haxe.lang.Runtime.toInt(startIndex)) : (me.length() - 1);
+			int sIndex = (startIndex != null ) ? (hydr.lang.Runtime.toInt(startIndex)) : (me.length() - 1);
 			if (sIndex > me.length() || sIndex < 0)
 				sIndex = me.length() - 1;
 			else if (sIndex < 0)
@@ -110,7 +110,7 @@ private typedef NativeString = String;
 			int targetLen = meLen;
 			if (len != null)
 			{
-				targetLen = haxe.lang.Runtime.toInt(len);
+				targetLen = hydr.lang.Runtime.toInt(len);
 				if (targetLen == 0)
 					return "";
 				if( pos != 0 && targetLen < 0 ){
@@ -143,7 +143,7 @@ private typedef NativeString = String;
 		int len = me.length();
 		if ( endIndex == null) {
 			endIdx = len;
-		} else if ( (endIdx = haxe.lang.Runtime.toInt(endIndex)) < 0 ) {
+		} else if ( (endIdx = hydr.lang.Runtime.toInt(endIndex)) < 0 ) {
 			endIdx = 0;
 		} else if ( endIdx > len ) {
 			endIdx = len;
@@ -199,7 +199,7 @@ private typedef NativeString = String;
 	}
 }
 
-@:keep @:nativeGen @:native('haxe.lang.StringRefl') private class StringRefl
+@:keep @:nativeGen @:native('hydr.lang.StringRefl') private class StringRefl
 {
 	public static var fields = ["length", "toUpperCase", "toLowerCase", "charAt", "charCodeAt", "indexOf", "lastIndexOf", "split", "substr", "substring"];
 
@@ -230,7 +230,7 @@ private typedef NativeString = String;
 	}
 }
 
-@:keep @:native('haxe.lang.NativeString') private extern class JavaString
+@:keep @:native('hydr.lang.NativeString') private extern class JavaString
 {
 	//name collides with Haxe's
 	function _charAt(idx:Int):java.StdTypes.Char16;

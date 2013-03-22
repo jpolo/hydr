@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,15 +30,15 @@
 		print("\n");
 	}
 
-	public static function stdin() : haxe.io.Input {
+	public static function stdin() : hydr.io.Input {
 		return untyped new sys.io.FileInput(file_stdin());
 	}
 
-	public static function stdout() : haxe.io.Output {
+	public static function stdout() : hydr.io.Output {
 		return untyped new sys.io.FileOutput(file_stdout());
 	}
 
-	public static function stderr() : haxe.io.Output {
+	public static function stderr() : hydr.io.Output {
 		return untyped new sys.io.FileOutput(file_stderr());
 	}
 
@@ -120,9 +120,9 @@
 		return new String(sys_exe_path());
 	}
 
-	public static function environment() : haxe.ds.StringMap<String> {
+	public static function environment() : hydr.ds.StringMap<String> {
 		var vars:Array<String> = sys_env();
-		var result = new haxe.ds.StringMap<String>();
+		var result = new hydr.ds.StringMap<String>();
 		var i = 0;
 		while(i<vars.length) {
 			result.set( vars[i], vars[i+1] );

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,10 +21,10 @@
  */
 package sys.db;
 import sys.db.RecordInfos;
-import haxe.macro.Expr;
-import haxe.macro.Type.VarAccess;
+import hydr.macro.Expr;
+import hydr.macro.Type.VarAccess;
 #if macro
-import haxe.macro.Context;
+import hydr.macro.Context;
 #end
 
 private typedef SqlFunction = {
@@ -43,9 +43,9 @@ class RecordMacros {
 	var manager : Expr;
 	var inf : RecordInfos;
 	var g : {
-		var cache : haxe.ds.StringMap<RecordInfos>;
-		var types : haxe.ds.StringMap<RecordType>;
-		var functions : haxe.ds.StringMap<SqlFunction>;
+		var cache : hydr.ds.StringMap<RecordInfos>;
+		var types : hydr.ds.StringMap<RecordType>;
+		var functions : hydr.ds.StringMap<SqlFunction>;
 	};
 
 	function new(c) {
@@ -60,15 +60,15 @@ class RecordMacros {
 
 	function initGlobals()
 	{
-		var cache = new haxe.ds.StringMap();
-		var types = new haxe.ds.StringMap();
+		var cache = new hydr.ds.StringMap();
+		var types = new hydr.ds.StringMap();
 		for( c in Type.getEnumConstructs(RecordType) ) {
 			var e : Dynamic = Reflect.field(RecordType, c);
 			if( Std.is(e, RecordType) )
 				types.set("S"+c.substr(1), e);
 		}
 		types.remove("SNull");
-		var functions = new haxe.ds.StringMap();
+		var functions = new hydr.ds.StringMap();
 		for( f in [
 			{ name : "now", params : [], ret : DDateTime, sql : "NOW($)" },
 			{ name : "curDate", params : [], ret : DDate, sql : "CURDATE($)" },
@@ -93,7 +93,7 @@ class RecordMacros {
 		return null;
 	}
 
-	public dynamic function typeof( e : Expr ) : haxe.macro.Type {
+	public dynamic function typeof( e : Expr ) : hydr.macro.Type {
 		#if macro
 		return Context.typeof(e);
 		#else
@@ -102,7 +102,7 @@ class RecordMacros {
 		#end
 	}
 
-	public dynamic function follow( t : haxe.macro.Type, ?once ) : haxe.macro.Type {
+	public dynamic function follow( t : hydr.macro.Type, ?once ) : hydr.macro.Type {
 		#if macro
 		return Context.follow(t,once);
 		#else
@@ -111,7 +111,7 @@ class RecordMacros {
 		#end
 	}
 
-	public dynamic function getManager( t : haxe.macro.Type, p : Position ) : RecordMacros {
+	public dynamic function getManager( t : hydr.macro.Type, p : Position ) : RecordMacros {
 		#if macro
 		return getManagerInfos(t, p);
 		#else
@@ -120,7 +120,7 @@ class RecordMacros {
 		#end
 	}
 
-	public dynamic function resolveType( name : String ) : haxe.macro.Type {
+	public dynamic function resolveType( name : String ) : hydr.macro.Type {
 		#if macro
 		return Context.getType(name);
 		#else
@@ -129,7 +129,7 @@ class RecordMacros {
 		#end
 	}
 
-	function makeInt( t : haxe.macro.Type ) {
+	function makeInt( t : hydr.macro.Type ) {
 		switch( t ) {
 		case TInst(c, _):
 			var name = c.toString();
@@ -140,7 +140,7 @@ class RecordMacros {
 		throw "Unsupported " + Std.string(t);
 	}
 
-	function makeRecord( t : haxe.macro.Type ) {
+	function makeRecord( t : hydr.macro.Type ) {
 		switch( t ) {
 		case TInst(c, _):
 			var name = c.toString();
@@ -162,7 +162,7 @@ class RecordMacros {
 		return null;
 	}
 
-	function getFlags( t : haxe.macro.Type ) {
+	function getFlags( t : hydr.macro.Type ) {
 		switch( t ) {
 		case TEnum(e,_):
 			var cl = e.get().names;
@@ -181,7 +181,7 @@ class RecordMacros {
 		}
 	}
 
-	function makeType( t : haxe.macro.Type ) {
+	function makeType( t : hydr.macro.Type ) {
 		switch( t ) {
 		case TInst(c, _):
 			var name = c.toString();
@@ -190,7 +190,7 @@ class RecordMacros {
 			case "Float": DFloat;
 			case "String": DText;
 			case "Date": DDateTime;
-			case "haxe.io.Bytes": DBinary;
+			case "hydr.io.Bytes": DBinary;
 			default: throw "Unsupported Record Type " + name;
 			}
 		case TAbstract(a, _):
@@ -262,7 +262,7 @@ class RecordMacros {
 		}
 	}
 
-	function getRecordInfos( c : haxe.macro.Type.Ref<haxe.macro.Type.ClassType> ) : RecordInfos {
+	function getRecordInfos( c : hydr.macro.Type.Ref<hydr.macro.Type.ClassType> ) : RecordInfos {
 		var cname = c.toString();
 		var i = g.cache.get(cname);
 		if( i != null ) return i;
@@ -270,12 +270,12 @@ class RecordMacros {
 			key : null,
 			name : cname.split(".").pop(), // remove package name
 			fields : [],
-			hfields : new haxe.ds.StringMap(),
+			hfields : new hydr.ds.StringMap(),
 			relations : [],
 			indexes : [],
 		};
 		var c = c.get();
-		var fieldsPos = new haxe.ds.StringMap();
+		var fieldsPos = new hydr.ds.StringMap();
 		var fields = c.fields.get();
 		var csup = c.superClass;
 		while( csup != null ) {
@@ -405,7 +405,7 @@ class RecordMacros {
 	}
 
 	function quoteField( f : String ) {
-		var m : { private var KEYWORDS : haxe.ds.StringMap<Bool>; } = Manager;
+		var m : { private var KEYWORDS : hydr.ds.StringMap<Bool>; } = Manager;
 		return m.KEYWORDS.exists(f.toLowerCase()) ? "`"+f+"`" : f;
 	}
 
@@ -495,7 +495,7 @@ class RecordMacros {
 			case 2: "Bool";
 			case 3: "String";
 			case 4: "Date";
-			case 5: pack = ["haxe", "io"];  "Bytes";
+			case 5: pack = ["hydr", "io"];  "Bytes";
 			default: throw "assert";
 			},
 			pack : pack,
@@ -642,7 +642,7 @@ class RecordMacros {
 		case EObjectDecl(fl):
 			var first = true;
 			var sql = makeString("(", p);
-			var fields = new haxe.ds.StringMap();
+			var fields = new hydr.ds.StringMap();
 			for( f in fl ) {
 				var fi = getField(f);
 				if( first )
@@ -946,7 +946,7 @@ class RecordMacros {
 
 	function buildOptions( eopt : Expr ) {
 		var p = eopt.pos;
-		var opts = new haxe.ds.StringMap();
+		var opts = new hydr.ds.StringMap();
 		var opt = { limit : null, orderBy : null, forceIndex : null };
 		switch( eopt.expr ) {
 		case EObjectDecl(fields):
@@ -999,7 +999,7 @@ class RecordMacros {
 		return opt;
 	}
 
-	public static function getInfos( t : haxe.macro.Type ) {
+	public static function getInfos( t : hydr.macro.Type ) {
 		var c = switch( t ) {
 		case TInst(c, _): if( c.toString() == "sys.db.Object" ) return null; c;
 		default: return null;
@@ -1029,7 +1029,7 @@ class RecordMacros {
 					if( cur == null || c.meta.has(":skip") || c.meta.has("rtti") )
 						continue;
 					var inst = getInfos(t);
-					var s = new haxe.Serializer();
+					var s = new hydr.Serializer();
 					s.useEnumIndex = true;
 					s.useCache = true;
 					s.serialize(inst.inf);
@@ -1041,7 +1041,7 @@ class RecordMacros {
 		return null;
 	}
 
-	static function getManagerInfos( t : haxe.macro.Type, pos ) {
+	static function getManagerInfos( t : hydr.macro.Type, pos ) {
 		var param = null;
 		switch( t ) {
 		case TInst(c, p):
@@ -1163,9 +1163,9 @@ class RecordMacros {
 			var ecache = { expr : EConst(CIdent(cache)), pos : pos };
 			var efield = { expr : EConst(CIdent(f.name)), pos : pos };
 			var fname = { expr : EConst(CString(f.name)), pos : pos };
-			// note : we need to store the data in the same field, which is typed as t while it is actually a haxe.io.Bytes
+			// note : we need to store the data in the same field, which is typed as t while it is actually a hydr.io.Bytes
 			// this might cause some issues with static platforms.
-			// In that case maybe a special handling of SData field compilation to haxe.io.Bytes will be necessary
+			// In that case maybe a special handling of SData field compilation to hydr.io.Bytes will be necessary
 			var get = {
 				args : [],
 				params : [],

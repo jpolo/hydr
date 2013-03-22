@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,32 +26,32 @@ package java.internal;
  compatibility to the host language. Do not access it directly.
 **/
 
-@:native('haxe.lang.Runtime')
+@:native('hydr.lang.Runtime')
 @:nativeGen
 @:classCode('
-	public static java.lang.Object getField(haxe.lang.IHxObject obj, java.lang.String field, boolean throwErrors)
+	public static java.lang.Object getField(hydr.lang.IHxObject obj, java.lang.String field, boolean throwErrors)
 	{
 		if (obj == null && !throwErrors) return null;
 		return obj.__hx_getField(field, throwErrors, false, false);
 	}
 
-	public static double getField_f(haxe.lang.IHxObject obj, java.lang.String field, boolean throwErrors)
+	public static double getField_f(hydr.lang.IHxObject obj, java.lang.String field, boolean throwErrors)
 	{
 		if (obj == null && !throwErrors) return 0.0;
 		return obj.__hx_getField_f(field, throwErrors, false);
 	}
 
-	public static java.lang.Object setField(haxe.lang.IHxObject obj, java.lang.String field, java.lang.Object value)
+	public static java.lang.Object setField(hydr.lang.IHxObject obj, java.lang.String field, java.lang.Object value)
 	{
 		return obj.__hx_setField(field, value, false);
 	}
 
-	public static double setField_f(haxe.lang.IHxObject obj, java.lang.String field, double value)
+	public static double setField_f(hydr.lang.IHxObject obj, java.lang.String field, double value)
 	{
 		return obj.__hx_setField_f(field, value, false);
 	}
 
-	public static java.lang.Object callField(haxe.lang.IHxObject obj, java.lang.String field, Array<?> args)
+	public static java.lang.Object callField(hydr.lang.IHxObject obj, java.lang.String field, Array<?> args)
 	{
 		return obj.__hx_invokeField(field, args);
 	}
@@ -61,7 +61,7 @@ package java.internal;
 	public static var undefined:Dynamic = { };
 
 	@:functionCode('
-	return new haxe.lang.Closure(obj, field);
+	return new hydr.lang.Closure(obj, field);
 	')
 	public static function closure(obj:Dynamic, field:String):Dynamic
 	{
@@ -84,7 +84,7 @@ package java.internal;
 				if (v1 instanceof java.lang.Long || v2 instanceof java.lang.Long)
 					return v1c.longValue() == v2c.longValue();
 				return v1c.doubleValue() == v2c.doubleValue();
-			} else if (v1 instanceof java.lang.String || v1 instanceof haxe.lang.IEquatable) { //TODO see what happens with Boolean cases
+			} else if (v1 instanceof java.lang.String || v1 instanceof hydr.lang.IEquatable) { //TODO see what happens with Boolean cases
 				return v1.equals(v2);
 			}
 
@@ -99,7 +99,7 @@ package java.internal;
 		if (v1 == v2)
 			return true;
 
-		if (v1 instanceof java.lang.String || v1 instanceof haxe.lang.IEquatable)
+		if (v1 instanceof java.lang.String || v1 instanceof hydr.lang.IEquatable)
 		{
 			return v1 != null && v1.equals(v2);
 		} else {
@@ -179,7 +179,7 @@ package java.internal;
 
 			cl = (java.lang.Class) o;
 		} else if (o instanceof java.lang.String) {
-			return haxe.lang.StringRefl.handleGetField( (java.lang.String) o, field, false) != null;
+			return hydr.lang.StringRefl.handleGetField( (java.lang.String) o, field, false) != null;
 		} else {
 			cl = o.getClass();
 		}
@@ -273,12 +273,12 @@ package java.internal;
 		if (obj instanceof java.lang.Class)
 		{
 			if (obj == java.lang.String.class && field.equals("fromCharCode"))
-				return new haxe.lang.Closure(haxe.lang.StringExt.class, field);
+				return new hydr.lang.Closure(hydr.lang.StringExt.class, field);
 
 			cl = (java.lang.Class) obj;
 			obj = null;
 		} else if (obj instanceof java.lang.String) {
-			return haxe.lang.StringRefl.handleGetField((java.lang.String) obj, field, throwErrors);
+			return hydr.lang.StringRefl.handleGetField((java.lang.String) obj, field, throwErrors);
 		} else {
 			cl = obj.getClass();
 		}
@@ -295,7 +295,7 @@ package java.internal;
 			{
 				if (ms[i].getName().equals(field))
 				{
-					return new haxe.lang.Closure(obj != null ? obj : cl, field);
+					return new hydr.lang.Closure(obj != null ? obj : cl, field);
 				}
 			}
 		} catch (Throwable t2)
@@ -355,12 +355,12 @@ package java.internal;
 		if (obj instanceof java.lang.Class)
 		{
 			if (obj == java.lang.String.class && field.equals("fromCharCode"))
-				return haxe.lang.StringExt.fromCharCode(toInt(args.__get(0)));
+				return hydr.lang.StringExt.fromCharCode(toInt(args.__get(0)));
 
 			cl = (java.lang.Class) obj;
 			obj = null;
 		} else if (obj instanceof java.lang.String) {
-			return haxe.lang.StringRefl.handleCallField((java.lang.String) obj, field, args);
+			return hydr.lang.StringRefl.handleCallField((java.lang.String) obj, field, args);
 		} else {
 			cl = obj.getClass();
 		}
@@ -426,7 +426,7 @@ package java.internal;
 
 		java.lang.reflect.Method found;
 		if (ms.length == 0 || (found = ms[0]) == null)
-			throw haxe.lang.HaxeException.wrap("No compatible method found for: " + field);
+			throw hydr.lang.HaxeException.wrap("No compatible method found for: " + field);
 
 		if (hasNumber)
 		{
@@ -473,12 +473,12 @@ package java.internal;
 
 		catch (java.lang.reflect.InvocationTargetException e)
 		{
-			throw haxe.lang.HaxeException.wrap(e.getCause());
+			throw hydr.lang.HaxeException.wrap(e.getCause());
 		}
 
 		catch (Throwable t)
 		{
-			throw haxe.lang.HaxeException.wrap(t);
+			throw hydr.lang.HaxeException.wrap(t);
 		}
 	')
 	public static function slowCallField(obj:Dynamic, field:String, args:Array<Dynamic>):Dynamic
@@ -487,9 +487,9 @@ package java.internal;
 	}
 
 	@:functionCode('
-		if (obj instanceof haxe.lang.IHxObject)
+		if (obj instanceof hydr.lang.IHxObject)
 		{
-			return ((haxe.lang.IHxObject) obj).__hx_invokeField(field, args);
+			return ((hydr.lang.IHxObject) obj).__hx_invokeField(field, args);
 		}
 
 		return slowCallField(obj, field, args);
@@ -501,8 +501,8 @@ package java.internal;
 
 	@:functionCode('
 
-		if (obj instanceof haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) obj).__hx_getField(field, throwErrors, false, false);
+		if (obj instanceof hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) obj).__hx_getField(field, throwErrors, false, false);
 
 		return slowGetField(obj, field, throwErrors);
 
@@ -514,8 +514,8 @@ package java.internal;
 
 	@:functionCode('
 
-		if (obj instanceof haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) obj).__hx_getField_f(field, throwErrors, false);
+		if (obj instanceof hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) obj).__hx_getField_f(field, throwErrors, false);
 
 		return toDouble(slowGetField(obj, field, throwErrors));
 
@@ -527,8 +527,8 @@ package java.internal;
 
 	@:functionCode('
 
-		if (obj instanceof haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) obj).__hx_setField(field, value, false);
+		if (obj instanceof hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) obj).__hx_setField(field, value, false);
 
 		return slowSetField(obj, field, value);
 
@@ -540,8 +540,8 @@ package java.internal;
 
 	@:functionCode('
 
-		if (obj instanceof haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) obj).__hx_setField_f(field, value, false);
+		if (obj instanceof hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) obj).__hx_setField_f(field, value, false);
 
 		return toDouble(slowSetField(obj, field, value));
 
@@ -567,7 +567,7 @@ package java.internal;
 	}
 }
 
-@:keep @:native("haxe.lang.EmptyObject") private enum EmptyObject
+@:keep @:native("hydr.lang.EmptyObject") private enum EmptyObject
 {
 	EMPTY;
 }

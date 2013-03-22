@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -139,7 +139,7 @@ extern class Array<T> {
 		
 		The sort operation is not guaranteed to be stable, which means that the
 		order of equal elements may not be retained. For a stable Array sorting
-		algorithm, haxe.ds.sort.MergeSort.sort() can be used instead.
+		algorithm, hydr.ds.sort.MergeSort.sort() can be used instead.
 		
 		If [f] is null, the result is unspecified.
 	**/

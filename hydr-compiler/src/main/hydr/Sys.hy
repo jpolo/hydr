@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -53,7 +53,7 @@ extern class Sys {
 	/**
 		Returns the whole environement variables.
 	**/
-	static function environment() : haxe.ds.StringMap<String>;
+	static function environment() : hydr.ds.StringMap<String>;
 
 	/**
 		Suspend the current execution for the given time (in seconds).
@@ -117,16 +117,16 @@ extern class Sys {
 	/**
 		Returns the process standard input, from which you can read what user enters. Usually it will block until the user send a full input line. See [getChar] for an alternative.
 	**/
-	static function stdin() : haxe.io.Input;
+	static function stdin() : hydr.io.Input;
 
 	/**
 		Returns the process standard output on which you can write.
 	**/
-	static function stdout() : haxe.io.Output;
+	static function stdout() : hydr.io.Output;
 
 	/**
 		Returns the process standard error on which you can write.
 	**/
-	static function stderr() : haxe.io.Output;
+	static function stderr() : hydr.io.Output;
 
 }

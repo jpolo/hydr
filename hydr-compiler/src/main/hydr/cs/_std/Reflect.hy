@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -55,10 +55,10 @@ import cs.internal.Function;
 		Tells if an object has a field set. This doesn't take into account the object prototype (class methods).
 	**/
 	@:functionCode('
-		if (o is haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) o).__hx_getField(field, haxe.lang.FieldLookup.hash(field), false, true, false) != haxe.lang.Runtime.undefined;
+		if (o is hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) o).__hx_getField(field, hydr.lang.FieldLookup.hash(field), false, true, false) != hydr.lang.Runtime.undefined;
 
-		return haxe.lang.Runtime.slowHasField(o, field);
+		return hydr.lang.Runtime.slowHasField(o, field);
 	')
 	public static function hasField( o : Dynamic, field : String ) : Bool
 	{
@@ -69,10 +69,10 @@ import cs.internal.Function;
 		Returns the field of an object, or null if [o] is not an object or doesn't have this field.
 	**/
 	@:functionCode('
-		if (o is haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) o).__hx_getField(field, haxe.lang.FieldLookup.hash(field), false, false, false);
+		if (o is hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) o).__hx_getField(field, hydr.lang.FieldLookup.hash(field), false, false, false);
 
-		return haxe.lang.Runtime.slowGetField(o, field, false);
+		return hydr.lang.Runtime.slowGetField(o, field, false);
 	')
 	public static function field( o : Dynamic, field : String ) : Dynamic
 	{
@@ -84,10 +84,10 @@ import cs.internal.Function;
 		Set an object field value.
 	**/
 	@:functionCode('
-		if (o is haxe.lang.IHxObject)
-			((haxe.lang.IHxObject) o).__hx_setField(field, haxe.lang.FieldLookup.hash(field), value, false);
+		if (o is hydr.lang.IHxObject)
+			((hydr.lang.IHxObject) o).__hx_setField(field, hydr.lang.FieldLookup.hash(field), value, false);
 		else
-			haxe.lang.Runtime.slowSetField(o, field, value);
+			hydr.lang.Runtime.slowSetField(o, field, value);
 	')
 	public static function setField( o : Dynamic, field : String, value : Dynamic ) : Void
 	{
@@ -98,13 +98,13 @@ import cs.internal.Function;
 		Similar to field but also supports property (might be slower).
 	**/
 	@:functionCode('
-		if (o is haxe.lang.IHxObject)
-			return ((haxe.lang.IHxObject) o).__hx_getField(field, haxe.lang.FieldLookup.hash(field), false, false, true);
+		if (o is hydr.lang.IHxObject)
+			return ((hydr.lang.IHxObject) o).__hx_getField(field, hydr.lang.FieldLookup.hash(field), false, false, true);
 
-		if (haxe.lang.Runtime.slowHasField(o, "get_" + field))
-			return haxe.lang.Runtime.slowCallField(o, "get_" + field, null);
+		if (hydr.lang.Runtime.slowHasField(o, "get_" + field))
+			return hydr.lang.Runtime.slowCallField(o, "get_" + field, null);
 
-		return haxe.lang.Runtime.slowGetField(o, field, false);
+		return hydr.lang.Runtime.slowGetField(o, field, false);
 	')
 	public static function getProperty( o : Dynamic, field : String ) : Dynamic
 	{
@@ -115,12 +115,12 @@ import cs.internal.Function;
 		Similar to setField but also supports property (might be slower).
 	**/
 	@:functionCode('
-		if (o is haxe.lang.IHxObject)
-			((haxe.lang.IHxObject) o).__hx_setField(field, haxe.lang.FieldLookup.hash(field), value, true);
-		else if (haxe.lang.Runtime.slowHasField(o, "set_" + field))
-			haxe.lang.Runtime.slowCallField(o, "set_" + field, new Array<object>(new object[]{value}));
+		if (o is hydr.lang.IHxObject)
+			((hydr.lang.IHxObject) o).__hx_setField(field, hydr.lang.FieldLookup.hash(field), value, true);
+		else if (hydr.lang.Runtime.slowHasField(o, "set_" + field))
+			hydr.lang.Runtime.slowCallField(o, "set_" + field, new Array<object>(new object[]{value}));
 		else
-			haxe.lang.Runtime.slowSetField(o, field, value);
+			hydr.lang.Runtime.slowSetField(o, field, value);
 	')
 	public static function setProperty( o : Dynamic, field : String, value : Dynamic ) : Void
 	{
@@ -131,7 +131,7 @@ import cs.internal.Function;
 		Call a method with the given object and arguments.
 	**/
 	@:functionCode('
-		return ((haxe.lang.Function) func).__hx_invokeDynamic(args);
+		return ((hydr.lang.Function) func).__hx_invokeDynamic(args);
 	')
 	public static function callMethod( o : Dynamic, func : Dynamic, args : Array<Dynamic> ) : Dynamic
 	{
@@ -142,10 +142,10 @@ import cs.internal.Function;
 		Returns the list of fields of an object, excluding its prototype (class methods).
 	**/
 	@:functionCode('
-		if (o is haxe.lang.IHxObject)
+		if (o is hydr.lang.IHxObject)
 		{
 			Array<object> ret = new Array<object>();
-				((haxe.lang.IHxObject) o).__hx_getFields(ret);
+				((hydr.lang.IHxObject) o).__hx_getFields(ret);
 			return ret;
 		} else if (o is System.Type) {
 			return Type.getClassFields( (System.Type) o);
@@ -162,7 +162,7 @@ import cs.internal.Function;
 		Tells if a value is a function or not.
 	**/
 	@:functionCode('
-		return f is haxe.lang.Function;
+		return f is hydr.lang.Function;
 	')
 	public static function isFunction( f : Dynamic ) : Bool
 	{
@@ -173,7 +173,7 @@ import cs.internal.Function;
 		Generic comparison function, does not work for methods, see [compareMethods]
 	**/
 	@:functionCode('
-		return haxe.lang.Runtime.compare(a, b);
+		return hydr.lang.Runtime.compare(a, b);
 	')
 	public static function compare<T>( a : T, b : T ) : Int
 	{
@@ -187,12 +187,12 @@ import cs.internal.Function;
 		if (f1 == f2)
 			return true;
 
-		if (f1 is haxe.lang.Closure && f2 is haxe.lang.Closure)
+		if (f1 is hydr.lang.Closure && f2 is hydr.lang.Closure)
 		{
-			haxe.lang.Closure f1c = (haxe.lang.Closure) f1;
-			haxe.lang.Closure f2c = (haxe.lang.Closure) f2;
+			hydr.lang.Closure f1c = (hydr.lang.Closure) f1;
+			hydr.lang.Closure f2c = (hydr.lang.Closure) f2;
 
-			return haxe.lang.Runtime.refEq(f1c.obj, f2c.obj) && f1c.field.Equals(f2c.field);
+			return hydr.lang.Runtime.refEq(f1c.obj, f2c.obj) && f1c.field.Equals(f2c.field);
 		}
 
 		return false;
@@ -207,7 +207,7 @@ import cs.internal.Function;
 
 	**/
 	@:functionCode('
-		return v is haxe.lang.DynamicObject;
+		return v is hydr.lang.DynamicObject;
 	')
 	public static function isObject( v : Dynamic ) : Bool
 	{
@@ -218,7 +218,7 @@ import cs.internal.Function;
 		Delete an object field.
 	**/
 	@:functionCode('
-		return (o is haxe.lang.DynamicObject && ((haxe.lang.DynamicObject) o).__hx_deleteField(f, haxe.lang.FieldLookup.hash(f)));
+		return (o is hydr.lang.DynamicObject && ((hydr.lang.DynamicObject) o).__hx_deleteField(f, hydr.lang.FieldLookup.hash(f)));
 	')
 	public static function deleteField( o : Dynamic, f : String ) : Bool
 	{

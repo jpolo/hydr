@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -70,16 +70,16 @@ typedef SSmallText = String
 typedef SText = String
 
 /** Blob type (up to 64KB) **/
-typedef SSmallBinary = haxe.io.Bytes
+typedef SSmallBinary = hydr.io.Bytes
 
 /** LongBlob type (up to 4GB) **/
-typedef SLongBinary = haxe.io.Bytes
+typedef SLongBinary = hydr.io.Bytes
 
 /** MediumBlob type (up to 24MB) **/
-typedef SBinary = haxe.io.Bytes
+typedef SBinary = hydr.io.Bytes
 
 /** same as binary(n) **/
-typedef SBytes<Const> = haxe.io.Bytes
+typedef SBytes<Const> = hydr.io.Bytes
 
 /** one byte signed [-128...127] **/
 typedef STinyInt = Int
@@ -107,14 +107,14 @@ typedef SNull<T> = T
 /** specify that the integer use custom encoding **/
 typedef SEncoded = Int
 
-/** haxe Serialized string **/
+/** hydr Serialized string **/
 typedef SSerialized = String
 
 /** native neko serialized bytes **/
-typedef SNekoSerialized = haxe.io.Bytes
+typedef SNekoSerialized = hydr.io.Bytes
 
 /** a set of bitflags of different enum values **/
-typedef SFlags<T:EnumValue> = haxe.EnumFlags<T>
+typedef SFlags<T:EnumValue> = hydr.EnumFlags<T>
 
 /** same as [SFlags] but will adapt the storage size to the number of flags **/
 typedef SSmallFlags<T:EnumValue> = SFlags<T>;

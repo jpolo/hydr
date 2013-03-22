@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36,11 +36,11 @@ class Manager<T : Object> {
 
 	private static inline var cache_field = "__cache__";
 
-	private static var object_cache : haxe.ds.StringMap<Object> = new haxe.ds.StringMap();
+	private static var object_cache : hydr.ds.StringMap<Object> = new hydr.ds.StringMap();
 	private static var init_list : List<Manager<Dynamic>> = new List();
 
 	private static var KEYWORDS = {
-		var h = new haxe.ds.StringMap();
+		var h = new hydr.ds.StringMap();
 		for( k in "ADD|ALL|ALTER|ANALYZE|AND|AS|ASC|ASENSITIVE|BEFORE|BETWEEN|BIGINT|BINARY|BLOB|BOTH|BY|CALL|CASCADE|CASE|CHANGE|CHAR|CHARACTER|CHECK|COLLATE|COLUMN|CONDITION|CONSTRAINT|CONTINUE|CONVERT|CREATE|CROSS|CURRENT_DATE|CURRENT_TIME|CURRENT_TIMESTAMP|CURRENT_USER|CURSOR|DATABASE|DATABASES|DAY_HOUR|DAY_MICROSECOND|DAY_MINUTE|DAY_SECOND|DEC|DECIMAL|DECLARE|DEFAULT|DELAYED|DELETE|DESC|DESCRIBE|DETERMINISTIC|DISTINCT|DISTINCTROW|DIV|DOUBLE|DROP|DUAL|EACH|ELSE|ELSEIF|ENCLOSED|ESCAPED|EXISTS|EXIT|EXPLAIN|FALSE|FETCH|FLOAT|FLOAT4|FLOAT8|FOR|FORCE|FOREIGN|FROM|FULLTEXT|GRANT|GROUP|HAVING|HIGH_PRIORITY|HOUR_MICROSECOND|HOUR_MINUTE|HOUR_SECOND|IF|IGNORE|IN|INDEX|INFILE|INNER|INOUT|INSENSITIVE|INSERT|INT|INT1|INT2|INT3|INT4|INT8|INTEGER|INTERVAL|INTO|IS|ITERATE|JOIN|KEY|KEYS|KILL|LEADING|LEAVE|LEFT|LIKE|LIMIT|LINES|LOAD|LOCALTIME|LOCALTIMESTAMP|LOCK|LONG|LONGBLOB|LONGTEXT|LOOP|LOW_PRIORITY|MATCH|MEDIUMBLOB|MEDIUMINT|MEDIUMTEXT|MIDDLEINT|MINUTE_MICROSECOND|MINUTE_SECOND|MOD|MODIFIES|NATURAL|NOT|NO_WRITE_TO_BINLOG|NULL|NUMERIC|ON|OPTIMIZE|OPTION|OPTIONALLY|OR|ORDER|OUT|OUTER|OUTFILE|PRECISION|PRIMARY|PROCEDURE|PURGE|READ|READS|REAL|REFERENCES|REGEXP|RELEASE|RENAME|REPEAT|REPLACE|REQUIRE|RESTRICT|RETURN|REVOKE|RIGHT|RLIKE|SCHEMA|SCHEMAS|SECOND_MICROSECOND|SELECT|SENSITIVE|SEPARATOR|SET|SHOW|SMALLINT|SONAME|SPATIAL|SPECIFIC|SQL|SQLEXCEPTION|SQLSTATE|SQLWARNING|SQL_BIG_RESULT|SQL_CALC_FOUND_ROWS|SQL_SMALL_RESULT|SSL|STARTING|STRAIGHT_JOIN|TABLE|TERMINATED|THEN|TINYBLOB|TINYINT|TINYTEXT|TO|TRAILING|TRIGGER|TRUE|UNDO|UNION|UNIQUE|UNLOCK|UNSIGNED|UPDATE|USAGE|USE|USING|UTC_DATE|UTC_TIME|UTC_TIMESTAMP|VALUES|VARBINARY|VARCHAR|VARCHARACTER|VARYING|WHEN|WHERE|WHILE|WITH|WRITE|XOR|YEAR_MONTH|ZEROFILL|ASENSITIVE|CALL|CONDITION|CONNECTION|CONTINUE|CURSOR|DECLARE|DETERMINISTIC|EACH|ELSEIF|EXIT|FETCH|GOTO|INOUT|INSENSITIVE|ITERATE|LABEL|LEAVE|LOOP|MODIFIES|OUT|READS|RELEASE|REPEAT|RETURN|SCHEMA|SCHEMAS|SENSITIVE|SPECIFIC|SQL|SQLEXCEPTION|SQLSTATE|SQLWARNING|TRIGGER|UNDO|UPGRADE|WHILE".split("|") )
 			h.set(k.toLowerCase(),true);
 		h;
@@ -60,9 +60,9 @@ class Manager<T : Object> {
 	var class_proto : { prototype : Dynamic };
 
 	public function new( classval : Class<T> ) {
-		var m : Array<Dynamic> = haxe.rtti.Meta.getType(classval).rtti;
+		var m : Array<Dynamic> = hydr.rtti.Meta.getType(classval).rtti;
 		if( m == null ) throw "Missing @rtti for class " + Type.getClassName(classval);
-		table_infos = haxe.Unserializer.run(m[0]);
+		table_infos = hydr.Unserializer.run(m[0]);
 		table_name = quoteField(table_infos.name);
 		table_keys = table_infos.key;
 		// set the manager and ready for further init
@@ -77,23 +77,23 @@ class Manager<T : Object> {
 		return unsafeObjects("SELECT * FROM " + table_name,lock);
 	}
 
-	public macro function get(ethis,id,?lock:haxe.macro.Expr.ExprOf<Bool>) : #if macro haxe.macro.Expr #else haxe.macro.Expr.ExprOf<T> #end {
+	public macro function get(ethis,id,?lock:hydr.macro.Expr.ExprOf<Bool>) : #if macro hydr.macro.Expr #else hydr.macro.Expr.ExprOf<T> #end {
 		return RecordMacros.macroGet(ethis,id,lock);
 	}
 
-	public macro function select(ethis, cond, ?options, ?lock:haxe.macro.Expr.ExprOf<Bool>) : #if macro haxe.macro.Expr #else haxe.macro.Expr.ExprOf<T> #end {
+	public macro function select(ethis, cond, ?options, ?lock:hydr.macro.Expr.ExprOf<Bool>) : #if macro hydr.macro.Expr #else hydr.macro.Expr.ExprOf<T> #end {
 		return RecordMacros.macroSearch(ethis, cond, options, lock, true);
 	}
 
-	public macro function search(ethis, cond, ?options, ?lock:haxe.macro.Expr.ExprOf<Bool>) : #if macro haxe.macro.Expr #else haxe.macro.Expr.ExprOf<List<T>> #end {
+	public macro function search(ethis, cond, ?options, ?lock:hydr.macro.Expr.ExprOf<Bool>) : #if macro hydr.macro.Expr #else hydr.macro.Expr.ExprOf<List<T>> #end {
 		return RecordMacros.macroSearch(ethis, cond, options, lock);
 	}
 
-	public macro function count(ethis, cond) : #if macro haxe.macro.Expr #else haxe.macro.Expr.ExprOf<Int> #end {
+	public macro function count(ethis, cond) : #if macro hydr.macro.Expr #else hydr.macro.Expr.ExprOf<Int> #end {
 		return RecordMacros.macroCount(ethis, cond);
 	}
 
-	public macro function delete(ethis, cond, ?options) : #if macro haxe.macro.Expr #else haxe.macro.Expr.ExprOf<Void> #end {
+	public macro function delete(ethis, cond, ?options) : #if macro hydr.macro.Expr #else hydr.macro.Expr.ExprOf<Void> #end {
 		return RecordMacros.macroDelete(ethis, cond, options);
 	}
 
@@ -149,7 +149,7 @@ class Manager<T : Object> {
 				case DTinyText, DText, DString(_), DSmallText, DSerialized:
 					Reflect.setField(x, name, "");
 				case DSmallBinary, DNekoSerialized, DLongBinary, DBytes(_), DBinary:
-					Reflect.setField(x, name, haxe.io.Bytes.alloc(0));
+					Reflect.setField(x, name, hydr.io.Bytes.alloc(0));
 				case DDate, DDateTime, DTimeStamp:
 					// default date might depend on database
 				case DId, DUId, DBigId, DNull, DInterval, DEncoded, DData:
@@ -187,7 +187,7 @@ class Manager<T : Object> {
 		};
 	}
 
-	inline function hasBinaryChanged( a : haxe.io.Bytes, b : haxe.io.Bytes ) {
+	inline function hasBinaryChanged( a : hydr.io.Bytes, b : hydr.io.Bytes ) {
 		return a != b && (a == null || b == null || a.compare(b) != 0);
 	}
 
@@ -276,19 +276,19 @@ class Manager<T : Object> {
 		return s.toString();
 	}
 
-	function doSerialize( field : String, v : Dynamic ) : haxe.io.Bytes {
-		var s = new haxe.Serializer();
+	function doSerialize( field : String, v : Dynamic ) : hydr.io.Bytes {
+		var s = new hydr.Serializer();
 		s.useEnumIndex = true;
 		s.serialize(v);
 		var str = s.toString();
 		#if neko
 		return neko.Lib.bytesReference(str);
 		#else
-		return haxe.io.Bytes.ofString(str);
+		return hydr.io.Bytes.ofString(str);
 		#end
 	}
 
-	function doUnserialize( field : String, b : haxe.io.Bytes ) : Dynamic {
+	function doUnserialize( field : String, b : hydr.io.Bytes ) : Dynamic {
 		if( b == null )
 			return null;
 		var str;
@@ -299,7 +299,7 @@ class Manager<T : Object> {
 		#end
 		if( str == "" )
 			return null;
-		return haxe.Unserializer.run(str);
+		return hydr.Unserializer.run(str);
 	}
 
 	/* ---------------------------- INTERNAL API -------------------------- */
@@ -500,7 +500,7 @@ class Manager<T : Object> {
 	}
 
 	public static function cleanup() {
-		object_cache = new haxe.ds.StringMap();
+		object_cache = new hydr.ds.StringMap();
 	}
 
 	function initRelation( r : RecordInfos.RecordRelation ) {

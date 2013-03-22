@@ -538,7 +538,7 @@ package java.lang;
 	* @return  the {@code float} value represented by this object
 	*          converted to type {@code long}
 	*/
-	@:overload override public function longValue() : haxe.Int64;
+	@:overload override public function longValue() : hydr.Int64;
 	
 	/**
 	* Returns the {@code float} value of this {@code Float} object.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,17 +23,17 @@ package cs.internal;
 import cs.system.Type;
 private typedef StdType = std.Type;
 
-@:keep @:native('haxe.lang.HxObject')
+@:keep @:native('hydr.lang.HxObject')
 private class HxObject implements IHxObject
 {
 }
 
-@:keep @:native('haxe.lang.IHxObject')
+@:keep @:native('hydr.lang.IHxObject')
 private interface IHxObject
 {
 }
 
-@:keep @:native('haxe.lang.DynamicObject')
+@:keep @:native('hydr.lang.DynamicObject')
 private class DynamicObject extends HxObject implements Dynamic
 {
 	@:skipReflection public function toString():String
@@ -60,11 +60,11 @@ private class DynamicObject extends HxObject implements Dynamic
 	}
 }
 
-@:keep @:native('haxe.lang.IGenericObject') interface IGenericObject
+@:keep @:native('hydr.lang.IGenericObject') interface IGenericObject
 {
 }
 
-@:native('haxe.lang.Enum')
+@:native('hydr.lang.Enum')
 @:keep @:skipCtor
 private class Enum
 {

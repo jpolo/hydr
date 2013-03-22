@@ -212,7 +212,7 @@ let is_internal_class = function
 	|  ([],"Int") | ([],"Void") |  ([],"String") | ([], "Null") | ([], "Float")
 	|  ([],"Array") | ([], "Class") | ([], "Enum") | ([], "Bool")
    |  ([], "Dynamic") | ([], "ArrayAccess") | (["cpp"], "FastIterator")-> true
-	|  (["cpp"], "CppInt32__") | ([],"Math") | (["haxe";"io"], "Unsigned_char__") -> true
+	|  (["cpp"], "CppInt32__") | ([],"Math") | (["hydr";"io"], "Unsigned_char__") -> true
 	| _ -> false
 
 
@@ -229,7 +229,7 @@ let is_cpp_class = function
 	| ("cpp"::_ , _)  -> true
 	| ( [] , "Xml" )  -> true
 	| ( [] , "EReg" )  -> true
-	| ( ["haxe"] , "Log" )  -> true
+	| ( ["hydr"] , "Log" )  -> true
    | _ -> false;;
 
 let is_scalar typename = match typename with
@@ -365,7 +365,7 @@ let gen_close_namespace output class_path =
 
 (* The basic types can have default values and are passesby value *)
 let cant_be_null = function
-	| "Int" | "Bool" | "Float" |  "::haxe::io::Unsigned_char__" -> true
+	| "Int" | "Bool" | "Float" |  "::hydr::io::Unsigned_char__" -> true
 	| "int" | "bool" | "double" | "float" -> true
 	| _ -> false
 
@@ -383,7 +383,7 @@ let rec class_string klass suffix params =
 					 (List.map type_string  params) ) ^ " >"
 	| _ when (match klass.cl_kind with KTypeParameter _ -> true | _ -> false) -> "Dynamic"
 	|  ([],"#Int") -> "/* # */int"
-	|  (["haxe";"io"],"Unsigned_char__") -> "unsigned char"
+	|  (["hydr";"io"],"Unsigned_char__") -> "unsigned char"
 	|  ([],"Class") -> "::Class"
 	|  ([],"EnumValue") -> "Dynamic"
 	|  ([],"Null") -> (match params with
@@ -402,8 +402,8 @@ let rec class_string klass suffix params =
             (join_class_path klass.cl_path "::") ^ suffix
 	| _ -> "::" ^ (join_class_path klass.cl_path "::") ^ suffix
 	)
-and type_string_suff suffix haxe_type =
-	(match haxe_type with
+and type_string_suff suffix hydr_type =
+	(match hydr_type with
 	| TMono r -> (match !r with None -> "Dynamic" ^ suffix | Some t -> type_string_suff suffix t)
 	| TAbstract ({ a_path = ([],"Void") },[]) -> "Void"
 	| TAbstract ({ a_path = ([],"Bool") },[]) -> "bool"
@@ -441,7 +441,7 @@ and type_string_suff suffix haxe_type =
 			| _ -> assert false)
 		| _ ->  type_string_suff suffix (apply_params type_def.t_types params type_def.t_type)
 		)
-	| TFun (args,haxe_type) -> "Dynamic" ^ suffix
+	| TFun (args,hydr_type) -> "Dynamic" ^ suffix
 	| TAnon a -> "Dynamic"
       (*
 		(match !(a.a_status) with
@@ -449,19 +449,19 @@ and type_string_suff suffix haxe_type =
 		| EnumStatics e -> type_string_suff suffix (TEnum (e,List.map snd e.e_types))
 		| _ -> "Dynamic"  ^ suffix )
       *)
-	| TDynamic haxe_type -> "Dynamic" ^ suffix
+	| TDynamic hydr_type -> "Dynamic" ^ suffix
 	| TLazy func -> type_string_suff suffix ((!func)())
 	| TAbstract (abs,pl) when abs.a_impl <> None ->
 		type_string_suff suffix (Codegen.Abstract.get_underlying_type abs pl)
 	| TAbstract (abs,pl) ->
 		"::" ^ (join_class_path abs.a_path "::") ^ suffix
 	)
-and type_string haxe_type =
-	type_string_suff "" haxe_type
+and type_string hydr_type =
+	type_string_suff "" hydr_type
 
-and is_dynamic_array_param haxe_type =
-   if (type_string (follow haxe_type)) = "Dynamic" then true
-	else (match follow haxe_type with
+and is_dynamic_array_param hydr_type =
+   if (type_string (follow hydr_type)) = "Dynamic" then true
+	else (match follow hydr_type with
 	| TInst (klass,params) ->
 			(match klass.cl_path with
          | ([],"Array") | ([],"Class") | (["cpp"],"FastIterator") -> false
@@ -476,8 +476,8 @@ and is_dynamic_array_param haxe_type =
 
 
 
-let is_array haxe_type =
-	match follow haxe_type with
+let is_array hydr_type =
+	match follow hydr_type with
 	| TInst (klass,params) ->
 		(match klass.cl_path with
 		| [] , "Array" -> not (is_dynamic_array_param (List.hd params))
@@ -489,8 +489,8 @@ let is_array haxe_type =
 	| _ -> false
 	;;
 
-let is_array_implementer haxe_type =
-	match follow haxe_type with
+let is_array_implementer hydr_type =
+	match follow hydr_type with
 	| TInst (klass,params) ->
 		(match klass.cl_array_access with
 		| Some _ -> true
@@ -501,13 +501,13 @@ let is_array_implementer haxe_type =
 
 
 (* Get the type and output it to the stream *)
-let gen_type ctx haxe_type =
-	ctx.ctx_output (type_string haxe_type)
+let gen_type ctx hydr_type =
+	ctx.ctx_output (type_string hydr_type)
 ;;
 
 (* Get the type and output it to the stream *)
-let gen_type_suff ctx haxe_type suff =
-	ctx.ctx_output (type_string_suff suff haxe_type);;
+let gen_type_suff ctx hydr_type suff =
+	ctx.ctx_output (type_string_suff suff hydr_type);;
 
 let member_type ctx field_object member =
 	let name = (if (is_array field_object.etype) then "::Array"
@@ -802,7 +802,7 @@ let only_int_cases cases =
 			List.exists (fun case -> match case.eexpr with TConst (TInt _) -> false | _ -> true ) cases
 				) cases );;
 
-(* See if there is a haxe break statement that will be swollowed by c++ break *)
+(* See if there is a hydr break statement that will be swollowed by c++ break *)
 exception BreakFound;;
 
 let contains_break expression =
@@ -1664,7 +1664,7 @@ and gen_expression ctx retval expression =
 			gen_expression ctx true index;
 			output ")";
 		end
-	(* Get precidence matching haxe ? *)
+	(* Get precidence matching hydr ? *)
 	| TBinop (op,expr1,expr2) -> gen_bin_op op expr1 expr2
 	| TField (expr,name) when (is_null expr) -> output "Dynamic()"
 
@@ -1972,7 +1972,7 @@ and gen_expression ctx retval expression =
 
 
 (*
-let is_dynamic_haxe_method f =
+let is_dynamic_hydr_method f =
 	match follow f.cf_type with
 	| TFun _ when f.cf_expr = None -> true
 	| _ ->
@@ -1982,7 +1982,7 @@ let is_dynamic_haxe_method f =
 		| _ -> false);;
 *)
 
-let is_dynamic_haxe_method f =
+let is_dynamic_hydr_method f =
 		(match f.cf_expr, f.cf_kind with
 		| Some { eexpr = TFunction _ }, (Var _ | Method MethDynamic) -> true
 		| _ -> false);;
@@ -1990,7 +1990,7 @@ let is_dynamic_haxe_method f =
 
 let is_data_member field =
 	match field.cf_expr with
-	| Some { eexpr = TFunction function_def } -> is_dynamic_haxe_method field
+	| Some { eexpr = TFunction function_def } -> is_dynamic_hydr_method field
 	| _ -> true;;
 
 
@@ -2047,7 +2047,7 @@ let gen_field ctx class_def class_name ptr_name is_static is_interface field =
             function_def.tf_args )
 		end in
 
-		if (not (is_dynamic_haxe_method field)) then begin
+		if (not (is_dynamic_hydr_method field)) then begin
 			(* The actual function definition *)
 			output return_type;
 			output (" " ^ class_name ^ "::" ^ remap_name ^ "( " );
@@ -2135,7 +2135,7 @@ let gen_field_init ctx field =
 	(* Function field *)
 	| Some { eexpr = TFunction function_def } ->
 
-		if (is_dynamic_haxe_method field) then begin
+		if (is_dynamic_hydr_method field) then begin
 			let func_name = "__default_" ^ (remap_name) in
 			output ( "	" ^ remap_name ^ " = new " ^ func_name ^ ";\n\n" );
 		end
@@ -2177,7 +2177,7 @@ let gen_member_def ctx class_def is_static is_interface field =
 	output (if is_static then "		static " else "		");
    (match  field.cf_expr with
 	| Some { eexpr = TFunction function_def } ->
-		if ( is_dynamic_haxe_method field ) then begin
+		if ( is_dynamic_hydr_method field ) then begin
          if ( not (is_override class_def field.cf_name ) ) then begin
 			   output ("Dynamic " ^ remap_name ^ ";\n");
 			   output (if is_static then "		static " else "		");
@@ -2270,7 +2270,7 @@ let find_referenced_types ctx obj super_deps constructor_deps header_only for_de
          | _ when klass.cl_extern -> add_extern_class klass
 			| _ -> (match klass.cl_kind with KTypeParameter _ -> () | _ -> add_type klass.cl_path);
 			)
-		| TFun (args,haxe_type) -> visit_type haxe_type;
+		| TFun (args,hydr_type) -> visit_type hydr_type;
 				List.iter (fun (_,_,t) -> visit_type t; ) args;
 		| TAbstract (abs,pl) when abs.a_impl <> None ->
 			visit_type (Codegen.Abstract.get_underlying_type abs pl)
@@ -2869,7 +2869,7 @@ let generate_class_files common_ctx member_types super_deps constructor_deps cla
 			(fun field -> let remap_name = keyword_remap field.cf_name in
 				match field.cf_expr with
 				| Some { eexpr = TFunction function_def } ->
-						if (is_dynamic_haxe_method field) then
+						if (is_dynamic_hydr_method field) then
 							output_cpp ("	" ^ remap_name ^ " = new __default_" ^ remap_name ^ "(this);\n")
 				| _ -> ()
 			)
@@ -2911,7 +2911,7 @@ let generate_class_files common_ctx member_types super_deps constructor_deps cla
 
 		let variable_field field =
 			(match field.cf_expr with
-			| Some { eexpr = TFunction function_def } -> is_dynamic_haxe_method field
+			| Some { eexpr = TFunction function_def } -> is_dynamic_hydr_method field
 			| _ -> true)
 		in
       let is_readable field =
@@ -3342,7 +3342,7 @@ let write_build_data filename classes main_deps build_extra exe_name =
 	in
 
 	output_string buildfile "<xml>\n";
-	output_string buildfile "<files id=\"haxe\">\n";
+	output_string buildfile "<files id=\"hydr\">\n";
 	output_string buildfile "<compilerflag value=\"-Iinclude\"/>\n";
 	List.iter add_class_to_buildfile classes;
 	add_class_to_buildfile (  ( [] , "__boot__") , [] );
@@ -3366,7 +3366,7 @@ let write_build_data filename classes main_deps build_extra exe_name =
 let write_build_options filename defines =
 	let writer = cached_source_writer filename in
 	writer#write ( defines ^ "\n");
-	let cmd = Unix.open_process_in "haxelib path hxcpp" in
+	let cmd = Unix.open_process_in "hydrlib path hxcpp" in
 	writer#write (Pervasives.input_line cmd);
 	Pervasives.ignore (Unix.close_process_in cmd);
 	writer#close;;
@@ -3449,7 +3449,7 @@ let rec s_type t =
 	| TDynamic t2 -> "Dynamic" ^ s_type_params (if t == t2 then [] else [t2])
 	| TLazy f -> s_type (!f())
    in
-   if result="Array<haxe.io.Unsigned_char__>" then "haxe.io.BytesData" else result
+   if result="Array<hydr.io.Unsigned_char__>" then "hydr.io.BytesData" else result
 
 and s_fun t void =
 	match follow t with
@@ -3561,7 +3561,7 @@ let gen_extern_enum common_ctx enum_def file_info =
 
 
 
-(* The common_ctx contains the haxe AST in the "types" field and the resources *)
+(* The common_ctx contains the hydr AST in the "types" field and the resources *)
 let generate common_ctx =
 	make_base_directory common_ctx.file;
 
@@ -3650,7 +3650,7 @@ let generate common_ctx =
 	if ( not (Common.defined common_ctx Define.NoCompilation) ) then begin
 		let old_dir = Sys.getcwd() in
 		Sys.chdir common_ctx.file;
-		let cmd = ref "haxelib run hxcpp Build.xml haxe" in
+		let cmd = ref "hydrlib run hxcpp Build.xml hydr" in
 		if (common_ctx.debug) then cmd := !cmd ^ " -Ddebug";
       cmd := !cmd ^ !cmd_defines;
       print_endline !cmd;

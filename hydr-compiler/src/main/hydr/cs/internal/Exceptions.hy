@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,8 +22,8 @@
 package cs.internal;
 import cs.system.Exception;
 
-//should NOT be usable inside haxe code
-@:nativeGen @:keep @:native("haxe.lang.HaxeException") private class HaxeException extends Exception
+//should NOT be usable inside hydr code
+@:nativeGen @:keep @:native("hydr.lang.HaxeException") private class HaxeException extends Exception
 {
 	private var obj:Dynamic;
 

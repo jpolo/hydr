@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,14 +21,14 @@
  */
 package sys.io;
 
-private class Stdin extends haxe.io.Output {
+private class Stdin extends hydr.io.Output {
 
 	var p : Dynamic;
-	var buf : haxe.io.Bytes;
+	var buf : hydr.io.Bytes;
 
 	public function new(p) {
 		this.p = p;
-		buf = haxe.io.Bytes.alloc(1);
+		buf = hydr.io.Bytes.alloc(1);
 	}
 
 	public override function close() {
@@ -41,11 +41,11 @@ private class Stdin extends haxe.io.Output {
 		writeBytes(buf,0,1);
 	}
 
-	public override function writeBytes( buf : haxe.io.Bytes, pos : Int, len : Int ) : Int {
+	public override function writeBytes( buf : hydr.io.Bytes, pos : Int, len : Int ) : Int {
 		try {
 			return _stdin_write(p,buf.getData(),pos,len);
 		} catch( e : Dynamic ) {
-			throw new haxe.io.Eof();
+			throw new hydr.io.Eof();
 		}
 	}
 
@@ -54,29 +54,29 @@ private class Stdin extends haxe.io.Output {
 
 }
 
-private class Stdout extends haxe.io.Input {
+private class Stdout extends hydr.io.Input {
 
 	var p : Dynamic;
 	var out : Bool;
-	var buf : haxe.io.Bytes;
+	var buf : hydr.io.Bytes;
 
 	public function new(p,out) {
 		this.p = p;
 		this.out = out;
-		buf = haxe.io.Bytes.alloc(1);
+		buf = hydr.io.Bytes.alloc(1);
 	}
 
 	public override function readByte() {
 		if( readBytes(buf,0,1) == 0 )
-			throw haxe.io.Error.Blocked;
+			throw hydr.io.Error.Blocked;
 		return buf.get(0);
 	}
 
-	public override function readBytes( str : haxe.io.Bytes, pos : Int, len : Int ) : Int {
+	public override function readBytes( str : hydr.io.Bytes, pos : Int, len : Int ) : Int {
 		try {
 			return (out?_stdout_read:_stderr_read)(p,str.getData(),pos,len);
 		} catch( e : Dynamic ) {
-			throw new haxe.io.Eof();
+			throw new hydr.io.Eof();
 		}
 	}
 
@@ -88,12 +88,12 @@ private class Stdout extends haxe.io.Input {
 @:coreApi class Process {
 
 	var p : Dynamic;
-	public var stdout(default,null) : haxe.io.Input;
-	public var stderr(default,null) : haxe.io.Input;
-	public var stdin(default,null) : haxe.io.Output;
+	public var stdout(default,null) : hydr.io.Input;
+	public var stderr(default,null) : hydr.io.Input;
+	public var stdin(default,null) : hydr.io.Output;
 
 	public function new( cmd : String, args : Array<String> ) : Void {
-		p = try _run(untyped cmd.__s,neko.Lib.haxeToNeko(args)) catch( e : Dynamic ) throw "Process creation failure : "+cmd;
+		p = try _run(untyped cmd.__s,neko.Lib.hydrToNeko(args)) catch( e : Dynamic ) throw "Process creation failure : "+cmd;
 		stdin = new Stdin(p);
 		stdout = new Stdout(p,true);
 		stderr = new Stdout(p,false);

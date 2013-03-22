@@ -407,11 +407,11 @@ let reify in_macro =
 				expr "EBlock" [e1]
 			(* TODO: can $v and $i be implemented better? *)
 			| Meta.Dollar "v", _ ->
-				(ECall ((EField ((EField ((EField ((EConst (Ident "haxe"),p),"macro"),p),"Context"),p),"makeExpr"),p),[e; to_pos (pos e)]),p)
+				(ECall ((EField ((EField ((EField ((EConst (Ident "hydr"),p),"macro"),p),"Context"),p),"makeExpr"),p),[e; to_pos (pos e)]),p)
 			| Meta.Dollar "i", _ ->
 				expr "EConst" [mk_enum "Constant" "CIdent" [e1] (pos e1)]
 			| Meta.Dollar "p", _ ->
-				(ECall ((EField ((EField ((EField ((EConst (Ident "haxe"),p),"macro"),p),"ExprTools"),p),"toFieldExpr"),p),[e]),p)
+				(ECall ((EField ((EField ((EField ((EConst (Ident "hydr"),p),"macro"),p),"ExprTools"),p),"toFieldExpr"),p),[e]),p)
 			| Meta.Custom ":pos", [pexpr] ->
 				let old = !cur_pos in
 				cur_pos := Some pexpr;
@@ -1060,18 +1060,18 @@ and inline_function = parser
 and reify_expr e =
 	let to_expr,_,_ = reify !in_macro in
 	let e = to_expr e in
-	(ECheckType (e,(CTPath { tpackage = ["haxe";"macro"]; tname = "Expr"; tsub = None; tparams = [] })),pos e)
+	(ECheckType (e,(CTPath { tpackage = ["hydr";"macro"]; tname = "Expr"; tsub = None; tparams = [] })),pos e)
 
 and parse_macro_expr p = parser
 	| [< '(DblDot,_); t = parse_complex_type >] ->
 		let _, to_type, _  = reify !in_macro in
 		let t = to_type t p in
-		(ECheckType (t,(CTPath { tpackage = ["haxe";"macro"]; tname = "Expr"; tsub = Some "ComplexType"; tparams = [] })),p)
+		(ECheckType (t,(CTPath { tpackage = ["hydr";"macro"]; tname = "Expr"; tsub = Some "ComplexType"; tparams = [] })),p)
 	| [< '(Kwd Var,p1); vl = psep Comma parse_var_decl >] ->
 		reify_expr (EVars vl,p1)
 	| [< d = parse_class [] [] false >] ->
 		let _,_,to_type = reify !in_macro in
-		(ECheckType (to_type d,(CTPath { tpackage = ["haxe";"macro"]; tname = "Expr"; tsub = Some "TypeDefinition"; tparams = [] })),p)
+		(ECheckType (to_type d,(CTPath { tpackage = ["hydr";"macro"]; tname = "Expr"; tsub = Some "TypeDefinition"; tparams = [] })),p)
 	| [< e = secure_expr >] ->
 		reify_expr e
 

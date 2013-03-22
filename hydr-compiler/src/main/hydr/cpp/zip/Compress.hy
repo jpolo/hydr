@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@ class Compress {
 		s = _deflate_init(level);
 	}
  
-	public function execute( src : haxe.io.Bytes, srcPos : Int, dst : haxe.io.Bytes, dstPos : Int ) : { done : Bool, read : Int, write : Int } {
+	public function execute( src : hydr.io.Bytes, srcPos : Int, dst : hydr.io.Bytes, dstPos : Int ) : { done : Bool, read : Int, write : Int } {
 		return _deflate_buffer(s,src.getData(),srcPos,dst.getData(),dstPos);
 	}
  
@@ -41,10 +41,10 @@ class Compress {
 		_deflate_end(s);
 	}
  
-	public static function run( s : haxe.io.Bytes, level : Int ) : haxe.io.Bytes {
+	public static function run( s : hydr.io.Bytes, level : Int ) : hydr.io.Bytes {
 		var c = new Compress(level);
 		c.setFlushMode(Flush.FINISH);
-		var out = haxe.io.Bytes.alloc(_deflate_bound(c.s,s.length));
+		var out = hydr.io.Bytes.alloc(_deflate_bound(c.s,s.length));
 		var r = c.execute(s,0,out,0);
 		c.close();
 		if( !r.done || r.read != s.length )

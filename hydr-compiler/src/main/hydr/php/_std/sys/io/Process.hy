@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,13 +22,13 @@
 package sys.io;
 import php.NativeArray;
 
-private class Stdin extends haxe.io.Output {
+private class Stdin extends hydr.io.Output {
 	var p : Dynamic;
-	var buf : haxe.io.Bytes;
+	var buf : hydr.io.Bytes;
 
 	public function new(p:Dynamic) {
 		this.p = p;
-		buf = haxe.io.Bytes.alloc(1);
+		buf = hydr.io.Bytes.alloc(1);
 	}
 
 	public override function close() {
@@ -41,36 +41,36 @@ private class Stdin extends haxe.io.Output {
 		writeBytes(buf,0,1);
 	}
 
-	public override function writeBytes( b : haxe.io.Bytes, pos : Int, l : Int ) : Int {
+	public override function writeBytes( b : hydr.io.Bytes, pos : Int, l : Int ) : Int {
 		var s = b.readString(pos, l);
-		if(untyped __call__('feof', p)) return throw new haxe.io.Eof();
+		if(untyped __call__('feof', p)) return throw new hydr.io.Eof();
 		var r = untyped __call__('fwrite', p, s, l);
-		if(untyped __physeq__(r, false)) return throw haxe.io.Error.Custom('An error occurred');
+		if(untyped __physeq__(r, false)) return throw hydr.io.Error.Custom('An error occurred');
 		return r;
 	}
 }
 
-private class Stdout extends haxe.io.Input {
+private class Stdout extends hydr.io.Input {
 	var p : Dynamic;
-	var buf : haxe.io.Bytes;
+	var buf : hydr.io.Bytes;
 
 	public function new(p:Dynamic) {
 		this.p = p;
-		buf = haxe.io.Bytes.alloc(1);
+		buf = hydr.io.Bytes.alloc(1);
 	}
 
 	public override function readByte() {
 		if( readBytes(buf,0,1) == 0 )
-			throw haxe.io.Error.Blocked;
+			throw hydr.io.Error.Blocked;
 		return buf.get(0);
 	}
 
-	public override function readBytes( str : haxe.io.Bytes, pos : Int, l : Int ) : Int {
-		if(untyped __call__('feof', p)) return throw new haxe.io.Eof();
+	public override function readBytes( str : hydr.io.Bytes, pos : Int, l : Int ) : Int {
+		if(untyped __call__('feof', p)) return throw new hydr.io.Eof();
 		var r : String = untyped __call__('fread', p, l);
-		if(untyped __physeq__(r, "")) return throw new haxe.io.Eof();
-		if(untyped __physeq__(r, false)) return throw haxe.io.Error.Custom('An error occurred');
-		var b = haxe.io.Bytes.ofString(r);
+		if(untyped __physeq__(r, "")) return throw new hydr.io.Eof();
+		if(untyped __physeq__(r, false)) return throw hydr.io.Error.Custom('An error occurred');
+		var b = hydr.io.Bytes.ofString(r);
 		str.blit(pos, b, 0, r.length);
 		return r.length;
 	}
@@ -81,9 +81,9 @@ class Process {
 	var p : Dynamic;
 	var st : NativeArray;
 	var cl : Int;
-	public var stdout(default,null) : haxe.io.Input;
-	public var stderr(default,null) : haxe.io.Input;
-	public var stdin(default,null) : haxe.io.Output;
+	public var stdout(default,null) : hydr.io.Input;
+	public var stderr(default,null) : hydr.io.Input;
+	public var stdin(default,null) : hydr.io.Output;
 
 	public function new( cmd : String, args : Array<String> ) : Void {
 		var pipes = untyped __call__("array");
@@ -127,7 +127,7 @@ class Process {
 		untyped __call__('proc_terminate',p);
 	}
 
-	function replaceStream(input : haxe.io.Input) : Void {
+	function replaceStream(input : hydr.io.Input) : Void {
 		var fp = untyped __call__("fopen", "php://memory", "r+");
 		while(true) {
 			var s = untyped __call__("fread", untyped input.p, 8192);

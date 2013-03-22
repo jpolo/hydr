@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,7 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #if !(core_api || cross)
-#error "Please don't add haxe/std to your classpath, instead set HAXE_STD_PATH env var"
+#error "Please don't add hydr/std to your classpath, instead set HAXE_STD_PATH env var"
 #end
 
 /**

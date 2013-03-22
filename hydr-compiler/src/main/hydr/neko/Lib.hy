@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -64,14 +64,14 @@ class Lib {
 		Serialize using native Neko serialization. This will return a Binary string that can be
 		stored for long term usage. The serialized data is optimized for speed and not for size.
 	**/
-	public static function serialize( v : Dynamic ) : haxe.io.Bytes {
-		return haxe.io.Bytes.ofData(__serialize(v));
+	public static function serialize( v : Dynamic ) : hydr.io.Bytes {
+		return hydr.io.Bytes.ofData(__serialize(v));
 	}
 
 	/**
 		Unserialize a string using native Neko serialization. See [serialize].
 	**/
-	public static function unserialize( s : haxe.io.Bytes ) : Dynamic {
+	public static function unserialize( s : hydr.io.Bytes ) : Dynamic {
 		return untyped __unserialize(s.getData(),__dollar__loader);
 	}
 
@@ -82,7 +82,7 @@ class Lib {
 		some data into mod_neko that was serialized on a different server using a different
 		file path.
 	**/
-	public static function localUnserialize( s : haxe.io.Bytes ) : Dynamic {
+	public static function localUnserialize( s : hydr.io.Bytes ) : Dynamic {
 		return untyped __unserialize(s.getData(),{
 			loadmodule : function(m,l) { return __dollar__exports; },
 			loadprim : function(p,n) { return __dollar__loader.loadprim(p,n); }
@@ -124,7 +124,7 @@ class Lib {
 	/**
 		Converts a Neko value to its haXe equivalent. Used to unwrap String and Arrays Objects into raw Neko values.
 	**/
-	public static function haxeToNeko( v : Dynamic ) : Dynamic untyped {
+	public static function hydrToNeko( v : Dynamic ) : Dynamic untyped {
 		switch( __dollar__typeof(v) ) {
 		case 0: return v;
 		case 1: return v;
@@ -137,7 +137,7 @@ class Lib {
 			if( cl == Array ) {
 				var a = untyped __dollar__amake(v.length);
 				for( i in 0...v.length )
-					a[i] = haxeToNeko(v[i]);
+					a[i] = hydrToNeko(v[i]);
 				return a;
 			}
 			if( cl != null || __dollar__objgetproto(v) != null )
@@ -147,7 +147,7 @@ class Lib {
 			var l = __dollar__asize(f);
 			var o = __dollar__new(v);
 			while( i < l ) {
-				__dollar__objset(o,f[i],haxeToNeko(__dollar__objget(v,f[i])));
+				__dollar__objset(o,f[i],hydrToNeko(__dollar__objget(v,f[i])));
 				i += 1;
 			}
 			return o;
@@ -166,15 +166,15 @@ class Lib {
 	/**
 		Returns a string referencing the data contains in bytes.
 	**/
-	public inline static function stringReference( b : haxe.io.Bytes ) {
+	public inline static function stringReference( b : hydr.io.Bytes ) {
 		return new String( cast b.getData() );
 	}
 
 	/**
 		Returns bytes referencing the content of a string.
 	**/
-	public inline static function bytesReference( s : String ) : haxe.io.Bytes {
-		return untyped new haxe.io.Bytes( s.length, s.__s );
+	public inline static function bytesReference( s : String ) : hydr.io.Bytes {
+		return untyped new hydr.io.Bytes( s.length, s.__s );
 	}
 
 	static var __serialize = load("std","serialize",1);

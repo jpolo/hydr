@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,7 +21,7 @@
  */
 package java.internal;
 
-@:native('haxe.lang.Iterator')
+@:native('hydr.lang.Iterator')
 @:keep
 interface Iterator<T>
 {
@@ -32,7 +32,7 @@ interface Iterator<T>
 	
 }
 
-@:native('haxe.lang.Iterable')
+@:native('hydr.lang.Iterable')
 @:keep
 interface Iterable<T>
 {

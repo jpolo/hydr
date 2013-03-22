@@ -347,7 +347,7 @@ package java.io;
 	* @param      l   The <code>long</code> to be printed
 	* @see        java.lang.Long#toString(long)
 	*/
-	@:overload public function print(l : haxe.Int64) : Void;
+	@:overload public function print(l : hydr.Int64) : Void;
 	
 	/**
 	* Prints a floating-point number.  The string produced by <code>{@link
@@ -450,7 +450,7 @@ package java.io;
 	*
 	* @param x the <code>long</code> value to be printed
 	*/
-	@:overload public function println(x : haxe.Int64) : Void;
+	@:overload public function println(x : hydr.Int64) : Void;
 	
 	/**
 	* Prints a floating-point number and then terminates the line.  This method

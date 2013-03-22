@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -82,8 +82,8 @@ class Loader {
 		but with different names, for example with two relatives paths reprensenting
 		the same file, since the cache is done on a by-name basic.
 	**/
-	public function getCache() : haxe.ds.StringMap<Module> {
-		var h = new haxe.ds.StringMap<Module>();
+	public function getCache() : hydr.ds.StringMap<Module> {
+		var h = new hydr.ds.StringMap<Module>();
 		var cache = untyped l.cache;
 		for( f in Reflect.fields(cache) )
 			h.set(f,new Module(Reflect.field(cache,f)));

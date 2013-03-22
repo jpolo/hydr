@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,22 +22,22 @@
 package cs.internal;
 
 @:classCode('
-	//This function is here to be used with Reflection, when the haxe.lang.Null type is known
-	public static haxe.lang.Null<T> _ofDynamic(object obj)
+	//This function is here to be used with Reflection, when the hydr.lang.Null type is known
+	public static hydr.lang.Null<T> _ofDynamic(object obj)
 	{
 		if (obj == null)
 		{
-			return new haxe.lang.Null<T>(default(T), false);
+			return new hydr.lang.Null<T>(default(T), false);
 		} else if (typeof(T).Equals(typeof(double))) {
-			return new haxe.lang.Null<T>((T) (object) haxe.lang.Runtime.toDouble(obj), true);
+			return new hydr.lang.Null<T>((T) (object) hydr.lang.Runtime.toDouble(obj), true);
 		} else if (typeof(T).Equals(typeof(int))) {
-			return new haxe.lang.Null<T>((T) (object) haxe.lang.Runtime.toInt(obj), true);
+			return new hydr.lang.Null<T>((T) (object) hydr.lang.Runtime.toInt(obj), true);
 		} else {
-			return new haxe.lang.Null<T>((T) obj, true);
+			return new hydr.lang.Null<T>((T) obj, true);
 		}
 	}
 ')
-@:keep @:struct @:nativeGen @:native("haxe.lang.Null") private class Nullable<T>
+@:keep @:struct @:nativeGen @:native("hydr.lang.Null") private class Nullable<T>
 {
 
 	@:readOnly public var value:T;
@@ -61,13 +61,13 @@ package cs.internal;
 	@:functionCode('
 		if (obj == null)
 		{
-			return new haxe.lang.Null<D>(default(D), false);
+			return new hydr.lang.Null<D>(default(D), false);
 		} else if (typeof(D).Equals(typeof(double))) {
-			return new haxe.lang.Null<D>((D) (object) haxe.lang.Runtime.toDouble(obj), true);
+			return new hydr.lang.Null<D>((D) (object) hydr.lang.Runtime.toDouble(obj), true);
 		} else if (typeof(D).Equals(typeof(int))) {
-			return new haxe.lang.Null<D>((D) (object) haxe.lang.Runtime.toInt(obj), true);
+			return new hydr.lang.Null<D>((D) (object) hydr.lang.Runtime.toInt(obj), true);
 		} else {
-			return new haxe.lang.Null<D>((D) obj, true);
+			return new hydr.lang.Null<D>((D) obj, true);
 		}
 	')
 	public static function ofDynamic<D>(obj:Dynamic):Nullable<D>

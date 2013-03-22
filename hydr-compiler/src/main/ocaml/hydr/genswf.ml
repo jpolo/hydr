@@ -690,7 +690,7 @@ let build_swc_catalog com types =
 	let x = node "swc" ["xmlns","http://www.adobe.com/flash/swccatalog/9"] [
 		node "versions" [] [
 			node "swc" ["version","1.2"] [];
-			node "haxe" ["version",Printf.sprintf "%d.%.2d" (com.version/100) (com.version mod 100)] [];
+			node "hydr" ["version",Printf.sprintf "%d.%.2d" (com.version/100) (com.version mod 100)] [];
 		];
 		node "features" [] [
 			node "feature-script-deps" [] [];
@@ -785,7 +785,7 @@ let detect_format data p =
 		error "Unknown file format" p
 
 let build_swf9 com file swc =
-	let boot_name = if swc <> None || Common.defined com Define.HaxeBoot then "haxe" else "boot_" ^ (String.sub (Digest.to_hex (Digest.string (Filename.basename file))) 0 4) in
+	let boot_name = if swc <> None || Common.defined com Define.HaxeBoot then "hydr" else "boot_" ^ (String.sub (Digest.to_hex (Digest.string (Filename.basename file))) 0 4) in
 	let code = Genswf9.generate com boot_name in
 	let code = (match swc with
 	| Some cat ->
@@ -1126,7 +1126,7 @@ let generate com swf_header =
 			| _ -> ()
 		) tags;
 	) com.swf_libs;
-  (* build haxe swf *)
+  (* build hydr swf *)
 	let tags = if isf9 then build_swf9 com file swc else build_swf8 com codeclip exports in
 	let header, bg = (match swf_header with None -> default_header com | Some h -> convert_header com h) in
 	let bg = tag (TSetBgColor { cr = bg lsr 16; cg = (bg lsr 8) land 0xFF; cb = bg land 0xFF }) in

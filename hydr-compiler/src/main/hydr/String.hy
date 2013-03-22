@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,7 +22,7 @@
 /**
 	The basic String class.
 	
-	A haxe String is immutable, it is not possible to modify individual
+	A hydr String is immutable, it is not possible to modify individual
 	characters. No method of this class changes the state of [this] String.
 	
 	Strings can be constructed using the string literal syntax "string value".

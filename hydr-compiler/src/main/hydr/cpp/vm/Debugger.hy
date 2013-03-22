@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,7 +21,7 @@
  */
 package cpp.vm;
 
-import haxe.CallStack;
+import hydr.CallStack;
 
 class Debugger
 {
@@ -82,7 +82,7 @@ class Debugger
    // public static function suspendAll()
 
    // Callstack
-   public static function getStackFrames() : Array<haxe.StackItem>
+   public static function getStackFrames() : Array<hydr.StackItem>
    {
       return untyped __global__.__hxcpp_dbg_stack_frames_get();
    }

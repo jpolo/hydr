@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39,12 +39,12 @@ enum XmlType {
 
 	var _nodeName : String;
 	var _nodeValue : String;
-	var _attributes : haxe.ds.StringMap<String>;
+	var _attributes : hydr.ds.StringMap<String>;
 	var _children : Array<Xml>;
 	var _parent : Xml;
 
 	public static function parse( str : String ) : Xml {
-		return haxe.xml.Parser.parse(str);
+		return hydr.xml.Parser.parse(str);
 	}
 
 	private function new() : Void {
@@ -54,7 +54,7 @@ enum XmlType {
 		var r = new Xml();
 		r.nodeType = Xml.Element;
 		r._children = new Array();
-		r._attributes = new haxe.ds.StringMap();
+		r._attributes = new hydr.ds.StringMap();
 		r.set_nodeName( name );
 		return r;
 	}

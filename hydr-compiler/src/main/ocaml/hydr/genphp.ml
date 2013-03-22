@@ -91,7 +91,7 @@ let rec class_string klass suffix params =
 					 (List.map type_string  params) ) ^ " >"
 	| _ when (match klass.cl_kind with KTypeParameter _ -> true | _ -> false) -> "Dynamic"
 	|  ([],"#Int") -> "/* # */int"
-	|  (["haxe";"io"],"Unsigned_char__") -> "unsigned char"
+	|  (["hydr";"io"],"Unsigned_char__") -> "unsigned char"
 	|  ([],"Class") -> "Class"
 	|  ([],"Null") -> (match params with
 			| [t] ->
@@ -104,8 +104,8 @@ let rec class_string klass suffix params =
 	(* Normal class *)
 	| _ -> (join_class_path klass.cl_path "::") ^ suffix
 	)
-and type_string_suff suffix haxe_type =
-	(match haxe_type with
+and type_string_suff suffix hydr_type =
+	(match hydr_type with
 	| TMono r -> (match !r with None -> "Dynamic" | Some t -> type_string_suff suffix t)
 	| TAbstract ({ a_path = [],"Int" },[]) -> "int"
 	| TAbstract ({ a_path = [],"Float" },[]) -> "double"
@@ -135,13 +135,13 @@ and type_string_suff suffix haxe_type =
 			| _ -> assert false)
 		| _ ->  type_string_suff suffix (apply_params type_def.t_types params type_def.t_type)
 		)
-	| TFun (args,haxe_type) -> "Dynamic"
+	| TFun (args,hydr_type) -> "Dynamic"
 	| TAnon anon -> "Dynamic"
-	| TDynamic haxe_type -> "Dynamic"
+	| TDynamic hydr_type -> "Dynamic"
 	| TLazy func -> type_string_suff suffix ((!func)())
 	)
-and type_string haxe_type =
-	type_string_suff "" haxe_type;;
+and type_string hydr_type =
+	type_string_suff "" hydr_type;;
 
 let debug_expression expression type_too =
 	"/* " ^ Type.s_expr_kind expression ^ (if (type_too) then " = " ^ (type_string (follow expression.etype)) else "") ^ " */";;
@@ -278,7 +278,7 @@ let s_path ctx path isextern p =
 			String.concat "_" pack ^ "_" ^ (prefix_class ctx.com name))
 	end
 
-let s_path_haxe path =
+let s_path_hydr path =
 	match fst path, snd path with
 	| [], s -> s
 	| el, s -> String.concat "." el ^ "." ^ s
@@ -298,7 +298,7 @@ let escape_bin s =
 	Buffer.contents b
 
 (*
-haxe reserved words that match php ones: break, case, class, continue, default, do, else, extends, for, function, if, new, return, static, switch, var, while, interface, implements, public, private, try, catch, throw
+hydr reserved words that match php ones: break, case, class, continue, default, do, else, extends, for, function, if, new, return, static, switch, var, while, interface, implements, public, private, try, catch, throw
  *)
 (* PHP only (for future use): cfunction, old_function *)
 let is_keyword n =
@@ -1224,7 +1224,7 @@ and gen_expr ctx e =
 	| TField (e1,s) ->
 		gen_tfield ctx e e1 (field_name s)
 	| TTypeExpr t ->
-		print ctx "_hx_qtype(\"%s\")" (s_path_haxe (t_path t))
+		print ctx "_hx_qtype(\"%s\")" (s_path_hydr (t_path t))
 	| TParenthesis e ->
 		(match e.eexpr with
 		| TParenthesis _
@@ -2100,7 +2100,7 @@ let generate_class ctx c =
 		print ctx "\tfunction __toString() { return $this->toString(); }";
 		newline ctx
 	end else if (not c.cl_interface) && (not c.cl_extern) then begin
-		print ctx "\tfunction __toString() { return '%s'; }" (s_path_haxe c.cl_path) ;
+		print ctx "\tfunction __toString() { return '%s'; }" (s_path_hydr c.cl_path) ;
 		newline ctx
 	end;
 

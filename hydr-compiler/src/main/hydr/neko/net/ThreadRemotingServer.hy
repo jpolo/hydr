@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,7 +21,7 @@
  */
 package neko.net;
 
-class ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,String> {
+class ThreadRemotingServer extends ThreadServer<hydr.remoting.SocketConnection,String> {
 
 	var domains : Array<String>;
 	var port : Int;
@@ -32,11 +32,11 @@ class ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,S
 		this.domains = domains;
 	}
 
-	public dynamic function initClientApi( cnx : haxe.remoting.SocketConnection, ctx : haxe.remoting.Context ) {
+	public dynamic function initClientApi( cnx : hydr.remoting.SocketConnection, ctx : hydr.remoting.Context ) {
 		throw "Not implemented";
 	}
 
-	public dynamic function onXml( cnx : haxe.remoting.SocketConnection, data : String ) {
+	public dynamic function onXml( cnx : hydr.remoting.SocketConnection, data : String ) {
 		throw "Unhandled XML data '"+data+"'";
 	}
 
@@ -54,11 +54,11 @@ class ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,S
 	}
 
 	public override function clientConnected( s : sys.net.Socket ) {
-		var ctx = new haxe.remoting.Context();
-		var cnx = haxe.remoting.SocketConnection.create(s,ctx);
+		var ctx = new hydr.remoting.Context();
+		var cnx = hydr.remoting.SocketConnection.create(s,ctx);
 		var me = this;
 		cnx.setErrorHandler(function(e) {
-			if( !Std.is(e,haxe.io.Eof) && !Std.is(e,haxe.io.Error) )
+			if( !Std.is(e,hydr.io.Eof) && !Std.is(e,hydr.io.Error) )
 				me.logError(e);
 			me.stopClient(s);
 		});
@@ -66,7 +66,7 @@ class ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,S
 		return cnx;
 	}
 
-	override function readClientMessage( cnx : haxe.remoting.SocketConnection, buf : haxe.io.Bytes, pos : Int, len : Int ) {
+	override function readClientMessage( cnx : hydr.remoting.SocketConnection, buf : hydr.io.Bytes, pos : Int, len : Int ) {
 		var msgLen = cnx.getProtocol().messageLength(buf.get(pos),buf.get(pos+1));
 		if( msgLen == null ) {
 			if( buf.get(pos) != 60 )
@@ -95,7 +95,7 @@ class ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,S
 		};
 	}
 
-	public override function clientMessage( cnx : haxe.remoting.SocketConnection, msg : String ) {
+	public override function clientMessage( cnx : hydr.remoting.SocketConnection, msg : String ) {
 		try {
 			if( msg.charCodeAt(0) == 60 ) {
 				if( domains != null && msg == "<policy-file-request/>" )
@@ -105,7 +105,7 @@ class ThreadRemotingServer extends ThreadServer<haxe.remoting.SocketConnection,S
 			} else
 				cnx.processMessage(msg);
 		} catch( e : Dynamic ) {
-			if( !Std.is(e,haxe.io.Eof) && !Std.is(e,haxe.io.Error) )
+			if( !Std.is(e,hydr.io.Eof) && !Std.is(e,hydr.io.Error) )
 				logError(e);
 			stopClient(cnx.getProtocol().socket);
 		}

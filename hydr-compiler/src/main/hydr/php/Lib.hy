@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -76,13 +76,13 @@ class Lib {
 		return untyped __call__("new _hx_array", a);
 	}
 
-	public static function hashOfAssociativeArray<T>(arr : NativeArray) : haxe.ds.StringMap<T> {
-		var h = new haxe.ds.StringMap<T>();
+	public static function hashOfAssociativeArray<T>(arr : NativeArray) : hydr.ds.StringMap<T> {
+		var h = new hydr.ds.StringMap<T>();
 		untyped h.h = arr;
 		return h;
 	}
 
-	public static function associativeArrayOfHash(hash : haxe.ds.StringMap<Dynamic>) : NativeArray {
+	public static function associativeArrayOfHash(hash : hydr.ds.StringMap<Dynamic>) : NativeArray {
 		return untyped hash.h;
 	}
 

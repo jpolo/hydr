@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -40,7 +40,7 @@ import cs.internal.Exceptions;
 			case "System.Double":
 				return untyped __cs__('v is double || v is int');
 			case "System.Int32":
-				return untyped __cs__('haxe.lang.Runtime.isInt(v)');
+				return untyped __cs__('hydr.lang.Runtime.isInt(v)');
 			case "System.Boolean":
 				return untyped __cs__('v is bool');
 			case "System.Object":

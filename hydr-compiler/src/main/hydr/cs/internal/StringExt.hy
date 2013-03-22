@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,7 @@ package cs.internal;
 import cs.internal.Function;
 private typedef NativeString = String;
 
-@:keep @:nativeGen @:native("haxe.lang.StringExt") private class StringExt
+@:keep @:nativeGen @:native("hydr.lang.StringExt") private class StringExt
 {
 
 	@:functionCode('
@@ -39,9 +39,9 @@ private typedef NativeString = String;
 
 	@:functionCode('
 			if ( ((uint) index) >= me.Length)
-				return default(haxe.lang.Null<int>);
+				return default(hydr.lang.Null<int>);
 			else
-				return new haxe.lang.Null<int>((int)me[index], true);
+				return new hydr.lang.Null<int>((int)me[index], true);
 	')
 	public static function charCodeAt(me:NativeString, index:Int):Null<Int>
 	{
@@ -206,7 +206,7 @@ private typedef NativeString = String;
 	}
 }
 
-@:keep @:nativeGen @:native('haxe.lang.StringRefl') private class StringRefl
+@:keep @:nativeGen @:native('hydr.lang.StringRefl') private class StringRefl
 {
 	public static var fields = ["length", "toUpperCase", "toLowerCase", "charAt", "charCodeAt", "indexOf", "lastIndexOf", "split", "substr", "substring"];
 

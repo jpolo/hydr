@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,7 +27,7 @@ package cs.internal;
  in modules (untested).
 **/
 
-@:keep @:abstract @:nativeGen @:native("haxe.lang.Function") private class Function
+@:keep @:abstract @:nativeGen @:native("hydr.lang.Function") private class Function
 {
 	function new(arity:Int, type:Int)
 	{
@@ -35,7 +35,7 @@ package cs.internal;
 	}
 }
 
-@:keep @:nativeGen @:native("haxe.lang.VarArgsBase") private class VarArgsBase extends Function
+@:keep @:nativeGen @:native("hydr.lang.VarArgsBase") private class VarArgsBase extends Function
 {
 	public function __hx_invokeDynamic(dynArgs:Array<Dynamic>):Dynamic
 	{
@@ -44,7 +44,7 @@ package cs.internal;
 	}
 }
 
-@:keep @:nativeGen @:native('haxe.lang.VarArgsFunction') class VarArgsFunction extends VarArgsBase
+@:keep @:nativeGen @:native('hydr.lang.VarArgsFunction') class VarArgsFunction extends VarArgsBase
 {
 	private var fun:Array<Dynamic>->Dynamic;
 
@@ -60,7 +60,7 @@ package cs.internal;
 	}
 }
 
-@:keep @:nativeGen @:native('haxe.lang.Closure') class Closure extends VarArgsBase
+@:keep @:nativeGen @:native('hydr.lang.Closure') class Closure extends VarArgsBase
 {
 	private var obj:Dynamic;
 	private var field:String;

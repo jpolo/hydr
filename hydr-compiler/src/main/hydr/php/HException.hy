@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,8 +23,8 @@ package php;
 
 extern class HException extends Exception {
   public var e : Dynamic;
-  public var p : haxe.PosInfos;
-  public function new(e : Dynamic, ?message : String, ?code : Int, ?p : haxe.PosInfos) : Void;
+  public var p : hydr.PosInfos;
+  public function new(e : Dynamic, ?message : String, ?code : Int, ?p : hydr.PosInfos) : Void;
   public function setLine(l:Int) : Void;
   public function setFile(f:String) : Void;
 }

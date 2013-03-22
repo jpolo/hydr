@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,8 +24,8 @@ package cs.system;
 /**
 	Warning: This class definition is incomplete.
 	In order to get most current extern definitions, install/update hxcs library with:
-		haxelib install hxcs
-	Please refer to http://lib.haxe.org/p/hxcs for more information.
+		hydrlib install hxcs
+	Please refer to http://lib.hydr.org/p/hxcs for more information.
 **/
 @:native('System.Environment') extern class Environment
 {

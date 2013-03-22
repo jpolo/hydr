@@ -384,8 +384,8 @@ let rec gen_call ctx e el in_value =
 		) (Hashtbl.fold (fun name data acc -> (name,data) :: acc) ctx.com.resources []);
 		spr ctx "]";
 	| TLocal { v_name = "`trace" }, [e;infos] ->
-		if has_feature ctx "haxe.Log.trace" then begin
-			let t = (try List.find (fun t -> t_path t = (["haxe"],"Log")) ctx.com.types with _ -> assert false) in
+		if has_feature ctx "hydr.Log.trace" then begin
+			let t = (try List.find (fun t -> t_path t = (["hydr"],"Log")) ctx.com.types with _ -> assert false) in
 			spr ctx (ctx.type_accessor t);
 			spr ctx ".trace(";
 			gen_value ctx e;
@@ -1183,7 +1183,7 @@ let generate com =
 	| None -> ()
 	| Some e -> gen_expr ctx e; newline ctx);
 	if ctx.found_expose then begin
-        (* TODO(bruno): Remove runtime branching when standard node haxelib is available *)
+        (* TODO(bruno): Remove runtime branching when standard node hydrlib is available *)
 		print ctx
 "function $hxExpose(src, path) {
 	var o = typeof window != \"undefined\" ? window : exports;

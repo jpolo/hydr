@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -134,7 +134,7 @@ private class MysqlResultSet implements ResultSet {
 			case "datetime", "date":
 				return Date.fromString(v);
 			case "blob":
-				return haxe.io.Bytes.ofData(cast v);
+				return hydr.io.Bytes.ofData(cast v);
 			default:
 				return v;
 		}

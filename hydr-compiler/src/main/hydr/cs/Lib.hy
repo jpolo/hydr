@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,7 +24,7 @@ import cs.system.Type;
 
 /**
 	Platform-specific C# Library. Provides some platform-specific functions for the C# target,
-	such as conversion from haxe types to native types and vice-versa.
+	such as conversion from hydr types to native types and vice-versa.
 **/
 class Lib
 {
@@ -84,7 +84,7 @@ class Lib
 		This function will not work with Value Types (such as Int, Float, Bool...)
 	**/
 	@:functionCode('
-			throw new haxe.lang.HaxeException("This function cannot be accessed at runtime");
+			throw new hydr.lang.HaxeException("This function cannot be accessed at runtime");
 	')
 	@:extern public static inline function as<T>(obj:Dynamic, cl:Class<T>):T
 	{

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -76,10 +76,10 @@ class Lib {
 	
 	public static function redirectTraces() {
 		if (flash.external.ExternalInterface.available)
-			haxe.Log.trace = traceToConsole;
+			hydr.Log.trace = traceToConsole;
 	}
 
-	static function traceToConsole(v : Dynamic, ?inf : haxe.PosInfos ) {
+	static function traceToConsole(v : Dynamic, ?inf : hydr.PosInfos ) {
 		var type = if( inf != null && inf.customParams != null ) inf.customParams[0] else null;
 		if( type != "warn" && type != "info" && type != "debug" && type != "error" )
 			type = if( inf == null ) "error" else "log";

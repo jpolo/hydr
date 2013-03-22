@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45,7 +45,7 @@ class Cookie {
 		Returns all cookies
 	**/
 	public static function all(){
-		var h = new haxe.ds.StringMap();
+		var h = new hydr.ds.StringMap();
 		var a = Browser.document.cookie.split(";");
 		for( e in a ){
 			e = StringTools.ltrim(e);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,7 +28,7 @@ class Uncompress {
 		s = _inflate_init(windowBits);
 	}
 
-	public function this_run( src : haxe.io.Bytes, srcPos : Int, dst : haxe.io.Bytes, dstPos : Int ) : { done : Bool, read : Int, write : Int } {
+	public function this_run( src : hydr.io.Bytes, srcPos : Int, dst : hydr.io.Bytes, dstPos : Int ) : { done : Bool, read : Int, write : Int } {
 		return _inflate_buffer(s,src.getData(),srcPos,dst.getData(),dstPos);
 	}
 
@@ -40,11 +40,11 @@ class Uncompress {
 		_inflate_end(s);
 	}
 
-	public static function run( src : haxe.io.Bytes, ?bufsize ) : haxe.io.Bytes {
+	public static function run( src : hydr.io.Bytes, ?bufsize ) : hydr.io.Bytes {
 		var u = new Uncompress(null);
 		if( bufsize == null ) bufsize = 1 << 16; // 64K
-		var tmp = haxe.io.Bytes.alloc(bufsize);
-		var b = new haxe.io.BytesBuffer();
+		var tmp = hydr.io.Bytes.alloc(bufsize);
+		var b = new hydr.io.BytesBuffer();
 		var pos = 0;
 		u.setFlushMode(Flush.SYNC);
 		while( true ) {

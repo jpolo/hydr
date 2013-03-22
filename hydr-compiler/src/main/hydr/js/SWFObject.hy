@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +33,7 @@ extern class SWFObject {
 
 	private static function __init__() : Void untyped {
 		#if embed_js
-		haxe.macro.Compiler.includeFile("js/swfobject-1.5.js");
+		hydr.macro.Compiler.includeFile("js/swfobject-1.5.js");
 		#end
 		js.SWFObject = deconcept.SWFObject;
 	}
