@@ -58,9 +58,9 @@ package java;
 	}
 
 	/**
-		Returns a Haxe Array of a native Array.
+		Returns a Hydr Array of a native Array.
 		It won't copy the contents of the native array, so unless any operation triggers an array resize,
-		all changes made to the Haxe array will affect the native array argument.
+		all changes made to the Hydr array will affect the native array argument.
 	**/
 	public static function array<T>(native:java.NativeArray<T>):Array<T>
 	{
@@ -68,7 +68,7 @@ package java;
 	}
 
 	/**
-		Allocates a new Haxe Array with a predetermined size
+		Allocates a new Hydr Array with a predetermined size
 	**/
 	public static function arrayAlloc<T>(size:Int):Array<T>
 	{

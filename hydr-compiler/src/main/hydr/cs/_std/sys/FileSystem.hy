@@ -61,7 +61,7 @@ class FileSystem {
 				atime: untyped Date.fromNative(fi.LastAccessTime),
 				mtime: untyped Date.fromNative(fi.LastWriteTime),
 				ctime: untyped Date.fromNative(fi.CreationTime),
-				size: cast(fi.Length, Int), //TODO: maybe change to Int64 for Haxe 3?
+				size: cast(fi.Length, Int), //TODO: maybe change to Int64 for Hydr 3?
 				dev: 0, //FIXME: not sure what that is
 				ino: 0, //FIXME: not sure what that is
 				nlink: 0, //FIXME: not sure what that is
@@ -76,7 +76,7 @@ class FileSystem {
 				atime: untyped Date.fromNative(fi.LastAccessTime),
 				mtime: untyped Date.fromNative(fi.LastWriteTime),
 				ctime: untyped Date.fromNative(fi.CreationTime),
-				size: 0, //TODO: maybe change to Int64 for Haxe 3?
+				size: 0, //TODO: maybe change to Int64 for Hydr 3?
 				dev: 0, //FIXME: not sure what that is
 				ino: 0, //FIXME: not sure what that is
 				nlink: 0, //FIXME: not sure what that is

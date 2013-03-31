@@ -272,11 +272,11 @@ class TestBasetypes extends Test {
 	}
 
 	function testObjectKeyword() {
-		// new is a keyword in Haxe
+		// new is a keyword in Hydr
 		var l = { "new": "test" };
 		var prefix = #if as3 "_" #else "" #end;
 		eq(Reflect.field(l, prefix + "new"), "test");
-		// const is a keyword on some platforms but not in Haxe
+		// const is a keyword on some platforms but not in Hydr
 		// check that with can still access it normally
 		var o = { const : 6 }
 		eq(o.const, 6);

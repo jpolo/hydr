@@ -54,7 +54,7 @@ class HttpConnection implements Connection implements Dynamic<Connection> {
 		var s = new hydr.Serializer();
 		s.serialize(__path);
 		s.serialize(params);
-		h.setHeader("X-Haxe-Remoting","1");
+		h.setHeader("X-Hydr-Remoting","1");
 		h.setParameter("__x",s.toString());
 		h.onData = function(d) { data = d; };
 		h.onError = function(e) { throw e; };
@@ -76,7 +76,7 @@ class HttpConnection implements Connection implements Dynamic<Connection> {
 	#if neko
 	public static function handleRequest( ctx : Context ) {
 		var v = neko.Web.getParams().get("__x");
-		if( neko.Web.getClientHeader("X-Haxe-Remoting") == null || v == null )
+		if( neko.Web.getClientHeader("X-Hydr-Remoting") == null || v == null )
 			return false;
 		neko.Lib.print(processRequest(v,ctx));
 		return true;
@@ -84,7 +84,7 @@ class HttpConnection implements Connection implements Dynamic<Connection> {
 	#elseif php
 	public static function handleRequest( ctx : Context ) {
 		var v = php.Web.getParams().get("__x");
-		if( php.Web.getClientHeader("X-Haxe-Remoting") == null || v == null )
+		if( php.Web.getClientHeader("X-Hydr-Remoting") == null || v == null )
 			return false;
 		php.Lib.print(processRequest(v,ctx));
 		return true;

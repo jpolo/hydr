@@ -23,7 +23,7 @@ package cs.internal;
 import cs.system.Exception;
 
 //should NOT be usable inside hydr code
-@:nativeGen @:keep @:native("hydr.lang.HaxeException") private class HaxeException extends Exception
+@:nativeGen @:keep @:native("hydr.lang.HydrException") private class HydrException extends Exception
 {
 	private var obj:Dynamic;
 
@@ -31,9 +31,9 @@ import cs.system.Exception;
 	{
 		super();
 
-		if (Std.is(obj, HaxeException))
+		if (Std.is(obj, HydrException))
 		{
-			var _obj:HaxeException = cast obj;
+			var _obj:HydrException = cast obj;
 			obj = _obj.getObject();
 		}
 		this.obj = obj;
@@ -46,13 +46,13 @@ import cs.system.Exception;
 
 	public function toString():String
 	{
-		return "Haxe Exception: " + obj;
+		return "Hydr Exception: " + obj;
 	}
 
 	public static function wrap(obj:Dynamic):Exception
 	{
 		if (Std.is(obj, Exception)) return obj;
 
-		return new HaxeException(obj);
+		return new HydrException(obj);
 	}
 }

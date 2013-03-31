@@ -30,7 +30,7 @@ import cs.system.reflection.MethodInfo;
 import cs.system.Type;
 
 /**
- This class is meant for internal compiler use only. It provides the Haxe runtime
+ This class is meant for internal compiler use only. It provides the Hydr runtime
  compatibility to the host language.
 **/
 
@@ -325,7 +325,7 @@ import cs.system.Type;
 					return new hydr.lang.Closure(obj != null ? obj : t, field, 0);
 				} else {
 					if (throwErrors)
-						throw HaxeException.wrap("Cannot access field \'" + field + "\'.");
+						throw HydrException.wrap("Cannot access field \'" + field + "\'.");
 					else
 						return null;
 				}
@@ -394,7 +394,7 @@ import cs.system.Type;
 			System.Reflection.PropertyInfo prop = t.GetProperty(field, bf);
 			if (prop == null)
 			{
-				throw hydr.lang.HaxeException.wrap("Field \'" + field + "\' not found for writing from Class " + t);
+				throw hydr.lang.HydrException.wrap("Field \'" + field + "\' not found for writing from Class " + t);
 			}
 
 			if (prop.PropertyType.ToString().StartsWith("hydr.lang.Null"))
@@ -585,7 +585,7 @@ import cs.system.Type;
 
 		if (last == 0)
 		{
-			throw hydr.lang.HaxeException.wrap("Method \'" + field + "\' not found on type " + t);
+			throw hydr.lang.HydrException.wrap("Method \'" + field + "\' not found on type " + t);
 		}
 
 		return hydr.lang.Runtime.callMethod(obj, mis, last, args);

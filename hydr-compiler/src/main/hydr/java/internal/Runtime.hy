@@ -22,7 +22,7 @@
 package java.internal;
 
 /**
- This class is meant for internal compiler use only. It provides the Haxe runtime
+ This class is meant for internal compiler use only. It provides the Hydr runtime
  compatibility to the host language. Do not access it directly.
 **/
 
@@ -304,7 +304,7 @@ package java.internal;
 		}
 
 		if (throwErrors)
-			throw HaxeException.wrap(t);
+			throw HydrException.wrap(t);
 
 		return null;
 	}
@@ -342,7 +342,7 @@ package java.internal;
 		}
 		catch (Throwable t)
 		{
-			throw HaxeException.wrap(t);
+			throw HydrException.wrap(t);
 		}
 	')
 	public static function slowSetField(obj:Dynamic, field:String, value:Dynamic):Dynamic
@@ -426,7 +426,7 @@ package java.internal;
 
 		java.lang.reflect.Method found;
 		if (ms.length == 0 || (found = ms[0]) == null)
-			throw hydr.lang.HaxeException.wrap("No compatible method found for: " + field);
+			throw hydr.lang.HydrException.wrap("No compatible method found for: " + field);
 
 		if (hasNumber)
 		{
@@ -473,12 +473,12 @@ package java.internal;
 
 		catch (java.lang.reflect.InvocationTargetException e)
 		{
-			throw hydr.lang.HaxeException.wrap(e.getCause());
+			throw hydr.lang.HydrException.wrap(e.getCause());
 		}
 
 		catch (Throwable t)
 		{
-			throw hydr.lang.HaxeException.wrap(t);
+			throw hydr.lang.HydrException.wrap(t);
 		}
 	')
 	public static function slowCallField(obj:Dynamic, field:String, args:Array<Dynamic>):Dynamic

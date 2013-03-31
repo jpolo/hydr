@@ -72,7 +72,7 @@ class Lib {
 		return untyped __field__(a, 'a');
 	}
 
-	public static inline function toHaxeArray(a : NativeArray) : Array<Dynamic> {
+	public static inline function toHydrArray(a : NativeArray) : Array<Dynamic> {
 		return untyped __call__("new _hx_array", a);
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -108,7 +108,7 @@ class DateTools {
 		Format the date [d] according to the format [f]. The format is
 		compatible with the [strftime] standard format, except that there is no
 		support in Flash and JS for day and months names (due to lack of proper
-		internationalization API). On haXe/Neko/Windows, some formats are not
+		internationalization API). On Hydr/Neko/Windows, some formats are not
 		supported.
 	**/
 	public static function format( d : Date, f : String ) : String {

@@ -232,7 +232,7 @@ private typedef NativeString = String;
 
 @:keep @:native('hydr.lang.NativeString') private extern class JavaString
 {
-	//name collides with Haxe's
+	//name collides with Hydr's
 	function _charAt(idx:Int):java.StdTypes.Char16;
 	function codePointAt(idx:Int):Int;
 	function codePointBefore(idx:Int):Int;

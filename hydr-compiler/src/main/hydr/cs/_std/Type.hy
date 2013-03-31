@@ -23,7 +23,7 @@ import cs.Lib;
 import cs.internal.HxObject;
 import cs.internal.Runtime;
 /*
- * Copyright (c) 2005, The haXe Project Contributors
+ * Copyright (C) 2013-2013 Julien Polo
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,10 +34,10 @@ import cs.internal.Runtime;
  *     notice, this list of conditions and the following disclaimer in the
  *     documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE HAXE PROJECT CONTRIBUTORS "AS IS" AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE HYDR PROJECT CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE HAXE PROJECT CONTRIBUTORS BE LIABLE FOR
+ * DISCLAIMED. IN NO EVENT SHALL THE HYDR PROJECT CONTRIBUTORS BE LIABLE FOR
  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
@@ -193,7 +193,7 @@ import cs.internal.Runtime;
 		{
 			object ret = hydr.lang.Runtime.slowGetField(e, constr, true);
 			if (ret is hydr.lang.Function)
-				throw hydr.lang.HaxeException.wrap("Constructor " + constr + " needs parameters");
+				throw hydr.lang.HydrException.wrap("Constructor " + constr + " needs parameters");
 			return (T) ret;
 		} else {
 			return (T) hydr.lang.Runtime.slowCallField(e, constr, @params);

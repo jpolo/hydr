@@ -181,7 +181,7 @@ class TestJava extends Test
 		eq(child.someField(true, 10), 52);
 	}
 
-	function testHaxeKeywords()
+	function testHydrKeywords()
 	{
 		eq(Base._inline, 42);
 		eq(Base._callback, 43);

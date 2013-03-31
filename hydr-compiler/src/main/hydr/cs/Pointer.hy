@@ -23,7 +23,7 @@ package cs;
 
 /**
 	This type represents pointer types for C# function parameters. It should only
-	be used inside an unsafe context (not checked by the Haxe compiler)
+	be used inside an unsafe context (not checked by the Hydr compiler)
 
 	C# code:
 		int[] src;
@@ -31,7 +31,7 @@ package cs;
 		{
 			...
 		}
-	Haxe code:
+	Hydr code:
 		var pSrc:cs.Pointer<Int>;
 		cs.Lib.fixed(pSrc = cast src,
 		{

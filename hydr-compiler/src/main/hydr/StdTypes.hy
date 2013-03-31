@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -19,7 +19,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-// standard haXe types
+// standard Hydr types
 
 /**
 	The standard Void type. Only [null] values can be of the type [Void].
@@ -64,7 +64,7 @@ typedef Null<T> = T
 
 /**
 	Dynamic is an internal compiler type which has special behavior.
-	See the haXe language reference for more informations.
+	See the Hydr language reference for more informations.
 **/
 @:coreType @:runtimeValue abstract Dynamic<T> {
 }

@@ -20,7 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #if !(core_api || cross)
-#error "Please don't add hydr/std to your classpath, instead set HAXE_STD_PATH env var"
+#error "Please don't add hydr/std to your classpath, instead set HYDR_STD_PATH env var"
 #end
 
 /**

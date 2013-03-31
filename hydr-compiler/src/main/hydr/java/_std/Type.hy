@@ -233,12 +233,12 @@
 		}
 		catch (java.lang.reflect.InvocationTargetException e)
 		{
-			throw hydr.lang.HaxeException.wrap(e.getCause());
+			throw hydr.lang.HydrException.wrap(e.getCause());
 		}
 
 		catch (Throwable t)
 		{
-			throw hydr.lang.HaxeException.wrap(t);
+			throw hydr.lang.HydrException.wrap(t);
 		}
 	')
 	public static function createInstance<T>( cl : Class<T>, args : Array<Dynamic> ) : T untyped
@@ -258,7 +258,7 @@
 		{
 			java.lang.Object ret = hydr.lang.Runtime.slowGetField(e, constr, true);
 			if (ret instanceof hydr.lang.Function)
-				throw hydr.lang.HaxeException.wrap("Constructor " + constr + " needs parameters");
+				throw hydr.lang.HydrException.wrap("Constructor " + constr + " needs parameters");
 			return (T) ret;
 		} else {
 			return (T) hydr.lang.Runtime.slowCallField(e, constr, params);

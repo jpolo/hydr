@@ -24,7 +24,7 @@ import java.lang.Throwable;
 import java.lang.RuntimeException;
 import java.lang.Exception;
 
-@:nativeGen @:keep @:native("hydr.lang.HaxeException") private class HaxeException extends RuntimeException
+@:nativeGen @:keep @:native("hydr.lang.HydrException") private class HydrException extends RuntimeException
 {
 	private var obj:Dynamic;
 
@@ -32,9 +32,9 @@ import java.lang.Exception;
 	{
 		super(msg, cause);
 
-		if (Std.is(obj, HaxeException))
+		if (Std.is(obj, HydrException))
 		{
-			var _obj:HaxeException = cast obj;
+			var _obj:HydrException = cast obj;
 			obj = _obj.getObject();
 		}
 
@@ -48,7 +48,7 @@ import java.lang.Exception;
 
 	@:overload override public function toString():String
 	{
-		return "Haxe Exception: " + obj;
+		return "Hydr Exception: " + obj;
 	}
 
 	public static function wrap(obj:Dynamic):RuntimeException
@@ -57,10 +57,10 @@ import java.lang.Exception;
 			return obj;
 
 		if (Std.is(obj, String))
-			return new HaxeException(obj, obj, null);
+			return new HydrException(obj, obj, null);
 		else if (Std.is(obj, Throwable))
-			return new HaxeException(obj, null, obj);
+			return new HydrException(obj, null, obj);
 
-		return new HaxeException(obj, null, null);
+		return new HydrException(obj, null, null);
 	}
 }

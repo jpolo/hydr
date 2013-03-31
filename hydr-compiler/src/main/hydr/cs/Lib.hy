@@ -84,7 +84,7 @@ class Lib
 		This function will not work with Value Types (such as Int, Float, Bool...)
 	**/
 	@:functionCode('
-			throw new hydr.lang.HaxeException("This function cannot be accessed at runtime");
+			throw new hydr.lang.HydrException("This function cannot be accessed at runtime");
 	')
 	@:extern public static inline function as<T>(obj:Dynamic, cl:Class<T>):T
 	{
@@ -94,7 +94,7 @@ class Lib
 	/**
 		Returns a Class<> equivalent to the native System.Type type.
 
-		Currently Haxe's Class<> is equivalent to System.Type, but this is an implementation detail.
+		Currently Hydr's Class<> is equivalent to System.Type, but this is an implementation detail.
 		This may change in the future, so use this function whenever you need to perform such conversion.
 	**/
 	public static inline function fromNativeType(t:cs.system.Type):Class<Dynamic>
@@ -103,9 +103,9 @@ class Lib
 	}
 
 	/**
-		Returns a System.Type equivalent to the Haxe Class<> type.
+		Returns a System.Type equivalent to the Hydr Class<> type.
 
-		Currently Haxe's Class<> is equivalent to System.Type, but this is an implementation detail.
+		Currently Hydr's Class<> is equivalent to System.Type, but this is an implementation detail.
 		This may change in the future, so use this function whenever you need to perform such conversion.
 	**/
 	public static inline function toNativeType(cl:Class<Dynamic>):Type
@@ -122,9 +122,9 @@ class Lib
 	}
 
 	/**
-		Returns a Haxe Array of a native Array.
+		Returns a Hydr Array of a native Array.
 		It won't copy the contents of the native array, so unless any operation triggers an array resize,
-		all changes made to the Haxe array will affect the native array argument.
+		all changes made to the Hydr array will affect the native array argument.
 	**/
 	public static function array<T>(native:cs.NativeArray<T>):Array<T>
 	{
@@ -132,7 +132,7 @@ class Lib
 	}
 
 	/**
-		Allocates a new Haxe Array with a predetermined size
+		Allocates a new Hydr Array with a predetermined size
 	**/
 	public static function arrayAlloc<T>(size:Int):Array<T>
 	{

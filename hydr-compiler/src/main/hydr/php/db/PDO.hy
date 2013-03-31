@@ -111,7 +111,7 @@ private class PDOConnection implements Connection {
 		var result = pdo.query(s, untyped __php__("PDO::PARAM_STR"));
 		if(untyped __physeq__(result, false))
 		{
-			var info = Lib.toHaxeArray(pdo.errorInfo());
+			var info = Lib.toHydrArray(pdo.errorInfo());
 			throw "Error while executing " + s + " (" + info[2] + ")";
 		}
 		var db = dbname.toLowerCase();

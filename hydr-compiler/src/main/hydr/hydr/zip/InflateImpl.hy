@@ -85,7 +85,7 @@ private enum State {
 }
 
 /**
-	A pure Haxe implementation of the ZLIB Inflate algorithm which allows reading compressed data without any platform-specific support.
+	A pure Hydr implementation of the ZLIB Inflate algorithm which allows reading compressed data without any platform-specific support.
 **/
 class InflateImpl {
 

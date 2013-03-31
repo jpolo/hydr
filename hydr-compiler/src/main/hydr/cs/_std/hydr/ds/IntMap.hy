@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, The haXe Project Contributors
+ * Copyright (C) 2013-2013 Julien Polo
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -10,10 +10,10 @@
  *     notice, this list of conditions and the following disclaimer in the
  *     documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE HAXE PROJECT CONTRIBUTORS "AS IS" AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE HYDR PROJECT CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE HAXE PROJECT CONTRIBUTORS BE LIABLE FOR
+ * DISCLAIMED. IN NO EVENT SHALL THE HYDR PROJECT CONTRIBUTORS BE LIABLE FOR
  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
@@ -30,7 +30,7 @@ import cs.NativeArray;
  * This IntMap implementation is based on khash (https://github.com/attractivechaos/klib/blob/master/khash.h)
  * Copyright goes to Attractive Chaos <attractor@live.co.uk> and his contributors
  *
- * Thanks also to Jonas Malaco Filho for his Haxe-written IntMap code inspired by Python tables.
+ * Thanks also to Jonas Malaco Filho for his Hydr-written IntMap code inspired by Python tables.
  * (https://jonasmalaco.com/fossil/test/jonas-hydr/artifact/887b53126e237d6c68951111d594033403889304)
  */
 @:coreApi class IntMap<T>

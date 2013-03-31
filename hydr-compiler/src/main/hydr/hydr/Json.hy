@@ -23,7 +23,7 @@ package hydr;
 
 /**
 	Crossplatform JSON API : it will automatically use the optimized native API if available.
-	Use -D hydrJSON to force usage of the haXe implementation even if a native API is found : this will provide
+	Use -D hydrJSON to force usage of the Hydr implementation even if a native API is found : this will provide
 	extra encoding features such as enums (replaced by their index), Hashs and Iterable.
 **/
 #if (flash11 && !hydrJSON)
@@ -438,7 +438,7 @@ class Json {
 		}
 		else if (untyped __call__("is_array", val)) {
 			arr = phpMapArray(val, convertAfterDecode);
-			return php.Lib.toHaxeArray(arr);
+			return php.Lib.toHydrArray(arr);
 		}
 		else
 			return val;

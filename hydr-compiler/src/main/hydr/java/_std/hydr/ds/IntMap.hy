@@ -27,7 +27,7 @@ import java.NativeArray;
  * This IntMap implementation is based on khash (https://github.com/attractivechaos/klib/blob/master/khash.h)
  * Copyright goes to Attractive Chaos <attractor@live.co.uk> and his contributors
  *
- * Thanks also to Jonas Malaco Filho for his Haxe-written IntMap code inspired by Python tables.
+ * Thanks also to Jonas Malaco Filho for his Hydr-written IntMap code inspired by Python tables.
  * (https://jonasmalaco.com/fossil/test/jonas-hydr/artifact/887b53126e237d6c68951111d594033403889304)
  */
 

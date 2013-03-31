@@ -90,9 +90,9 @@ class Lib {
 	}
 
 	/**
-		Converts a Neko value to its haXe equivalent. Used for wrapping String and Arrays raw values into haXe Objects.
+		Converts a Neko value to its Hydr equivalent. Used for wrapping String and Arrays raw values into Hydr Objects.
 	**/
-	public static function nekoToHaxe( v : Dynamic ) : Dynamic untyped {
+	public static function nekoToHydr( v : Dynamic ) : Dynamic untyped {
 		switch( __dollar__typeof(v) ) {
 		case 0: return v;
 		case 1: return v;
@@ -102,7 +102,7 @@ class Lib {
 		case 6:
 			var a = Array.new1(v,__dollar__asize(v));
 			for( i in 0...a.length )
-				a[i] = nekoToHaxe(a[i]);
+				a[i] = nekoToHydr(a[i]);
 			return a;
 		case 5:
 			var f = __dollar__objfields(v);
@@ -112,7 +112,7 @@ class Lib {
 			if( __dollar__objgetproto(v) != null )
 				throw "Can't convert object prototype";
 			while( i < l ) {
-				__dollar__objset(o,f[i],nekoToHaxe(__dollar__objget(v,f[i])));
+				__dollar__objset(o,f[i],nekoToHydr(__dollar__objget(v,f[i])));
 				i += 1;
 			}
 			return o;
@@ -122,7 +122,7 @@ class Lib {
 	}
 
 	/**
-		Converts a Neko value to its haXe equivalent. Used to unwrap String and Arrays Objects into raw Neko values.
+		Converts a Neko value to its Hydr equivalent. Used to unwrap String and Arrays Objects into raw Neko values.
 	**/
 	public static function hydrToNeko( v : Dynamic ) : Dynamic untyped {
 		switch( __dollar__typeof(v) ) {

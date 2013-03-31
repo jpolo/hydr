@@ -84,7 +84,7 @@ class Lib {
 		This function is used to make porting from neko to cpp easy.
 		It does not need to do anything because the c-code can work with any Dynamic
 	**/
-	public static function nekoToHaxe( v : Dynamic ) : Dynamic {
+	public static function nekoToHydr( v : Dynamic ) : Dynamic {
 		return v;
 	}
 	/**

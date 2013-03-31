@@ -21,7 +21,7 @@
  */
 /**
 	The diffent possible runtime types of a value.
-	See [Type] for the haXe Reflection API.
+	See [Type] for the Hydr Reflection API.
 **/
 enum ValueType {
 	TNull;

@@ -49,7 +49,7 @@ class HttpAsyncConnection implements AsyncConnection implements Dynamic<AsyncCon
 		var s = new hydr.Serializer();
 		s.serialize(__path);
 		s.serialize(params);
-		h.setHeader("X-Haxe-Remoting","1");
+		h.setHeader("X-Hydr-Remoting","1");
 		h.setParameter("__x",s.toString());
 		var error = __data.error;
 		h.onData = function( response : String ) {
