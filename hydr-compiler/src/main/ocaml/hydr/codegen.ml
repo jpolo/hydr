@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -200,7 +200,7 @@ let extend_remoting ctx c t p async prot =
 	| _ -> error "Remoting proxy must be a class without parameters" p
 
 (* -------------------------------------------------------------------------- *)
-(* HAXE.RTTI.GENERIC *)
+(* HYDR.RTTI.GENERIC *)
 
 exception Generic_Exception of string * Ast.pos
 
@@ -391,7 +391,7 @@ let rec build_generic ctx c p tl =
 		TInst (cg,[])
 
 (* -------------------------------------------------------------------------- *)
-(* HAXE.XML.PROXY *)
+(* HYDR.XML.PROXY *)
 
 let extend_xml_proxy ctx c t file p =
 	let t = Typeload.load_complex_type ctx p t in

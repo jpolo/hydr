@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,6 +27,7 @@ open Genswf9
 open Type
 open Common
 open Ast
+open Version
 
 let rec make_tpath = function
 	| HMPath (pack,name) ->
@@ -690,7 +691,7 @@ let build_swc_catalog com types =
 	let x = node "swc" ["xmlns","http://www.adobe.com/flash/swccatalog/9"] [
 		node "versions" [] [
 			node "swc" ["version","1.2"] [];
-			node "hydr" ["version",Printf.sprintf "%d.%.2d" (com.version/100) (com.version mod 100)] [];
+			node "hydr" ["version",Printf.sprintf "%d.%.2d" (Version.major com.version) (Version.minor com.version)] [];
 		];
 		node "features" [] [
 			node "feature-script-deps" [] [];
@@ -785,7 +786,7 @@ let detect_format data p =
 		error "Unknown file format" p
 
 let build_swf9 com file swc =
-	let boot_name = if swc <> None || Common.defined com Define.HaxeBoot then "hydr" else "boot_" ^ (String.sub (Digest.to_hex (Digest.string (Filename.basename file))) 0 4) in
+	let boot_name = if swc <> None || Common.defined com Define.HydrBoot then "hydr" else "boot_" ^ (String.sub (Digest.to_hex (Digest.string (Filename.basename file))) 0 4) in
 	let code = Genswf9.generate com boot_name in
 	let code = (match swc with
 	| Some cat ->

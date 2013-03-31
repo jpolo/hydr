@@ -10,57 +10,70 @@
 #
 
 ###  Boostrap (do not change)
-ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-SOURCE_DIR=$(ROOT_DIR)/src/$(CONFIG)/ocaml
+DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+SOURCE_DIR=src/main/ocaml
 SOURCE_PROJECT=$(SOURCE_DIR)/$(NAME)
+SOURCE_STD_DIR=src/main/hydr
 
-TARGET_DIR=$(ROOT_DIR)/target
+TARGET_DIR=target
 COMPILE_DIR=$(TARGET_DIR)/compile
+DIST_DIR=$(TARGET_DIR)/dist
 INSTALL_DIR=/usr
+INSTALL_LIB_DIR=$(INSTALL_DIR)/lib/$(NAME)
+INSTALL_BIN_DIR=$(INSTALL_DIR)/bin
 
-export HAXE_LIBRARY_PATH=$(ROOT_DIR)/std
+export HYDR_HOME=$(realpath $(DIST_DIR))
+export HYDR_DEBUG=1
 
 #========================
 #  User Configuration
 #========================
 NAME=hydr
-CONFIG=main
+EXEC=$(NAME)c
 
 #========================
 #  Rules
 #========================
-all: compile
+all: dist
 
-compile: compile_libs compile_compiler
+dist: target_dir dependencies compile
+	@cp -u $(COMPILE_DIR)/$(EXEC) $(DIST_DIR)/bin/$(EXEC)
+	@cp -ru $(SOURCE_STD_DIR)/* $(DIST_DIR)/std
 
-compile_libs:
-	make -C $(SOURCE_DIR)/$(NAME) compile_libs
+compile:
+	@echo "Compiling $(NAME)..."
+	@make -C $(SOURCE_DIR)/$(NAME) compile_compiler
 	
-compile_compiler:
-	make -C $(SOURCE_DIR)/$(NAME) compile_compiler
+dependencies:
+	@echo "Compiling dependencies..."
+	@make -sC $(SOURCE_DIR)/$(NAME) compile_libs
 
 install:
-	cp haxe $(INSTALL_DIR)/bin/haxe
-	rm -rf $(INSTALL_DIR)/lib/haxe
-	mkdir $(INSTALL_DIR)/lib/haxe
-	cp -r std $(INSTALL_DIR)/lib/haxe
-	mkdir $(INSTALL_DIR)/lib/haxe/lib
-	chmod 777 $(INSTALL_DIR)/lib/haxe/lib
-	cp std/tools/haxelib/haxelib.sh $(INSTALL_DIR)/bin/haxelib
-	cp std/tools/haxedoc/haxedoc.sh $(INSTALL_DIR)/bin/haxedoc
-	chmod +x $(INSTALL_DIR)/bin/haxelib
-	chmod +x $(INSTALL_DIR)/bin/haxedoc
+	#create install lib & bin
+	rm -rf $(INSTALL_LIB_DIR)
+	mkdir -p $(INSTALL_LIB_DIR)/lib
+	
+	cp -r $(HYDR_STD_PATH) $(INSTALL_LIB_DIR)
+	cp $(NAME) $(INSTALL_BIN_DIR)/$(NAME)
+	#cp std/tools/haxelib/haxelib.sh $(INSTALL_BIN_DIR)/haxelib
+	#cp std/tools/haxedoc/haxedoc.sh $(INSTALL_BIN_DIR)/haxedoc
+	
+	chmod 777 $(INSTALL_LIB_DIR)/lib
+	chmod +x $(INSTALL_BIN_DIR)/$(NAME) $(INSTALL_BIN_DIR)/haxelib $(INSTALL_BIN_DIR))/haxedoc
 	
 uninstall:
-	rm -rf $(INSTALL_DIR)/bin/haxe $(INSTALL_DIR)/bin/haxelib $(INSTALL_DIR)/lib/haxe
+	rm -rf $(INSTALL_BIN_DIR)/$(NAME) $(INSTALL_BIN_DIR)/haxelib $(INSTALL_BIN_DIR))/haxedoc $(INSTALL_LIB_DIR)/lib/$(NAME)
 	
 export:
-	cp haxe*.exe doc/CHANGES.txt $(EXPORT)
+	cp $(NAME)*.exe doc/CHANGES.txt $(EXPORT)
 	rsync -a --exclude .svn --exclude *.n --exclude std/libs --delete std $(EXPORT)
 
-clean: clean_libs clean_compiler
+test:
+	$(DIST_DIR)/bin/$(EXEC) project/compile_test.hyml
 
-clean_libs:
+clean: clean_dependencies clean_compiler
+
+clean_dependencies:
 	make -C $(SOURCE_DIR)/extlib clean
 	make -C $(SOURCE_DIR)/extc clean
 	make -C $(SOURCE_DIR)/neko clean
@@ -70,7 +83,14 @@ clean_libs:
 	make -C $(SOURCE_DIR)/xml-light clean
 
 clean_compiler:
-	make -C $(SOURCE_DIR)/hydr clean
-	rm -f $(EXEC)
-	rm -f $(EXEC).opt
-	rm -rf $(COMPILE_DIR)
+	make -C $(SOURCE_DIR)/$(NAME) clean
+	@rm -f $(EXEC)
+	@rm -rf $(COMPILE_DIR)
+	
+target_dir:
+	@mkdir -p $(COMPILE_DIR)
+	@rm -rf $(DIST_DIR)
+	@mkdir -p $(DIST_DIR)
+	@mkdir -p $(DIST_DIR)/bin
+	@mkdir -p $(DIST_DIR)/std
+	@mkdir -p $(DIST_DIR)/addons

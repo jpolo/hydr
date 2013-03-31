@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,6 +23,7 @@
 open Ast
 open Common
 open Type
+open Path
 
 type dce = {
 	com : context;
@@ -340,7 +341,7 @@ let run com main full =
 	let dce = {
 		com = com;
 		full = full;
-		std_dirs = if full then [] else List.map Common.unique_full_path com.std_path;
+		std_dirs = if full then [] else List.map Path.full_unique com.std_path;
 		debug = Common.defined com Define.DceDebug;
 		added_fields = [];
 		follow_expr = expr;

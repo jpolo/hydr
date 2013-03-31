@@ -1,5 +1,5 @@
 #remoting
--cp ..
+-cp src/test/hydr/
 -main unit.RemotingServer
 -neko remoting.n
 

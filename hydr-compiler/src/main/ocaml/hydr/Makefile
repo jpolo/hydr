@@ -17,17 +17,16 @@ ROOT_DIR=$(realpath $(SOURCE_DIR)/../../..)
 TARGET_DIR=$(ROOT_DIR)/target
 
 COMPILE_DIR=$(TARGET_DIR)/compile
-INSTALL_DIR=/usr
 
 #========================
 #  User Configuration
 #========================
 NAME=hydr
 CONFIG=main
-SOURCES=ast.ml lexer.mll type.ml common.ml genxml.ml parser.ml typecore.ml optimizer.ml typeload.ml codegen.ml \
+SOURCES=env.ml path.ml lang.ml ast.ml lexer.mll type.ml common.ml genxml.ml parser.ml typecore.ml optimizer.ml typeload.ml codegen.ml \
 	gencommon.ml genas3.ml gencpp.ml genjs.ml genneko.ml genphp.ml genswf8.ml genswf9.ml genswf.ml genjava.ml gencs.ml \
 	interp.ml typer.ml matcher.ml dce.ml main.ml
-EXEC=$(NAME)
+EXEC="$(NAME)c"
 
 #========================
 #  User Compiler & Tools
@@ -79,10 +78,10 @@ compile: compile_libs compile_compiler
 $(EXEC): $(OBJS)
 	$(CC) $(CUSTOM) -o $(EXEC) $(LIBS) $(OBJS)
 
-$(EXEC).opt: compile_dir $(OBJS_OPT)
-	$(CCOPT) -o $(TARGET_DIR)/$(EXEC) $(LIBS:.cma=.cmxa) $(OBJS_OPT)
+$(EXEC).opt: target_dir $(OBJS_OPT)
+	$(CCOPT) -o $(COMPILE_DIR)/$(EXEC) $(LIBS:.cma=.cmxa) $(OBJS_OPT)
 	
-compile_dir:
+target_dir:
 	@mkdir -p $(COMPILE_DIR)
 
 compile_libs:
@@ -139,8 +138,8 @@ compile_compiler: $(EXEC).opt
 	$(CAMLYACC) $<
 
 clean:
-	rm -f *.cm[iox] *.o *~ .*~ #*# 
-	rm -f lexer.ml
+	@rm -f *.cm[iox] *.o *~ .*~ #*# 
+	@rm -f lexer.ml
 
 dependencies: 
 	$(CAMLDEP) $(PP) *.ml *.ml[il] > $(COMPILE_DIR)/dependencies

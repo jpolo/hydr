@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,6 +30,7 @@ open Type
 open Printf
 open Option
 open ExtString
+open Version
 
 let is_boxed_type t = match follow t with
   | TInst ({ cl_path = (["java";"lang"], "Boolean") }, [])
@@ -606,7 +607,7 @@ struct
     run
 
   let configure gen (mapping_func:texpr->texpr) =
-    (if java_hash "Testing string hashCode implementation from haXe" <> (Int32.of_int 545883604) then assert false);
+    (if java_hash "Testing string hashCode implementation from Hydr" <> (Int32.of_int 545883604) then assert false);
     let map e = Some(mapping_func e) in
     gen.gsyntax_filters#add ~name:name ~priority:(PCustom priority) map
 
@@ -1942,7 +1943,7 @@ let configure gen =
   let base_exception = get_cl (get_type gen (["java"; "lang"], "Throwable")) in
   let base_exception_t = TInst(base_exception, []) in
 
-  let hx_exception = get_cl (get_type gen (["hydr";"lang"], "HaxeException")) in
+  let hx_exception = get_cl (get_type gen (["hydr";"lang"], "HydrException")) in
   let hx_exception_t = TInst(hx_exception, []) in
 
   let rec is_exception t =
@@ -2069,7 +2070,7 @@ let configure gen =
 	if ( not (Common.defined gen.gcon Define.NoCompilation) ) then begin
 		let old_dir = Sys.getcwd() in
 		Sys.chdir gen.gcon.file;
-		let cmd = "hydrlib run hxjava hxjava_build.txt --hydr-version " ^ (string_of_int gen.gcon.version) in
+		let cmd = "hydrlib run hxjava hxjava_build.txt --hydr-version " ^ (Version.print gen.gcon.version) in
 		print_endline cmd;
 		if gen.gcon.run_command cmd <> 0 then failwith "Build failed";
 		Sys.chdir old_dir;

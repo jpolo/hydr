@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25,14 +25,14 @@
 
   This module intends to be a common set of utilities common to all targets.
 
-  It's intended to provide a set of tools to be able to make targets in haXe more easily, and to
+  It's intended to provide a set of tools to be able to make targets in Hydr more easily, and to
   allow the programmer to have more control of how the target language will handle the program.
 
   For example, as of now, the hxcpp target, while greatly done, relies heavily on cpp's own operator
   overloading, and implicit conversions, which make it very hard to deliver a similar solution for languages
   that lack these features.
 
-  So this little framework is here so you can manipulate the HaXe AST and start bringing the AST closer
+  So this little framework is here so you can manipulate the Hydr AST and start bringing the AST closer
   to how it's intenteded to be in your host language.
 
   Rules
@@ -3783,7 +3783,7 @@ struct
             (* first see if any meta is present (already processed) *)
             if Meta.has Meta.NativeGeneric cl.cl_meta then
               Some false
-            else if Meta.has Meta.HaxeGeneric cl.cl_meta then
+            else if Meta.has Meta.HydrGeneric cl.cl_meta then
               Some true
             else if not (is_hxgen md) then
               (cl.cl_meta <- (Meta.NativeGeneric, [], cl.cl_pos) :: cl.cl_meta;
@@ -3803,7 +3803,7 @@ struct
                   match cl.cl_types with
                     | [] ->
                       (* if it's not, then it will be hxgeneric *)
-                      cl.cl_meta <- (Meta.HaxeGeneric, [], cl.cl_pos) :: cl.cl_meta;
+                      cl.cl_meta <- (Meta.HydrGeneric, [], cl.cl_pos) :: cl.cl_meta;
                       Some true
                     | _ ->
                       (* if it is, loop through all fields + statics and look for non-hxgeneric
@@ -3827,14 +3827,14 @@ struct
                       end else if isfirst && !has_unresolved then
                         None
                       else begin
-                        cl.cl_meta <- (Meta.HaxeGeneric, [], cl.cl_pos) :: cl.cl_meta;
+                        cl.cl_meta <- (Meta.HydrGeneric, [], cl.cl_pos) :: cl.cl_meta;
                         Some true
                       end
             end
           | TEnumDecl e ->
             if Meta.has Meta.NativeGeneric e.e_meta then
               Some false
-            else if Meta.has Meta.HaxeGeneric e.e_meta then
+            else if Meta.has Meta.HydrGeneric e.e_meta then
               Some true
             else if not (is_hxgen (TEnumDecl e)) then begin
               e.e_meta <- (Meta.NativeGeneric, [], e.e_pos) :: e.e_meta;
@@ -3843,7 +3843,7 @@ struct
               (* if enum is not generic, then it's hxgeneric *)
               match e.e_types with
                 | [] ->
-                  e.e_meta <- (Meta.HaxeGeneric, [], e.e_pos) :: e.e_meta;
+                  e.e_meta <- (Meta.HydrGeneric, [], e.e_pos) :: e.e_meta;
                   Some true
                 | _ ->
                   let rec loop efs =
@@ -3876,7 +3876,7 @@ struct
                   end else if isfirst && !has_unresolved then
                     None
                   else begin
-                    e.e_meta <- (Meta.HaxeGeneric, [], e.e_pos) :: e.e_meta;
+                    e.e_meta <- (Meta.HydrGeneric, [], e.e_pos) :: e.e_meta;
                     Some true
                   end
             end
@@ -5063,7 +5063,7 @@ end;;
   and will unwrap statements where expressions are expected, and vice-versa.
 
   It should be one of the first syntax filters to be applied. As a consequence, it's applied after all filters that add code to the AST, and by being
-  the first of the syntax filters, it will also have the AST retain most of the meaning of normal HaXe code. So it's easier to detect cases which are
+  the first of the syntax filters, it will also have the AST retain most of the meaning of normal Hydr code. So it's easier to detect cases which are
   side-effects free, for example
 
   Any target can make use of this, but there is one requirement: The target must accept null to be set to any kind of variable. For example,
@@ -5072,7 +5072,7 @@ end;;
   dependencies:
     While it's best for Expression Unwrap to delay its execution as much as possible, since theoretically any
     filter can return an expression that needs to be unwrapped, it is also desirable for ExpresionUnwrap to have
-    the AST as close as possible as HaXe's, so it can make some correct predictions (for example, so it can
+    the AST as close as possible as Hydr's, so it can make some correct predictions (for example, so it can
     more accurately know what can be side-effects-free and what can't).
     This way, it will run slightly after the Normal priority, so if you don't say that a syntax filter must run
     before Expression Unwrap, it will run after it.
@@ -8616,10 +8616,10 @@ end;;
 
   var x = MyClass;
   gets converted into
-  Haxe.Lang.Class x = Haxe.Lang.Runtime.GetType(typeof(MyClass).RuntimeHandle);
+  Hydr.Lang.Class x = Hydr.Lang.Runtime.GetType(typeof(MyClass).RuntimeHandle);
 
   which will in turn look in its cache but roughly would do:
-  Haxe.Lang.Class x = new Haxe.Lang.Class(new MyClass(EmptyObject.EMPTY));
+  Hydr.Lang.Class x = new Hydr.Lang.Class(new MyClass(EmptyObject.EMPTY));
 
   This module will of course let the caller choose how this will be implemented. It will just identify all
   uses of class that will require it to be cast as an object.

@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -103,7 +103,7 @@ let reserved =
 	List.iter (fun l -> Hashtbl.add h l ())
 	(* these ones are defined in order to prevent recursion in some Std functions *)
 	["is";"as";"int";"uint";"const";"getTimer";"typeof";"parseInt";"parseFloat";
-	(* AS3 keywords which are not Haxe ones *)
+	(* AS3 keywords which are not Hydr ones *)
 	"finally";"with";"final";"internal";"native";"namespace";"include";"delete";
 	(* some globals give some errors with Flex SDK as well *)
 	"print";"trace";

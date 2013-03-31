@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,6 +23,7 @@
 open Ast
 open Type
 open Common
+open Path
 
 type pos = Ast.pos
 
@@ -198,7 +199,7 @@ let write_mappings ctx =
 	let channel = open_out_bin (ctx.com.file ^ ".map") in
 	let sources = DynArray.to_list ctx.smap.sources in
 	let to_url file =
-		ExtString.String.map (fun c -> if c == '\\' then '/' else c) (Common.get_full_path file)
+		ExtString.String.map (fun c -> if c == '\\' then '/' else c) (Path.full file)
 	in
 	output_string channel "{\n";
 	output_string channel "\"version\":3,\n";

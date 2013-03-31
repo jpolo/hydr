@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -3357,7 +3357,7 @@ let write_build_data filename classes main_deps build_extra exe_name =
 	output_string buildfile "<compilerflag value=\"-Iinclude\"/>\n";
 	add_class_to_buildfile (  ( [] , "__main__") , main_deps );
 	output_string buildfile "</files>\n";
-	output_string buildfile ("<set name=\"HAXE_OUTPUT\" value=\"" ^ exe_name ^ "\" />\n");
+	output_string buildfile ("<set name=\"HYDR_OUTPUT\" value=\"" ^ exe_name ^ "\" />\n");
 	output_string buildfile "<include name=\"${HXCPP}/build-tool/BuildCommon.xml\"/>\n";
 	output_string buildfile build_extra;
 	output_string buildfile "</xml>\n";

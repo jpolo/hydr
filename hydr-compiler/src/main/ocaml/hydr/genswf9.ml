@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25,6 +25,7 @@ open Type
 open As3
 open As3hl
 open Common
+open Path
 
 type read = Read
 type write = Unused__ | Write
@@ -325,8 +326,8 @@ let property ctx p t =
 		| _ -> as3 p, None, false);
 	| TInst ({ cl_path = [],"String" },_) ->
 		(match p with
-		| "length" (* Int in AS3/Haxe *) -> ident p, None, false
-		| "charCodeAt" (* use Haxe version *) -> ident p, None, true
+		| "length" (* Int in AS3/Hydr *) -> ident p, None, false
+		| "charCodeAt" (* use Hydr version *) -> ident p, None, true
 		| "cca" -> as3 "charCodeAt", None, false
 		| _ -> as3 p, None, false);
 	| TAnon a ->
@@ -609,7 +610,7 @@ let debug_infos ?(is_min=true) ctx p =
 	if ctx.debug then begin
 		let line = Lexer.get_error_line (if is_min then p else { p with pmin = p.pmax }) in
 		if ctx.last_file <> p.pfile then begin
-			write ctx (HDebugFile (if ctx.debugger then Common.get_full_path p.pfile else p.pfile));
+			write ctx (HDebugFile (if ctx.debugger then Path.full p.pfile else p.pfile));
 			ctx.last_file <- p.pfile;
 			ctx.last_line <- -1;
 		end;

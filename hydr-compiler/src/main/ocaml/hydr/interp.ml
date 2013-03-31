@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,6 +24,8 @@ open Common
 open Nast
 open Unix
 open Type
+open Env
+open Path
 
 (* ---------------------------------------------------------------------- *)
 (* TYPES *)
@@ -463,7 +465,7 @@ type neko_context = {
 }
 
 let neko =
-	let is_win = Sys.os_type = "Win32" || Sys.os_type = "Cygwin" in
+	let is_win = Env.is_windows || Env.is_cygwin in
 	let neko = Extc.dlopen (if is_win then "neko.dll" else "libneko.so") in
 	let null = Extc.dlint 0 in
 	let neko = if Obj.magic neko == null && not is_win then Extc.dlopen "libneko.dylib" else neko in
@@ -1181,7 +1183,7 @@ let std_lib =
 				let t = Unix.localtime (date d) in
 				VString (string_of_int t.tm_wday)
 			| VString _ ->
-				exc (VString "Custom date format is not supported") (* use native Haxe implementation *)
+				exc (VString "Custom date format is not supported") (* use native Hydr implementation *)
 			| _ ->
 				error()
 		);
@@ -1939,9 +1941,9 @@ let reg_lib =
 				| Some (pos,pend) -> VObject (obj (hash_field (get_ctx())) ["pos",VInt pos;"len",VInt (pend - pos)]))
 			| _ -> error()
 		);
-		(* regexp_replace : not used by Haxe *)
-		(* regexp_replace_all : not used by Haxe *)
-		(* regexp_replace_fun : not used by Haxe *)
+		(* regexp_replace : not used by Hydr *)
+		(* regexp_replace_all : not used by Hydr *)
+		(* regexp_replace_fun : not used by Hydr *)
 	]
 	| Some neko ->
 	let regexp_new_options = neko.load "regexp@regexp_new_options" 2 in
@@ -2182,7 +2184,7 @@ let macro_lib =
 				try
 					Hashtbl.find hfiles f
 				with Not_found ->
-					let ff = Common.unique_full_path f in
+					let ff = Path.full_unique f in
 					Hashtbl.add hfiles f ff;
 					ff
 			in

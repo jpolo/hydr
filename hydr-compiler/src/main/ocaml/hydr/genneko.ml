@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -708,7 +708,7 @@ let generate_libs_init = function
 			var @s = $loader.loadprim("std@sys_string",0)();
 			var @env = $loader.loadprim("std@get_env",1);
 			var @b = if( @s == "Windows" )
-				@env("HAXEPATH") + "lib\\"
+				@env("HYDR_PATH") + "lib\\"
 				else try $loader.loadprim("std@file_contents",1)(@env("HOME")+"/.hydrlib") + "/"
 				catch e if( @s == "Linux" ) "/usr/lib/hydr/lib/" else "/usr/local/lib/hydr/lib/";
 			if( $loader.loadprim("std@sys_is64",0)() ) @s = @s + 64;
@@ -727,7 +727,7 @@ let generate_libs_init = function
 				"@s",Some (call p (loadp "sys_string" 0) []);
 				"@env",Some (loadp "get_env" 1);
 				"@b", Some (EIf (op "==" es (str p "Windows"),
-					op "+" (call p (ident p "@env") [str p "HAXEPATH"]) (str p "lib\\"),
+					op "+" (call p (ident p "@env") [str p "HYDR_PATH"]) (str p "lib\\"),
 					Some (ETry (
 						op "+" (call p (loadp "file_contents" 1) [op "+" (call p (ident p "@env") [str p "HOME"]) (str p "./hydrlib")]) (str p "/"),
 						"e",

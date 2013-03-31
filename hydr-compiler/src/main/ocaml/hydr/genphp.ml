@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -2141,7 +2141,7 @@ let createmain com e =
 	} in
 
 	spr ctx "if(version_compare(PHP_VERSION, '5.1.0', '<')) {
-    exit('Your current PHP version is: ' . PHP_VERSION . '. Haxe/PHP generates code for version 5.1.0 or later');
+    exit('Your current PHP version is: ' . PHP_VERSION . '. Hydr/PHP generates code for version 5.1.0 or later');
 }";
 	newline ctx;
 	newline ctx;

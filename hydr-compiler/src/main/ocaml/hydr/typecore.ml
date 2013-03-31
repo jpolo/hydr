@@ -1,5 +1,5 @@
 (*
- * Copyright (C)2005-2013 Haxe Foundation
+ * Copyright (C)2013-2013 Julien Polo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,6 +22,7 @@
 
 open Common
 open Type
+open Path
 
 type with_type =
 	| NoValue
@@ -343,7 +344,7 @@ let exc_protect ctx f (where:string) =
 
 let fake_modules = Hashtbl.create 0
 let create_fake_module ctx file =
-	let file = Common.unique_full_path file in
+	let file = Path.full_unique file in
 	let mdep = (try Hashtbl.find fake_modules file with Not_found ->
 		let mdep = {
 			m_id = alloc_mid();
