@@ -1,7 +1,7 @@
 # Makefile contributed by Alain Frisch
 
 MODULES = \
- enum bitSet dynArray extArray extHashtbl extList extString global IO option \
+ enum bitSet dynArray extArray extHashtbl extList extString extFilename global IO option \
  pMap std uChar uTF8 base64 unzip refList optParse dllist multiArray version
 
 # the list is topologically sorted

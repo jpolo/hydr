@@ -69,6 +69,7 @@ export:
 	rsync -a --exclude .svn --exclude *.n --exclude std/libs --delete std $(EXPORT)
 
 test:
+	@cp -ru $(SOURCE_STD_DIR)/* $(DIST_DIR)/std
 	$(DIST_DIR)/bin/$(EXEC) project/compile_test.hyml
 
 clean: clean_dependencies clean_compiler

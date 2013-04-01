@@ -150,7 +150,11 @@ let make_path f =
   let f = String.concat "/" (ExtString.String.nsplit f "\\") in
   let cl = ExtString.String.nsplit f "." in
   let cl = (match List.rev cl with
-    | ["hx";path] -> ExtString.String.nsplit path "/"
+    | [ext;path] -> 
+      if ext == Lang.filename_source_extension then 
+        ExtString.String.nsplit path "/"
+      else
+        cl
     | _ -> cl
   ) in
   let error() =
@@ -302,7 +306,7 @@ let lookup_classes com spath =
     | [] -> []
     | cp :: l ->
       let cp = (if cp = "" then "./" else cp) in
-      let c = normalize_path (Extc.get_real_path (Path.full_unique cp)) in
+      let c = Path.normalize (Extc.get_real_path (Path.full_unique cp)) in
       let clen = String.length c in
       if clen < String.length spath && String.sub spath 0 clen = c then begin
         let path = String.sub spath clen (String.length spath - clen) in
@@ -826,7 +830,7 @@ try
   let basic_args_spec = [
     ("-cp",Arg.String (fun path ->
       process_libs();
-      com.class_path <- normalize_path path :: com.class_path
+      com.class_path <- Path.normalize path :: com.class_path
     ),"<path> : add a directory to find source files");
     ("-js",Arg.String (set_platform Js),"<file> : compile code to JavaScript file");
     ("-swf",Arg.String (set_platform Flash),"<file> : compile code to Flash SWF file");
@@ -1099,7 +1103,7 @@ try
     Common.log com ("Classes found : ["  ^ (String.concat "," (List.map Ast.s_type_path !classes)) ^ "]");
   end;
   let add_std dir =
-    com.class_path <- List.filter (fun s -> not (List.mem s com.std_path)) com.class_path @ List.map (fun p -> p ^ dir ^ "/_std/") com.std_path @ com.std_path
+    com.class_path <- List.filter (fun s -> not (List.mem s com.std_path)) com.class_path @ List.map (fun p -> p ^ "/" ^ dir ^ "/_std") com.std_path @ com.std_path;
   in
   let ext = (match com.platform with
     | Cross ->

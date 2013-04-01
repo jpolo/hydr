@@ -32,6 +32,7 @@ let modules = [
 	"extHashtbl";
 	"extList";
 	"extString";
+	"extFilename";
 	"global";
 	"IO";
 	"option";

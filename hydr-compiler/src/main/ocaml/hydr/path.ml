@@ -12,22 +12,55 @@ module Path  = struct
       (fun f -> String.lowercase (full f)) 
     else full
     
+  let extension (pathname: string) =
+    ExtFilename.Filename.extension pathname
+    
   let normalize (pathname: string) =
-    let length = String.length pathname in
-    if length = 0 then
-      "."
-    else match pathname.[length - 1] with
-      | '\\' | '/' -> String.sub pathname 0 (length - 1)
-      | _ -> pathname
+    ExtFilename.Filename.normalize pathname
 
   let executable (basename: string) = 
     basename ^ (if Env.is_windows then ".exe" else "")
+    
+  let source (partial_path: string) =
+    let f = String.concat "/" (ExtString.String.nsplit partial_path "\\") in
+    let cl = ExtString.String.nsplit f "." in
+    let cl = (match List.rev cl with
+      | ["hy";path] -> ExtString.String.nsplit path "/"
+      | _ -> cl
+    ) in
+    let error() =
+      let msg =
+        if String.length f == 0 then
+          "Class name must not be empty"
+        else match (List.hd (List.rev cl)).[0] with
+          | 'A'..'Z' -> "Invalid class name"
+          | _ -> "Class name must start with uppercase character"
+      in
+      failwith msg
+    in
+    let invalid_char x =
+      for i = 1 to String.length x - 1 do
+        match x.[i] with
+        | 'A'..'Z' | 'a'..'z' | '0'..'9' | '_' -> ()
+        | _ -> error()
+      done;
+      false
+    in
+    let rec loop = function
+      | [] -> error()
+      | [x] -> if String.length x = 0 || not (x.[0] = '_' || (x.[0] >= 'A' && x.[0] <= 'Z')) || invalid_char x then error() else [] , x
+      | x :: l ->
+        if String.length x = 0 || x.[0] < 'a' || x.[0] > 'z' || invalid_char x then error() else
+          let path , name = loop l in
+          x :: path , name
+    in
+    loop cl
 
   let resolve file_paths (partial_path:string) =
     let rec loop = function
       | [] -> raise Not_found
       | file_path :: rest ->
-        let file = (normalize file_path) ^ "/" ^ partial_path in
+        let file = Filename.concat (normalize file_path) partial_path in
         if Sys.file_exists file then
           file
         else
