@@ -640,11 +640,6 @@ let get_signature com =
 		com.defines_signature <- Some s;
 		s
 
-let file_extension file =
-	match List.rev (ExtString.String.nsplit file ".") with
-	| e :: _ -> String.lowercase e
-	| [] -> ""
-
 let platforms = [
 	Flash8;
 	Js;

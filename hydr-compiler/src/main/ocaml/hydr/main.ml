@@ -19,7 +19,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  *)
-
+ 
+open ExtLib
 open Printf
 open Ast
 open Genswf
@@ -29,6 +30,7 @@ open Env
 open Lang
 open Version
 open Path
+
 
 type context = {
   com : Common.context;
@@ -132,7 +134,7 @@ let complete_fields fields =
   Buffer.add_string b "<list>\n";
   List.iter (fun (n,t,d) ->
     Buffer.add_string b (Printf.sprintf "<i n=\"%s\"><t>%s</t><d>%s</d></i>\n" n (htmlescape t) (htmlescape d))
-  ) (List.sort (fun (a,_,_) (b,_,_) -> compare a b) fields);
+  ) (List.sort ~cmp:(fun (a,_,_) (b,_,_) -> compare a b) fields);
   Buffer.add_string b "</list>\n";
   raise (Completion (Buffer.contents b))
 
@@ -142,7 +144,7 @@ let report_times print =
   print (Printf.sprintf "Total time : %.3fs" !tot);
   if !tot > 0. then begin
     print "------------------------------------";
-    let timers = List.sort (fun t1 t2 -> compare t1.name t2.name) (Hashtbl.fold (fun _ t acc -> t :: acc) Common.htimers []) in
+    let timers = List.sort ~cmp:(fun t1 t2 -> compare t1.name t2.name) (Hashtbl.fold (fun _ t acc -> t :: acc) Common.htimers []) in
     List.iter (fun t -> print (Printf.sprintf "  %s : %.3fs, %.0f%%" t.name t.total (t.total *. 100. /. !tot))) timers
   end
 
@@ -191,7 +193,7 @@ let unique l =
     | x1 :: x2 :: l when x1 = x2 -> _unique (x2 :: l)
     | x :: l -> x :: _unique l
   in
-  _unique (List.sort compare l)
+  _unique (List.sort l)
 
 let rec read_type_path com p =
   let classes = ref [] in
@@ -227,7 +229,7 @@ let rec read_type_path com p =
           else
             packages := f :: !packages
         end;
-      end else if file_extension f = Lang.filename_source_extension then begin
+      end else if Filename.extension f = Lang.filename_source_extension then begin
         let c = Filename.chop_extension f in
         if String.length c < 2 || String.sub c (String.length c - 2) 2 <> "__" then classes := c :: !classes;
       end;
@@ -814,7 +816,7 @@ try
     if com.platform <> Cross then failwith "Multiple targets";
     Common.init_platform com pf;
     com.file <- file;
-    if (pf = Flash8 || pf = Flash) && file_extension file = "swc" then Common.define com Define.Swc;
+    if (pf = Flash8 || pf = Flash) && Filename.extension file = "swc" then Common.define com Define.Swc;
   in
   let define f = Arg.Unit (fun () -> Common.define com f) in
   let process_ref = ref (fun args -> ()) in
@@ -1036,7 +1038,7 @@ try
         end else
           []
       in
-      let all = List.sort String.compare (loop 0) in
+      let all = List.sort ~cmp:String.compare (loop 0) in
       List.iter (fun msg -> ctx.com.print (msg ^ "\n")) all;
       did_something := true
     ),": print help for all compiler specific defines");
@@ -1067,7 +1069,7 @@ try
         end else
           []
       in
-      let all = List.sort String.compare (loop 0) in
+      let all = List.sort ~cmp:String.compare (loop 0) in
       List.iter (fun msg -> ctx.com.print (msg ^ "\n")) all;
       did_something := true
     ),": print help for all compiler metadatas");
@@ -1158,7 +1160,7 @@ try
 
   (* check file extension. In case of wrong commandline, we don't want
     to accidentaly delete a source file. *)
-  if not !no_output && file_extension com.file = ext then delete_file com.file;
+  if not !no_output && Filename.extension com.file = ext then delete_file com.file;
   List.iter (fun f -> f()) (List.rev (!pre_compilation));
   if !classes = [([],"Std")] && not !force_typing then begin
     if !cmds = [] && not !did_something then Arg.usage basic_args_spec usage;
