@@ -1,0 +1,30 @@
+
+[indentation]
+indent_width=2
+indent_type=0
+indent_hard_tab_width=8
+detect_indent=true
+detect_indent_width=true
+indent_mode=2
+
+[project]
+name=hydr-compiler
+base_path=/home/julien/Workspace/hydr/hydr-compiler
+description=
+file_patterns=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=80
+
+[files]
+current_page=0
+FILE_NAME_0=1184;CAML;0;16;1;1;0;/home/julien/Workspace/hydr/hydr-compiler/src/main/ocaml/hydr/main.ml;0;2
+
+[VTE]
+last_dir=/home/julien
+
+[build-menu]
+NF_03_LB=Make Test
+NF_03_CM=make test
+NF_03_WD=
