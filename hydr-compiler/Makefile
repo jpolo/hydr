@@ -55,14 +55,14 @@ install:
 	
 	cp -r $(HYDR_STD_PATH) $(INSTALL_LIB_DIR)
 	cp $(NAME) $(INSTALL_BIN_DIR)/$(NAME)
-	#cp std/tools/haxelib/haxelib.sh $(INSTALL_BIN_DIR)/haxelib
-	#cp std/tools/haxedoc/haxedoc.sh $(INSTALL_BIN_DIR)/haxedoc
+	#cp std/tools/haxelib/haxelib.sh $(INSTALL_BIN_DIR)/$(NAME)lib
+	#cp std/tools/haxedoc/haxedoc.sh $(INSTALL_BIN_DIR)/$(NAME)doc
 	
 	chmod 777 $(INSTALL_LIB_DIR)/lib
-	chmod +x $(INSTALL_BIN_DIR)/$(NAME) $(INSTALL_BIN_DIR)/haxelib $(INSTALL_BIN_DIR))/haxedoc
+	chmod +x $(INSTALL_BIN_DIR)/$(EXEC) $(INSTALL_BIN_DIR)/$(NAME)lib $(INSTALL_BIN_DIR))/$(NAME)doc
 	
 uninstall:
-	rm -rf $(INSTALL_BIN_DIR)/$(NAME) $(INSTALL_BIN_DIR)/haxelib $(INSTALL_BIN_DIR))/haxedoc $(INSTALL_LIB_DIR)/lib/$(NAME)
+	rm -rf $(INSTALL_BIN_DIR)/$(NAME) $(INSTALL_BIN_DIR)/$(NAME)lib $(INSTALL_BIN_DIR))/$(NAME)doc $(INSTALL_LIB_DIR)/lib/$(EXEC)
 	
 export:
 	cp $(NAME)*.exe doc/CHANGES.txt $(EXPORT)

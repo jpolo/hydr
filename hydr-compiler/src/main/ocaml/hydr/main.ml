@@ -1082,7 +1082,7 @@ try
   process_ref := process;
   process ctx.com.args;
   process_libs();
-  (try ignore(Common.find_file com "mt/Include.hx"); Common.raw_define com "mt"; with Not_found -> ());
+  (try ignore(Common.find_file com (Lang.filename_source "mt/Include")); Common.raw_define com "mt"; with Not_found -> ());
   if com.display then begin
     let mode = Common.defined_value_safe com Define.DisplayMode in
     if mode = "usage" then begin
@@ -1216,7 +1216,7 @@ try
     if ctx.has_error then raise Abort;
     (match !xml_out with
     | None -> ()
-    | Some "hx" ->
+    | Some "hy" ->
       Genxml.generate_hx com
     | Some file ->
       Common.log com ("Generating xml : " ^ file);

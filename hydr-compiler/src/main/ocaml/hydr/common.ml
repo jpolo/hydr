@@ -746,14 +746,6 @@ let add_filter ctx f =
 let find_file ctx f =
 	Path.resolve ctx.class_path f
 
-let normalize_path p =
-	let l = String.length p in
-	if l = 0 then
-		"./"
-	else match p.[l-1] with
-		| '\\' | '/' -> p
-		| _ -> p ^ "/"
-
 (* ------------------------- TIMERS ----------------------------- *)
 
 type timer_infos = {

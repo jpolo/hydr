@@ -1,90 +1,97 @@
 #remoting
 -cp src/test/hydr/
 -main unit.RemotingServer
--neko remoting.n
+-neko target/compile/remoting.n
 
 #exe-runner
 --next
+-cp src/test/hydr/
 -main RunExe
--neko runexe.n
+-neko target/compile/runexe.n
 
 #java-runner
 --next
+-cp src/test/hydr/
 -main RunJava
--neko runjava.n
+-neko target/compile/runjava.n
 
 #each
 --next
 -D macro-times
 -debug
--cp ..
--resource res1.txt
--resource res2.bin
+-cp src/test/hydr/
+-resource src/test/resources/res1.txt
+-resource src/test/resources/res2.bin
 --no-opt
 -dce full
 --each
 
 #flash8
--main unit.Test
--swf-header 300:300:30:FFFFFF
--swf-version 8
--swf unit8.swf
+#-cp src/test/hydr/
+#-main unit.Test
+#-swf-header 300:300:30:FFFFFF
+#-swf-version 8
+#-swf unit8.swf
 
 #flash9
---next
--main unit.Test
--swf-version 11
--swf unit9.swf
+#--next
+#-cp src/test/hydr/
+#-main unit.Test
+#-swf-version 11
+#-swf unit9.swf
 
 #js
 --next
-unit.Test
--js unit.js
+-cp src/test/hydr/
+-main unit.Test
+-js target/compile/unit.js
 
 #neko
---next
--D neko_v2
--main unit.Test
--neko unit.n
+#--next
+#-cp src/test/hydr/
+#-D neko_v2
+#-main unit.Test
+#-neko target/compile/unit.n
 
 #macro
---next
--main unit.Test
---interp
+#--next
+#-cp src/test/hydr/
+#-main unit.Test
+#--interp
 
 #php
---next
--main unit.Test
--php php
+#--next
+#-main unit.Test
+#-php php
 
 #as3
---next
--main unit.Test
--as3 as3
--cmd mxmlc -static-link-runtime-shared-libraries=true -debug as3/__main__.as --output unit9_as3.swf
+#--next
+#-main unit.Test
+#-as3 as3
+#-cmd mxmlc -static-link-runtime-shared-libraries=true -debug as3/__main__.as --output unit9_as3.swf
 
 #cpp
---next
--main unit.Test
--cpp cpp
--D NO_PRECOMPILED_HEADERS
+#--next
+#-main unit.Test
+#-cpp cpp
+#-D NO_PRECOMPILED_HEADERS
 
 #java native build
--cmd "haxelib run hxjava native_java/hxjava_build.txt --out native_java/native"
+#-cmd "hydrlib run hxjava native_java/hxjava_build.txt --out native_java/native"
 
 #java
---next
--main unit.Test
--java java
--java-lib native_java/native.jar
+#--next
+#-main unit.Test
+#-java java
+#-java-lib native_java/native.jar
 
 #cs
---next
--main unit.Test
--cs cs
+#--next
+#-main unit.Test
+#-cs cs
 
 #cs_unsafe
---next
--main unit.Test
--D unsafe
--cs cs_unsafe
+#--next
+#-main unit.Test
+#-D unsafe
+#-cs cs_unsafe

@@ -2190,7 +2190,12 @@ let resolve_module_file com m remap p =
     ) in
     if not (Meta.has Meta.NoPackageRestrict meta) then begin
       let x = (match fst m with [] -> assert false | x :: _ -> x) in
-      raise (Forbid_package ((x,m,p),[],if Common.defined com Define.Macro then "macro" else platform_name com.platform));
+      raise (Forbid_package (
+        (x,m,p),
+        [],
+        if Common.defined com Define.Macro then "macro" 
+        else platform_name com.platform
+      ));
     end;
   end;
   file
